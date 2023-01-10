@@ -1,0 +1,33 @@
+project(translator)
+
+# build library for the HTN components
+
+# commands for grapping the source files
+file(GLOB HTN_SOURCE_FILES "htn/src/*.cpp") 
+
+add_library(htn
+    ${HTN_SOURCE_FILES}
+)
+
+target_include_directories(htn
+    PUBLIC
+        htn/include
+)
+
+# build library for translating to HTN problems
+
+file(GLOB TO_HTN_SOURCE_FILES "to_htn/src/*.cpp")
+
+add_library(to_htn
+    ${TO_HTN_SOURCE_FILES}
+)
+
+target_include_directories(to_htn
+    PUBLIC
+        to_htn/include
+)
+
+target_link_libraries(to_htn
+    PUBLIC
+        htn
+)

@@ -115,3 +115,6 @@ target_link_libraries(pandaPIengine PUBLIC intDataStructures)
 
 # add plan verifiers
 add_subdirectory(verifier)
+
+# add translator for modeling assistance
+add_subdirectory(translator)
