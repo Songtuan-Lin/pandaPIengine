@@ -1,27 +1,16 @@
 #include "Model.h"
-#include <fstream>
+#include "task.h"
+#include "method.h"
 #include <string.h>
 #include <unordered_map>
 #include <algorithm>
 
-class Verifier {
-    public:
-        Verifier(string htnFile, string planFile) {
-            this->readHTNFile(htnFile);
-            vector<string> planStr = this->readPlanFile(planFile);
-            this->plan = this->parsePlan(planStr);
-        }
-
-        virtual bool getResult() {return this->result;}
-
-    protected:
+class Translator {
+    private:
         Model *htn;
         vector<int> plan;
-        bool result;
-
-    private:
         void readHTNFile(string htnFile) {
-            cout << "read model from" << htnFile << "\n";
+            cout << "Read model from" << htnFile << "\n";
             std::ifstream *fileInput = new std::ifstream(htnFile);
             if(!fileInput->good()) {
                 std::cerr << "Unable to open input file " << htnFile << ": " << strerror (errno) << std::endl;
@@ -40,7 +29,6 @@ class Verifier {
             this->htn->read(inputStream);
             cout << "reading htn file completed" << endl;
         }
-
         vector<int> parsePlan(vector<string> planStr) {
             vector<int> planNum;
             unordered_map<string, int> taskToIndex;
@@ -51,14 +39,13 @@ class Verifier {
             }
             for (int i = 0; i < planStr.size(); i++) {
                 if (!taskToIndex.count(planStr[i])) {
-                    std::cerr << "Plan contains unreachable actions, plan is not a solution" << endl;
+                    std::cerr << "Error: Plan contains actions not in the domain" << endl;
                     exit(-1);
                 }
                 planNum.push_back(taskToIndex[planStr[i]]);
             }
             return planNum;
         }
-
         vector<string> readPlanFile(string planFile) {
             cout << "Read plan from " << planFile << endl;
             vector<string> plan;
@@ -76,4 +63,12 @@ class Verifier {
             cout << "Read plan file complete" << endl;
             return plan;
         }
+
+    public:
+        Translator(string htnFile, string planFile) {
+            this->readHTNFile(htnFile);
+            vector<string> planStr = this->readPlanFile(planFile);
+            this->plan = this->parsePlan(planStr);
+        }
+
 };

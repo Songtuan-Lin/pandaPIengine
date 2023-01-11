@@ -1,33 +1,102 @@
 #include <string>
 #include <vector>
+#include <tuple>
+#include <fstream>
 #include "assert.h"
 
 using namespace std;
+
+class Proposition {
+    private:
+        int id;
+        string name;
+    
+    public:
+        Proposition() {
+            this->id = -1;
+            this->name = "";
+        }
+        Proposition(int id, string name) {
+            this->id = id;
+            this->name = name;
+        }
+        int getID() {return this->id;}
+        string getName() {return this->name;}
+        bool validiate() {return this->id != -1;}
+        void write(ofstream &ofile) {
+            assert(this->validiate());
+            ofile << this->name << endl;
+        }
+};
+
 class Task {
     private:
         int id;
         string name;
 
     public:
+        Task() {
+            this->id = -1;
+            this->name = "";
+        }
         Task(int id, string name) {
             this->id = id;
             this->name = name;
         }
         virtual bool isPrimitive() {return false;}
+        virtual void write(ofstream &ofile) {}
         int getID() {return this->id;}
         string getName() {return this->name;}
+        bool validiate() {return this->id != -1;}
 };
 
 class PrimitiveTask : public Task {
+    private:
+        vector<Proposition> precondition;
+        vector<Proposition> posEffs;
+        vector<Proposition> negEffs;
+        int cost;
+
     public:
+        PrimitiveTask() : Task() {}
         PrimitiveTask(int id, string name) : Task(id, name) {}
+        PrimitiveTask(int id, string name, int cost, vector<Proposition> precondition, vector<Proposition> posEffs, vector<Proposition> negEffs) : Task(id, name) {
+            this->cost = cost;
+            this->precondition = precondition;
+            this->posEffs = posEffs;
+            this->negEffs = negEffs;
+        }
         bool isPrimitive() {return true;}
+        void write(ofstream &ofile) {
+            assert(this->validiate());
+            ofile << "0 " << this->getName() << endl;
+        }
+        void writeAsAction(ofstream &ofile) {
+            ofile << to_string(this->cost) << endl;
+            for (Proposition p : this->precondition) {
+                ofile << p.getID() << " ";
+            }
+            ofile << -1 << endl;
+            for (Proposition p : this->posEffs) {
+                ofile << "0 " << p.getID() << "  ";
+            }
+            ofile << -1 << endl;
+            for (Proposition p : this->negEffs) {
+                ofile << "0 " << p.getID() << "  ";
+            }
+            ofile << -1 << endl;
+        }
 };
 
 class CompoundTask : public Task {
     public:
+        CompoundTask() : Task() {}
         CompoundTask(int id, string name) : Task(id, name) {}
         bool isPrimitive() {return false;}
+        void write(ofstream &ofile) {
+            assert(this->validiate());
+            ofile << "1 " << this->getName() << endl;
+        }
 };
 
 class TaskNetwork {
@@ -40,5 +109,24 @@ class TaskNetwork {
         void addOrder(tuple<int, int> constraint) {
             assert(get<0>(constraint) < this->tasks.size() && get<1>(constraint) < this->tasks.size());
             this->order.push_back(constraint);
+        }
+        bool validiate() {
+            for (Task t: this->tasks) {
+                if (!t.validiate()) return false;
+            }
+            return true;
+        }
+        void write(ofstream &ofile) {
+            assert(this->validiate());
+            for (Task t : this->tasks) {
+                // TODO: check carefully whether an offset should
+                // be added to the id of a compound task
+                ofile << t.getID() << " ";
+            }
+            ofile << -1 << endl;
+            for (tuple<int, int> o: this->order) {
+                ofile << get<0>(o) << " " << get<1>(o) << " ";
+            }
+            ofile << -1 << endl;
         }
 };

@@ -31,11 +31,6 @@ file(GLOB TO_SOURCE_FILES
 
 add_library(to_verifier
     ${TO_SOURCE_FILES}
-    ${pandaPIengine_SOURCE_DIR}/Model.cpp
-    ${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp
-    ${pandaPIengine_SOURCE_DIR}/Util.cpp
-    ${pandaPIengine_SOURCE_DIR}/Debug.cpp
-    ${pandaPIengine_SOURCE_DIR}/Invariants.cpp
 )
 
 target_include_directories(to_verifier

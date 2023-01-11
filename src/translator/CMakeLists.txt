@@ -5,18 +5,23 @@ project(translator)
 # commands for grapping the source files
 file(GLOB HTN_SOURCE_FILES "htn/src/*.cpp") 
 
-add_library(htn
-    ${HTN_SOURCE_FILES}
-)
+add_library(htn INTERFACE)
 
 target_include_directories(htn
-    PUBLIC
+    INTERFACE
         htn/include
 )
 
 # build library for translating to HTN problems
 
-file(GLOB TO_HTN_SOURCE_FILES "to_htn/src/*.cpp")
+file(GLOB TO_HTN_SOURCE_FILES 
+    "to_htn/src/*.cpp"
+    "../Model.cpp" 
+    "../ProgressionNetwork.cpp" 
+    "../Util.cpp" 
+    "../Debug.cpp" 
+    "../Invariants.cpp"
+)
 
 add_library(to_htn
     ${TO_HTN_SOURCE_FILES}
@@ -25,6 +30,7 @@ add_library(to_htn
 target_include_directories(to_htn
     PUBLIC
         to_htn/include
+        include
 )
 
 target_link_libraries(to_htn
