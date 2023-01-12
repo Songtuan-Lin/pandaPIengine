@@ -70,5 +70,4 @@ class Translator {
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
         }
-
 };
