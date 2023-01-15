@@ -1,38 +1,53 @@
-# More Background Information
+# Introduction
 
-We've put together a website with the history of all planning systems of the PANDA family, links to all relevant software projects, and further background information including pointers explaining the techniques deployed by the respective systems.
+This is the implementation of the CYK-based total order (TO) HTN plan verification approach, which is described in the paper, *On Total-Order HTN Plan Verification with Method Preconditions – An Extension of the CYK Parsing Algorithm*, accepted by AAAI 2023. The approach is built upon the HTN planning system [pandaPI](https://panda-planner-dev.github.io/). Concretely, it relies on the data structure in pandaPI used to store an input HTN planning problem.
 
-- You find it on https://panda-planner-dev.github.io/
-- or, as a forward, on http://panda.hierarchical-task.net
+# Compiling the Code
 
-## pandaPIengine
+Since the code is built upon pandaPI, all components required for compiling pandaPI are also required here, which are zip and gengetopt.
 
-pandaPIengine is a versatile HTN planning engine. To use the engine, you first need to parse and ground the planning problem. The capabilities are provided by other components: the [pandaPIparser](https://github.com/panda-planner-dev/pandaPIparser) and [pandaPIgrounder](https://github.com/panda-planner-dev/pandaPIgrounder)
-
-### Compiling pandaPIengine
-
-To compile pandaPIengine perform the following commands:
-
+You can compile the code via the following commands, assuming that you are in the root directory of the code, i.e., the directory that contains this README file. 
 ```
 mkdir build
-cd build
-cmake ../src
-make -j
+cd build/
+cmake ../src/
+make
 ```
-By default pandaPIengine is build **without** support for ILP-based heuristics, the SAT planner, and the BDD planner.
-For the latter two, you can pass the arguments `-DSAT=ON` or `-DBDD=ON`. For the ILP-based heuristics, you need an installation of IBM CPLEX and need to specify it through `-DCPLEX_SOURCE_DIR=PATH_TO_YOUR_CPLEX`.
+After executing the above commands, you can find the executable for the TOHTN plan verifier, run_verifier, in the directory build/verifier.
 
-### Using pandaPIengine
+# Running the Plan Verifier
 
-If you have a grounded HTN planning problem as a *.sas file, you can simply run `build/pandaPIengine FILE.sas`. pandaPIengine has a reasonable default configuration (Greedy best first search with the RC-FF heuristic and visited lists). If you want to customise pandaPIenigne, please run `build/pandaPIengine -h` to see the available options.
+The executable run_verifier takes two command-line arguments, -h and -p. The argument -h specifies the path to the file containing the input HTN planning problem, and the argument -p specifies the path to the file containing the plan to be verified.
+For instance, assuming that you are in the directory build, i.e., the directory where the code is compiled, the following code runs the plan verifier to check whether the plan written in the file plan.txt is a solution to the TOHTN planning problem written in the file problem.sas. In particular, we assume that the files, plan.txt and problem.sas, are also in the directory build.
+```
+verifier/run_verifier -h problem.sas -p plan.txt
+```
+Notably, since the TOHTN plan verifier can only deal with grounded problems, the file passed to the -h argument **must** be obtained by calling [pandaPIgrounder](https://github.com/panda-planner-dev/pandaPIgrounder.git), which requires an input file produced by [pandaPIparser](https://github.com/panda-planner-dev/pandaPIparser.git). In particular, when calling [pandaPIgrounder](https://github.com/panda-planner-dev/pandaPIgrounder.git), the command-line argument -t **must** be given, which transforms the input TOHTN planning problem into 2-Normal Form. For more details about how to compile and use [pandaPIparser](https://github.com/panda-planner-dev/pandaPIparser.git) and [pandaPIgrounder](https://github.com/panda-planner-dev/pandaPIgrounder.git), see the README files in the respective git repositories. The following commands produce the file problem.sas by calling the parser and the grounder, assuming that the executables pandaPIparser and pandaPIgrounder are in the directory buil, and the files domain.hddl and problem.hddl are also in the build directory.
+```
+./pandaPIparser domain.hddl problem.hddl problem.htn
+./pandaPIgrounder -D -t problem.htn problem.sas
+```
+Further, the plan written in the file plan.txt should be in the format:
+> action_1;action_2;action_3;...;action_n
 
-### A Simple Script for Running the Planner (All Components)
+i.e., all actions are written in a line, separated by ";".
 
-As described above, you'll need to run the pandaPIengine based on an SAS file produced by the grounder, which is in term based on a file produced by a parser. We've created a simple script (*problemSolver.sh*) that calls the entire chain of (the involved three) executables, and all the output produced is piped into appropriately named files. 
+# Experiment Results
+The following table shows the experiment results where the CYK-based TOHTN plan verifier was compared against the [parsing-based][1] verifier, the [planning-based][2] verifier, and the [SAT-based][3] verifier.
 
-Note that this script does not use any of the many parameters for each of the executables. It is merely intended as a starting point for your experiments. Also note that some default messages (by the grounder) are printed to std.err, which is therefore also piped into a file. So if an *actual* error occurs now, you won't see (so you might want to change the script/piping behavior). In fact, using that script you won't see any output on the terminal (except for errors by the parser or the engine, since those std.errs are not piped away.) After all, it's just a convenient starting point.
+The experiments were run on the benchmark set from the IPC 2020 on HTN planning, which can be obtained via the following commands:
 
-The script has three parameters: 
-- the domain file
-- the problem file
-- a new filename that will be used as prefix for all the produced files.
+```
+mkdir ipc-benchmarks
+cd ipc-benchmarks 
+git clone https://github.com/panda-planner-dev/ipc-2020-plans.git
+git clone https://github.com/panda-planner-dev/ipc2020-domains.git
+git clone https://github.com/panda-planner-dev/domains.git
+```
+
+[1]: <https://bercher.net/publications/2021/Bartak2021TOVerification.pdf> "On the Verification of Totally-Ordered HTN Plans. Roman Barták; Simona Ondrčková; Gregor Behnke; and Pascal Bercher. In Proceedings of the 33rd IEEE International Conference on Tools with Artificial Intelligence (ICTAI 2021), pages 263–267, 2021. IEEE"
+
+[2]: <https://bercher.net/publications/2022/Hoeller2022VerificationViaCompilation.pdf> "Compiling HTN Plan Verification Problems into HTN Planning Problems. Daniel Höller; Julia Wichlacz; Pascal Bercher; and Gregor Behnke. In Proceedings of the 32nd International Conference on Automated Planning and Scheduling (ICAPS 2022), pages 145–150, 2022. AAAI Press"
+
+[3]: <https://staff.fnwi.uva.nl/g.behnke/papers/Behnke17Verify.pdf> "This is a solution! (... but is it though?) -- Verifying solutions of hierarchical planning problems
+In Proceedings of the 27th International Conference on Automated Planning and Scheduling (ICAPS 2017), pages 20-28, 2017"
