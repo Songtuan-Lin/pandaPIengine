@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "traversal.h"
 
 class ActionInsertions {
     private:

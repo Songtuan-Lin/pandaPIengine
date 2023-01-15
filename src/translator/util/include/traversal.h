@@ -13,7 +13,7 @@ class TaskTraversal {
 
     public:
         TaskTraversal(Model *htn);
-        int getActionNum(int c, int a) {
+        int getNumAction(int c, int a) {
             assert(this->htn->isPrimitive[a] && !this->htn->isPrimitive[c]);
             int offset = this->htn->numActions;
             return this->count[c - offset][a];
