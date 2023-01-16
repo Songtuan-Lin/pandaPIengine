@@ -16,7 +16,7 @@ class Proposition {
             this->id = -1;
             this->name = "";
         }
-        Proposition(int id, string name) {
+        Proposition(string name, int id = -1) {
             this->id = id;
             this->name = name;
         }
@@ -39,7 +39,7 @@ class Task {
             this->id = -1;
             this->name = "";
         }
-        Task(int id, string name) {
+        Task(string name, int id = -1) {
             this->id = id;
             this->name = name;
         }
@@ -59,8 +59,8 @@ class PrimitiveTask : public Task {
 
     public:
         PrimitiveTask() : Task() {}
-        PrimitiveTask(int id, string name) : Task(id, name) {}
-        PrimitiveTask(int id, string name, int cost, vector<Proposition> precondition, vector<Proposition> posEffs, vector<Proposition> negEffs) : Task(id, name) {
+        PrimitiveTask(string name, int id = -1) : Task(name, id) {}
+        PrimitiveTask(int cost, vector<Proposition> precondition, vector<Proposition> posEffs, vector<Proposition> negEffs, string name, int id = -1) : Task(name, id) {
             this->cost = cost;
             this->precondition = precondition;
             this->posEffs = posEffs;
@@ -91,7 +91,7 @@ class PrimitiveTask : public Task {
 class CompoundTask : public Task {
     public:
         CompoundTask() : Task() {}
-        CompoundTask(int id, string name) : Task(id, name) {}
+        CompoundTask(string name, int id = -1) : Task(name, id) {}
         bool isPrimitive() {return false;}
         void write(ofstream &ofile) {
             assert(this->validiate());
