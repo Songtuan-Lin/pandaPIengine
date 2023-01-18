@@ -105,6 +105,12 @@ class TaskNetwork {
         vector<tuple<int, int>> order;
 
     public:
+        TaskNetwork() {}
+        TaskNetwork(vector<Task> tasks) {this->tasks = tasks;}
+        TaskNetwork(vector<Task> tasks, vector<tuple<int, int>> order) {
+            this->tasks = tasks;
+            this->order = order;
+        }
         void addTask(Task task) {this->tasks.push_back(task);}
         void addOrder(tuple<int, int> constraint) {
             assert(get<0>(constraint) < this->tasks.size() && get<1>(constraint) < this->tasks.size());
