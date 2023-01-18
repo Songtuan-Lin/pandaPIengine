@@ -22,9 +22,9 @@ class Proposition {
         }
         int getID() {return this->id;}
         string getName() {return this->name;}
-        bool validiate() {return this->id != -1;}
+        bool validate() {return this->id != -1;}
         void write(ofstream &ofile) {
-            assert(this->validiate());
+            assert(this->validate());
             ofile << this->name << endl;
         }
 };
@@ -47,7 +47,7 @@ class Task {
         virtual void write(ofstream &ofile) {}
         int getID() {return this->id;}
         string getName() {return this->name;}
-        bool validiate() {return this->id != -1;}
+        bool validate() {return this->id != -1;}
 };
 
 class PrimitiveTask : public Task {
@@ -68,7 +68,7 @@ class PrimitiveTask : public Task {
         }
         bool isPrimitive() {return true;}
         void write(ofstream &ofile) {
-            assert(this->validiate());
+            assert(this->validate());
             ofile << "0 " << this->getName() << endl;
         }
         void writeAsAction(ofstream &ofile) {
@@ -94,7 +94,7 @@ class CompoundTask : public Task {
         CompoundTask(string name, int id = -1) : Task(name, id) {}
         bool isPrimitive() {return false;}
         void write(ofstream &ofile) {
-            assert(this->validiate());
+            assert(this->validate());
             ofile << "1 " << this->getName() << endl;
         }
 };
@@ -112,7 +112,7 @@ class TaskNetwork {
         }
         bool validiate() {
             for (Task t: this->tasks) {
-                if (!t.validiate()) return false;
+                if (!t.validate()) return false;
             }
             return true;
         }
