@@ -32,3 +32,25 @@ PrimInsertion::PrimInsertion(
         id++;
     }
 }
+
+MethodInsertion::MethodInsertion(
+        Slot s, 
+        CompInsertion compIns, 
+        PrimInsertion primIns, 
+        Counter global, 
+        Counter local) {
+    string name = "not_occupy" + s.toString();
+    TaskNetwork tn({primIns.getEmpty()});
+    Method m(name, compIns.getTask(), tn);
+    this->methods.push_back(m);
+    vector<PrimitiveTask> prims = primIns.getOccupied();
+    for (PrimitiveTask prim : prims) {
+        name = "occupy" + s.toString();
+        TaskNetwork tn(
+            {global.c.getComp(), 
+             local.c.getComp(), 
+             prim}, true);
+        Method m(name, compIns.getTask(), tn);
+        this->methods.push_back(m);
+    }
+}

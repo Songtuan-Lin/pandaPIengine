@@ -7,6 +7,7 @@ class CounterProps {
         vector<Proposition> props;
     
     public:
+        CounterProps() {}
         CounterProps(int range, int startID) {
             int id = startID;
             for (int i = 0; i < range; i++) {
@@ -16,7 +17,8 @@ class CounterProps {
                 this->props.push_back(prop);
             }
         }
-        vector<Proposition> getProps() {return props;}
+        vector<Proposition> getProps() {return this->props;}
+        Proposition getInit() {return this->props[0];}
 };
 
 class CounterPrims {
@@ -24,6 +26,7 @@ class CounterPrims {
         vector<PrimitiveTask> prims;
     
     public:
+        CounterPrims() {}
         CounterPrims(const vector<Proposition> &props, int startID) {
             int id = startID;
             for (int i = 1; i < props.size(); i++) {
@@ -45,6 +48,7 @@ class CounterComp {
         CompoundTask c;
     
     public:
+        CounterComp() {}
         CounterComp(int id, int counterID = -1) {
             string name = "counter[" + to_string(counterID) + "]";
             CompoundTask c(name, id);
@@ -59,6 +63,7 @@ class CounterMethods {
         vector<Method> methods;
     
     public:
+        CounterMethods() {}
         CounterMethods(CounterComp c, CounterPrims cps) {
             int i = 1;
             for (PrimitiveTask &prim : cps.getPrims()) {
@@ -70,4 +75,23 @@ class CounterMethods {
                 i++;
             }
         }
+        vector<Method> getMethods() {return this->methods;}
+};
+
+struct Counter {
+    CounterComp c;
+    CounterMethods ms;
+    CounterProps props;
+    CounterPrims prims;
+    
+    Counter(
+            CounterComp c, 
+            CounterMethods ms, 
+            CounterProps props, 
+            CounterPrims prims) {
+        this->c = c;
+        this->ms = ms;
+        this->props = props;
+        this->prims = prims;
+    }
 };

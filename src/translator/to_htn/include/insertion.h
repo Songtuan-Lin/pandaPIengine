@@ -2,6 +2,7 @@
 #include "meta.h"
 #include "task.h"
 #include "method.h"
+#include "counter.h"
 
 class PropInsertion {
     private:
@@ -39,6 +40,11 @@ class PrimInsertion {
                 const Proposition &occupied, 
                 const vector<int> &positions, 
                 const vector<Proposition> &props);
+        PrimitiveTask getEmpty() {return this->prims[0];}
+        vector<PrimitiveTask> getOccupied() {
+            vector<PrimitiveTask> occupied(this->prims.begin() + 1, this->prims.end());
+            return occupied;
+        }
 };
 
 class CompInsertion {
@@ -63,5 +69,10 @@ class MethodInsertion {
         Slot s;
     
     public:
-        MethodInsertion(Slot s, CompoundTask c, PrimInsertion primIns);
+        MethodInsertion(
+                Slot s, 
+                CompInsertion compIns, 
+                PrimInsertion primIns,
+                Counter global,
+                Counter local);
 };

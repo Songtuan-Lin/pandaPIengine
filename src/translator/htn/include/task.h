@@ -106,7 +106,12 @@ class TaskNetwork {
 
     public:
         TaskNetwork() {}
-        TaskNetwork(vector<Task> tasks) {this->tasks = tasks;}
+        TaskNetwork(vector<Task> tasks, bool ordered = false) {
+            this->tasks = tasks;
+            if (ordered && tasks.size() > 1)
+                for (int i = 1; i < tasks.size(); i++)
+                    this->order.push_back(make_tuple(i - 1, i));
+        }
         TaskNetwork(vector<Task> tasks, vector<tuple<int, int>> order) {
             this->tasks = tasks;
             this->order = order;
