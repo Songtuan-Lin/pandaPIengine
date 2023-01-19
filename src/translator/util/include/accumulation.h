@@ -18,6 +18,20 @@ class ActionAccumulation {
             }
         }
         int getNumAccumulation(int pos, int action) {return accumulation[pos][action];}
+        int getNumAccumulation(int action) {return accumulation[accumulation.size() - 1][action];}
+};
+
+class ActionPositions {
+    private:
+        vector<vector<int>> positions;
+
+    public:
+        ActionPositions(Model *htn, vector<int> plan) {
+            this->positions.resize(htn->numActions);
+            for (int pos = 0; pos < plan.size(); pos++)
+                this->positions[plan[pos]].push_back(pos);
+        }
+        vector<int> getPositions(int a) {return this->positions[a];}
 };
 
 #endif
