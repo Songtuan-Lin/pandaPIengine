@@ -1,3 +1,6 @@
+#ifndef _block_inc_h_
+#define _block_inc_h_
+
 #include "meta.h"
 #include "task.h"
 #include "method.h"
@@ -47,3 +50,5 @@ class BlockMethods {
         }
         Method getMethod() {return this->ms[0];}
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef _method_inc_h_
+#define _method_inc_h_
+
 #include "task.h"
 
 class Method {
@@ -20,3 +23,5 @@ class Method {
             this->tn.write(ofile);
         }
 };
+
+#endif

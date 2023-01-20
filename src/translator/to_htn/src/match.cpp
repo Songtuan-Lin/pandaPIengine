@@ -8,7 +8,7 @@ MatchingPrims::MatchingPrims(
     int id = startID;
     for (int a = 0; a < htn->numActions; a++) {
         for (int pos : positions.getPositions(a)) {
-            string name = "matching[" + to_string(pos) + "]";
+            string name = "matched[" + to_string(pos) + "]";
             vector<Proposition> prec, del;
             if (pos == 0) {
                 prec = {props.getInit()};
@@ -22,6 +22,22 @@ MatchingPrims::MatchingPrims(
             this->prims.push_back(prim);
             this->lookup[a].push_back(prim);
             id++;
+        }
+    }
+}
+
+MatchingMethods::MatchingMethods(
+        Model *htn, 
+        MatchingComps mc, 
+        MatchingPrims mp) {
+    for (int a = 0; a < htn->numActions; a++) {
+        CompoundTask c = mc.get(a);
+        if (!c.validate()) continue;
+        for (PrimitiveTask p : mp.get(a)) {
+            string name = "matching[" + to_string(a) + "]";
+            TaskNetwork tn({p});
+            Method m(name, c, tn);
+            this->methods.push_back(m);
         }
     }
 }

@@ -6,7 +6,7 @@
 #include <algorithm>
 
 class Translator {
-    private:
+    protected:
         Model *htn;
         vector<int> plan;
         void readHTNFile(string htnFile) {

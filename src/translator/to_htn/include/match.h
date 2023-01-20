@@ -1,4 +1,8 @@
+#ifndef _match_inc_h_
+#define _match_inc_h_
+
 #include "task.h"
+#include "method.h"
 #include "accumulation.h"
 
 class MatchingProps {
@@ -14,7 +18,7 @@ class MatchingProps {
             this->init = init;
             id++;
             for (int i = 0; i < length; i++) {
-                name = "matching[" + to_string(i + 1) + "]";
+                name = "matched[" + to_string(i + 1) + "]";
                 Proposition prop(name, id);
                 id++;
                 this->props.push_back(prop);
@@ -35,8 +39,8 @@ class MatchingPrims {
                 Model *htn, int startID,
                 MatchingProps &props,
                 ActionPositions &positions);
-        vector<PrimitiveTask> getPrims() {return this->prims;}
-        vector<PrimitiveTask> getPrimsPerAction(int a) {return this->lookup[a];} 
+        vector<PrimitiveTask> get() {return this->prims;}
+        vector<PrimitiveTask> get(int a) {return this->lookup[a];} 
 };
 
 class MatchingComps {
@@ -57,4 +61,17 @@ class MatchingComps {
                 id++;
             }
         }
+        CompoundTask get(int a) {return this->lookup[a];}
+        vector<CompoundTask> get() {return this->comps;}
 };
+
+class MatchingMethods {
+    private:
+        vector<Method> methods;
+    
+    public:
+        MatchingMethods(Model *htn, MatchingComps mc, MatchingPrims mp);
+        vector<Method> get() {return this->methods;}
+};
+
+#endif

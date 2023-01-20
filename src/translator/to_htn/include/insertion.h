@@ -1,4 +1,9 @@
+#ifndef _insertion_inc_h_
+#define _insertion_inc_h_
+
 #include "Model.h"
+#include "match.h"
+#include "accumulation.h"
 #include "meta.h"
 #include "task.h"
 #include "method.h"
@@ -76,3 +81,5 @@ class MethodInsertion {
                 Counter global,
                 Counter local);
 };
+
+#endif

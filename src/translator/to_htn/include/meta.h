@@ -1,7 +1,10 @@
-#include "Model.h"
-#include "task.h"
-#include "method.h"
+#ifndef _meta_inc_h_
+#define _meta_inc_h_
+
 #include "assert.h"
+#include "insertion.h"
+#include "block.h"
+#include "counter.h"
 
 struct Slot {
     int m, b, i;
@@ -20,3 +23,19 @@ struct Block {
         return "[" + std::to_string(m) + ";" + std::to_string(b) + "]";
     }
 };
+
+struct SlotMetaInfo {
+    PropInsertion propIns;
+    PrimInsertion primIns;
+    CompInsertion compIns;
+    MethodInsertion methodIns;
+};
+
+struct BlockMetaInfo {
+    Counter local;
+    BlockComp bc;
+    BlockPrim bp;
+    BlockMethods bm;
+};
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef _task_inc_h_
+#define _task_inc_h_
+
 #include <string>
 #include <vector>
 #include <tuple>
@@ -141,3 +144,5 @@ class TaskNetwork {
             ofile << -1 << endl;
         }
 };
+
+#endif

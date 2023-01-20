@@ -1,3 +1,6 @@
+#ifndef _validation_inc_h_
+#define _validation_inc_h_
+
 #include "Model.h"
 #include "traversal.h"
 #include "accumulation.h"
@@ -30,3 +33,5 @@ class SlotValidiation {
         }
         bool isValid(int m, int b, int s) {return this->valid[m][b][s];} 
 };
+
+#endif

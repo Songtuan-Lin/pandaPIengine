@@ -1,3 +1,6 @@
+#ifndef _counter_inc_h_
+#define _counter_inc_h_
+
 #include <vector>
 #include "task.h"
 #include "method.h"
@@ -95,3 +98,5 @@ struct Counter {
         this->prims = prims;
     }
 };
+
+#endif
