@@ -9,6 +9,7 @@
 #include "meta.h"
 #include "translator.h"
 #include "validiation.h"
+#include "traversal.h"
 
 class HTNTranslator : public Translator {
     private:
