@@ -9,12 +9,12 @@
 #include "method.h"
 #include "counter.h"
 
-class PropInsertion {
+class PropsForInsertions {
     private:
         Proposition propEmpty, propOccupied;
     
     public:
-        PropInsertion(Slot s, int id) {
+        PropsForInsertions(Slot s, int id) {
             string name = "empty" + s.toString();
             this->propEmpty = Proposition(name, id);
             assert(this->propEmpty.getID() == id);
@@ -30,15 +30,19 @@ class PropInsertion {
             assert(this->propOccupied.validate());
             return this->propOccupied;
         }
+        vector<Proposition> get() {
+            assert(this->propOccupied.validate() && this->propEmpty.validate());
+            return {this->propEmpty, this->propOccupied};
+        }
 };
 
-class PrimInsertion {
+class PrimsForInsertions {
     private:
         vector<PrimitiveTask> prims;
         Slot s;
     
     public:
-        PrimInsertion(
+        PrimsForInsertions(
                 Slot s, int startID,
                 const Proposition &init,
                 const Proposition &empty, 
@@ -52,32 +56,32 @@ class PrimInsertion {
         }
 };
 
-class CompInsertion {
+class CompsForInsertions {
     private:
         CompoundTask c;
         Slot s;
     
     public:
-        CompInsertion(Slot s, int id) {
+        CompsForInsertions(Slot s, int id) {
             this->s = s;
             string name = "slot" + s.toString();
             CompoundTask c(name, id);
             this->c = c;
             assert(this->c.validate());
         }
-        CompoundTask getTask() {return this->c;}
+        CompoundTask get() {return this->c;}
 };
 
-class MethodInsertion {
+class MethodsForInsertions {
     private:
         vector<Method> methods;
         Slot s;
     
     public:
-        MethodInsertion(
+        MethodsForInsertions(
                 Slot s, 
-                CompInsertion compIns, 
-                PrimInsertion primIns,
+                CompsForInsertions compIns, 
+                PrimsForInsertions primIns,
                 Counter global,
                 Counter local);
 };

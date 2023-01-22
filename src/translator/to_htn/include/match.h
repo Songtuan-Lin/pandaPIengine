@@ -5,13 +5,13 @@
 #include "method.h"
 #include "accumulation.h"
 
-class MatchingProps {
+class PropsForMatching {
     private:
         Proposition init;
         vector<Proposition> props;
     
     public:
-        MatchingProps(int length, int startID) {
+        PropsForMatching(int length, int startID) {
             int id = startID;
             string name = "init";
             Proposition init(name, id);
@@ -27,29 +27,34 @@ class MatchingProps {
         Proposition getInit() {return this->init;}
         Proposition getProp(int pos) {return this->props[pos];}
         vector<Proposition> getMatchingProps() {return this->props;}
+        vector<Proposition> get() {
+            vector<Proposition> v = {this->init};
+            v.insert(v.end(), this->props.begin(), this->props.end());
+            return v;
+        }
 };
 
-class MatchingPrims {
+class PrimsForMatching {
     private:
         vector<PrimitiveTask> prims;
         vector<vector<PrimitiveTask>> lookup;
     
     public:
-        MatchingPrims(
+        PrimsForMatching(
                 Model *htn, int startID,
-                MatchingProps &props,
+                PropsForMatching &props,
                 ActionPositions &positions);
         vector<PrimitiveTask> get() {return this->prims;}
         vector<PrimitiveTask> get(int a) {return this->lookup[a];} 
 };
 
-class MatchingComps {
+class PrimsTranslation {
     private:
         vector<CompoundTask> comps;
         vector<CompoundTask> lookup;
     
     public:
-        MatchingComps(Model *htn, int startID, ActionAccumulation &accumulation) {
+        PrimsTranslation(Model *htn, int startID, ActionAccumulation &accumulation) {
             int id = startID;
             this->lookup.resize(htn->numActions);
             for (int a = 0; a < htn->numActions; a++) {
@@ -65,12 +70,15 @@ class MatchingComps {
         vector<CompoundTask> get() {return this->comps;}
 };
 
-class MatchingMethods {
+class MethodsForMatching {
     private:
         vector<Method> methods;
     
     public:
-        MatchingMethods(Model *htn, MatchingComps mc, MatchingPrims mp);
+        MethodsForMatching(
+                Model *htn, 
+                PrimsTranslation translation, 
+                PrimsForMatching matching);
         vector<Method> get() {return this->methods;}
 };
 

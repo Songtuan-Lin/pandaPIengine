@@ -1,6 +1,6 @@
 #include "insertion.h"
 
-PrimInsertion::PrimInsertion(
+PrimsForInsertions::PrimsForInsertions(
         Slot s, int startID,
         const Proposition &init,
         const Proposition &empty, 
@@ -33,15 +33,15 @@ PrimInsertion::PrimInsertion(
     }
 }
 
-MethodInsertion::MethodInsertion(
+MethodsForInsertions::MethodsForInsertions(
         Slot s, 
-        CompInsertion compIns, 
-        PrimInsertion primIns, 
+        CompsForInsertions compIns, 
+        PrimsForInsertions primIns, 
         Counter global, 
         Counter local) {
     string name = "not_occupy" + s.toString();
     TaskNetwork tn({primIns.getEmpty()});
-    Method m(name, compIns.getTask(), tn);
+    Method m(name, compIns.get(), tn);
     this->methods.push_back(m);
     vector<PrimitiveTask> prims = primIns.getOccupied();
     for (PrimitiveTask prim : prims) {
@@ -50,7 +50,7 @@ MethodInsertion::MethodInsertion(
             {global.c.getComp(), 
              local.c.getComp(), 
              prim}, true);
-        Method m(name, compIns.getTask(), tn);
+        Method m(name, compIns.get(), tn);
         this->methods.push_back(m);
     }
 }

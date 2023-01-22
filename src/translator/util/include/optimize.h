@@ -46,5 +46,7 @@ class OptimizeHTN {
     
     public:
         OptimizeHTN(Model *htn, vector<int> plan);
+        bool isTaskInvalid(int t) {return this->invalidTasks[t];}
+        bool isMethodInvalid(int m) {return this->invalidMethods[m];}
 };
 #endif

@@ -1,8 +1,8 @@
 #include "match.h"
 
-MatchingPrims::MatchingPrims(
+PrimsForMatching::PrimsForMatching(
         Model *htn, int startID,
-        MatchingProps &props,
+        PropsForMatching &props,
         ActionPositions &positions) {
     this->lookup.resize(htn->numActions);
     int id = startID;
@@ -26,14 +26,14 @@ MatchingPrims::MatchingPrims(
     }
 }
 
-MatchingMethods::MatchingMethods(
+MethodsForMatching::MethodsForMatching(
         Model *htn, 
-        MatchingComps mc, 
-        MatchingPrims mp) {
+        PrimsTranslation translation, 
+        PrimsForMatching matching) {
     for (int a = 0; a < htn->numActions; a++) {
-        CompoundTask c = mc.get(a);
+        CompoundTask c = translation.get(a);
         if (!c.validate()) continue;
-        for (PrimitiveTask p : mp.get(a)) {
+        for (PrimitiveTask p : matching.get(a)) {
             string name = "matching[" + to_string(a) + "]";
             TaskNetwork tn({p});
             Method m(name, c, tn);
