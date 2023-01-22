@@ -25,17 +25,10 @@ struct Block {
 };
 
 struct SlotMetaInfo {
-    PropInsertion propIns;
-    PrimInsertion primIns;
-    CompInsertion compIns;
-    MethodInsertion methodIns;
-};
-
-struct BlockMetaInfo {
-    Counter local;
-    BlockComp bc;
-    BlockPrim bp;
-    BlockMethods bm;
+    PropsForInsertions propIns;
+    PrimsForInsertions primIns;
+    CompsForInsertions compIns;
+    MethodsForInsertions methodIns;
 };
 
 #endif

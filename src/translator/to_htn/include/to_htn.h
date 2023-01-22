@@ -15,7 +15,6 @@ class HTNTranslator : public Translator {
     private:
         HTN h;
         vector<vector<vector<SlotMetaInfo>>> slotInfo;
-        vector<vector<BlockMetaInfo>> blockInfo;
 
     public:
         HTNTranslator(string htnFile, string planFile);
