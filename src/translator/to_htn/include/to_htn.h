@@ -15,6 +15,7 @@ class HTNTranslator : public Translator {
         HTN h;
         vector<vector<vector<SlotTranslation>>> slotTranslations;
         vector<Counter> countersForMethods;
+        vector<vector<BlockTranslation>> blockTranslations;
 
     public:
         HTNTranslator(string htnFile, string planFile);

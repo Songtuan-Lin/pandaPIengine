@@ -34,4 +34,29 @@ class CompForBlock {
         CompoundTask get() {return this->c;}
 };
 
+class MethodForBlock {
+    private:
+        Method m;
+    
+    public:
+        MethodForBlock(
+                Block block,
+                CompForBlock compForBlock,
+                vector<vector<vector<SlotTranslation>>> &translations) {
+            string name = "decompose" + block.toString();
+            vector<Task> tasks;
+            for (SlotTranslation &translation : translations[block.m][block.b]) {
+                if(translation.compForInsertion == nullptr) continue;
+                tasks.push_back(translation.compForInsertion->get());
+            }
+            TaskNetwork tn(tasks, true);
+            this->m = Method(name, compForBlock.get(), tn);
+        }
+        Method get() {return this->m;}
+};
+
+struct BlockTranslation {
+    CompForBlock *compForBlock = nullptr;
+};
+
 #endif

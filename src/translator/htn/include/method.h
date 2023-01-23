@@ -10,6 +10,7 @@ class Method {
         string name; // method name
 
     public:
+        Method() {};
         Method(string name, CompoundTask t, TaskNetwork tn) {
             this->name = name;
             this->t = t;
@@ -22,6 +23,7 @@ class Method {
             ofile << this->t.getID() << endl;
             this->tn.write(ofile);
         }
+        bool validate() {return this->t.validate();}
 };
 
 #endif

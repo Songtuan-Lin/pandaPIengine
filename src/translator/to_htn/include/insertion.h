@@ -83,6 +83,7 @@ class MethodsForInsertion {
                 PrimsForInsertion primIns,
                 Counter global,
                 Counter local);
+        vector<Method> get() {return this->methods;}
 };
 
 #endif

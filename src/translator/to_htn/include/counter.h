@@ -81,7 +81,7 @@ class MethodsForCounter {
                 i++;
             }
         }
-        vector<Method> getMethods() {return this->methods;}
+        vector<Method> get() {return this->methods;}
 };
 
 struct Counter {

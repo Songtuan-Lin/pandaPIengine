@@ -3,15 +3,18 @@
 
 #include "Model.h"
 #include "task.h"
+#include "method.h"
+#include "match.h"
+#include "block.h"
 #include "optimize.h"
 
-class CompTranslation {
+class CompsTranslation {
     private:
         vector<CompoundTask> comps;
         int offset;
     
     public:
-        CompTranslation(Model *htn, int startID, OptimizeHTN *opt) {
+        CompsTranslation(Model *htn, int startID, OptimizeHTN *opt) {
             int id = startID;
             this->offset = htn->numActions;
             this->comps.resize(htn->numTasks - this->offset);
@@ -29,6 +32,17 @@ class CompTranslation {
             return comp;
         }
         vector<CompoundTask> get() {return this->comps;}
+};
+
+class MethodsTranslation {
+    private:
+        vector<Method> methods;
+    
+    public:
+        MethodsTranslation(
+                Model *htn,
+                PrimsTranslation &primsTranslation,
+                CompsTranslation &compTranslation);
 };
 
 #endif

@@ -64,22 +64,44 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     CompForCounter compForGlobalCounter(offset + this->h.getNumComps());
     global.compForCounter = &compForGlobalCounter;
     this->h.addComps(compForGlobalCounter.get());
-    CompTranslation compTranslation(this->htn, 
+    MethodsForCounter methodsForGlobalCounter(compForGlobalCounter,
+                                              primsForGlobalCounter);
+    this->h.addMethods(methodsForGlobalCounter.get());
+    CompsTranslation compsTranslation(this->htn, 
                                     offset + this->h.getNumComps(), 
                                     this->optimizeHTN);
-    this->h.addComps(compTranslation.get());
+    this->h.addComps(compsTranslation.get());
+    this->blockTranslations.resize(this->htn->numMethods);
     for (int m = 0; m < this->htn->numMethods; m++) {
         if (this->optimizeHTN->isMethodInvalid(m)) continue;
         CompForCounter compForLocalCounter(offset + this->h.getNumComps());
         this->countersForMethods[m].compForCounter = &compForLocalCounter;
         this->h.addComps(compForLocalCounter.get());
-        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++)
+        MethodsForCounter methodsForLocalCounter(
+                compForLocalCounter,
+                *this->countersForMethods[m].primsForCounter);
+        this->h.addMethods(methodsForLocalCounter.get());
+        this->blockTranslations[m].resize(this->htn->numSubTasks[m] + 1);
+        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++) {
+            CompForBlock compForBlock(Block(m, b), this->h.getNumComps());
+            this->h.addComps(compForBlock.get());
             for (int i = 0; i < this->plan.size(); i++) {
                 if (!this->validation->isValid(m, b, i)) continue;
                 Slot s(m, b, i);
                 CompForInsertion compForInsertion(s, offset + this->h.getNumComps());
                 this->slotTranslations[m][b][i].compForInsertion = &compForInsertion;
                 this->h.addComps(compForInsertion.get());
+                MethodsForInsertion methodsForInsertion(
+                        s, compForInsertion, 
+                        *this->slotTranslations[m][b][i].primsForInsertion,
+                        global, this->countersForMethods[m]);
+                this->h.addMethods(methodsForInsertion.get());
             }
+            MethodForBlock methodForBlock(Block(m, b),
+                                          compForBlock,
+                                          this->slotTranslations);
+            this->h.addMethods(methodForBlock.get());
+        }
     }
+    // TODO: complete primitive task translations and compound task translations
 }
