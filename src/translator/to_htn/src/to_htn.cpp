@@ -1,37 +1,85 @@
 #include "to_htn.h"
 
 HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFile, planFile) {
-    TaskTraversal *traversal = new TaskTraversal(this->htn);
-    SlotValidiation *validation = new SlotValidiation(this->htn, this->plan);
-    // creating propositions
-    PropsForMatching propsForMatching(this->plan.size(), this->h.getNumProps());
+    this->countersForMethods.resize(this->htn->numMethods);
+    Counter global;
+    // creating propositions and prims
+    PropsForMatching propsForMatching(this->plan.size(), 
+                                      this->h.getNumProps());
     this->h.addProps(propsForMatching.get());
-    int maxInsertions = this->plan.size() - traversal->getNumReachable(this->htn->initialTask);
-    PropsForCounters propsForGlobalCounter(maxInsertions, this->h.getNumProps()); 
-    this->h.addProps(propsForGlobalCounter.get());
-    for (int m = 0; m < this->htn->numMethods; m++) {
-        int minReachableTasks = 0;
-        for (int t = 0; t < this->htn->numSubTasks[m]; t++)
-            minReachableTasks += traversal->getNumReachable(t);
-        int bound = this->plan.size() - minReachableTasks;
-        PropsForCounters propsForLocalCounter(bound, this->h.getNumProps());
-        this->h.addProps(propsForLocalCounter.get());
-        for (int b = 0; b < this->htn->numSubTasks[m]; b++)
-            for (int i = 0; i < this->plan.size(); i++) {
-                if (!validation->isValid(m, b, i)) continue;
-                Slot s(m, b, i);
-                PropsForInsertions propIns(s, this->h.getNumProps());
-                this->h.addProps(propIns.get());
-            }
-    }
-    // creating prims
     ActionPositions positions(this->htn, this->plan);
     PrimsForMatching primsForMatching(this->htn, 
                                       this->h.getNumPrims(),
                                       propsForMatching,
                                       positions);
     this->h.addPrims(primsForMatching.get());
-    PrimsForCounters primsForGlobalCounter(propsForGlobalCounter, 
-                                           this->h.getNumPrims());
+    int maxInsertions = this->plan.size() - traversal->getNumReachable(this->htn->initialTask);
+    PropsForCounter propsForGlobalCounter(maxInsertions, 
+                                          this->h.getNumProps());
+    global.propsForCounter = &propsForGlobalCounter; 
+    this->h.addProps(propsForGlobalCounter.get());
+    PrimsForCounter primsForGlobalCounter(propsForGlobalCounter, 
+                                          this->h.getNumPrims());
+    global.primsForCounter = &primsForGlobalCounter;
     this->h.addPrims(primsForGlobalCounter.get());
+    this->slotTranslations.resize(this->htn->numMethods);
+    for (int m = 0; m < this->htn->numMethods; m++) {
+        if (this->optimizeHTN->isMethodInvalid(m)) continue;
+        int minReachableTasks = 0;
+        for (int t = 0; t < this->htn->numSubTasks[m]; t++)
+            minReachableTasks += traversal->getNumReachable(t);
+        int bound = this->plan.size() - minReachableTasks;
+        PropsForCounter propsForLocalCounter(bound, this->h.getNumProps());
+        this->h.addProps(propsForLocalCounter.get());
+        this->countersForMethods[m].propsForCounter = &propsForLocalCounter;
+        // prims for each method
+        PrimsForCounter primsForLocalCounter(propsForLocalCounter, 
+                                             this->h.getNumPrims());
+        this->countersForMethods[m].primsForCounter = &primsForLocalCounter;
+        this->h.addPrims(primsForLocalCounter.get());
+        PrimForStartingMethod primForStartingMethod(this->countersForMethods[m],
+                                                    this->h.getNumPrims(),
+                                                    m);
+        this->slotTranslations[m].resize(this->htn->numSubTasks[m] + 1);
+        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++) {
+            this->slotTranslations[m][b].resize(this->plan.size());
+            for (int i = 0; i < this->plan.size(); i++) {
+                if (!this->validation->isValid(m, b, i)) continue;
+                Slot s(m, b, i);
+                PropsForInsertion propsForInsertion(s, this->h.getNumProps());
+                this->h.addProps(propsForInsertion.get());
+                this->slotTranslations[m][b][i].propsForInsertion = &propsForInsertion;
+                PrimsForInsertion primsForInsertion(s, this->h.getNumPrims(),
+                                                    propsForMatching,
+                                                    propsForInsertion,
+                                                    positions.get(this->plan[i]));
+                this->h.addPrims(primsForInsertion.get());
+                this->slotTranslations[m][b][i].primsForInsertion = &primsForInsertion;
+            }
+        }
+    }
+    // creating compound tasks and methods
+    int offset = this->h.getNumPrims();
+    // TODO: add the counter id
+    CompForCounter compForGlobalCounter(offset + this->h.getNumComps());
+    global.compForCounter = &compForGlobalCounter;
+    this->h.addComps(compForGlobalCounter.get());
+    CompTranslation compTranslation(this->htn, 
+                                    offset + this->h.getNumComps(), 
+                                    this->optimizeHTN);
+    this->h.addComps(compTranslation.get());
+    for (int m = 0; m < this->htn->numMethods; m++) {
+        if (this->optimizeHTN->isMethodInvalid(m)) continue;
+        CompForCounter compForLocalCounter(offset + this->h.getNumComps());
+        this->countersForMethods[m].compForCounter = &compForLocalCounter;
+        this->h.addComps(compForLocalCounter.get());
+        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++)
+            for (int i = 0; i < this->plan.size(); i++) {
+                if (!this->validation->isValid(m, b, i)) continue;
+                Slot s(m, b, i);
+                CompForInsertion compForInsertion(s, offset + this->h.getNumComps());
+                this->slotTranslations[m][b][i].compForInsertion = &compForInsertion;
+                this->h.addComps(compForInsertion.get());
+            }
+    }
 }

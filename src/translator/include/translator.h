@@ -1,6 +1,9 @@
 #include "Model.h"
 #include "task.h"
 #include "method.h"
+#include "traversal.h"
+#include "optimize.h"
+#include "validation.h"
 #include <string.h>
 #include <unordered_map>
 #include <algorithm>
@@ -9,6 +12,11 @@ class Translator {
     protected:
         Model *htn;
         vector<int> plan;
+        TaskTraversal *traversal;
+        OptimizeHTN *optimizeHTN;
+        SlotValidation *validation;
+    
+    private:
         void readHTNFile(string htnFile) {
             cout << "Read model from" << htnFile << "\n";
             std::ifstream *fileInput = new std::ifstream(htnFile);
@@ -69,5 +77,8 @@ class Translator {
             this->readHTNFile(htnFile);
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
+            this->traversal = new TaskTraversal(this->htn);
+            this->validation = new SlotValidation(this->htn, this->plan);
+            this->optimizeHTN = new OptimizeHTN(this->htn, this->plan);
         }
 };

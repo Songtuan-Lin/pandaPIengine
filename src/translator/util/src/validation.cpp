@@ -1,6 +1,6 @@
-#include "validiation.h"
+#include "validation.h"
 
-bool SlotValidiation::validate(int m, int b, int i, TaskTraversal *traversal, ActionAccumulation *accumulation) {
+bool SlotValidation::validate(int m, int b, int i, TaskTraversal *traversal, ActionAccumulation *accumulation) {
     // TODO: what about compound tasks decomposed into empty task network?
     if (b > 0) {
         int count = 0;

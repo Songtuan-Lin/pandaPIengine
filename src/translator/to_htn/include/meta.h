@@ -24,11 +24,11 @@ struct Block {
     }
 };
 
-struct SlotMetaInfo {
-    PropsForInsertions propIns;
-    PrimsForInsertions primIns;
-    CompsForInsertions compIns;
-    MethodsForInsertions methodIns;
+struct SlotTranslation {
+    PropsForInsertion *propsForInsertion = nullptr;
+    PrimsForInsertion *primsForInsertion = nullptr;
+    CompForInsertion *compForInsertion = nullptr;
+    MethodsForInsertion *methodsForInsertion = nullptr;
 };
 
 #endif

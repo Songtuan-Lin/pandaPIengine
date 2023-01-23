@@ -7,14 +7,14 @@
 #include "counter.h"
 #include "insertion.h"
 
-class MethodStartingPrim {
+class PrimForStartingMethod {
     private:
         PrimitiveTask prim;
     
     public:
-        MethodStartingPrim(Counter local, int id, int m) {
+        PrimForStartingMethod(Counter local, int id, int m) {
             string name = "start[" + to_string(m) + "]";
-            PrimitiveTask prim(0, {}, {local.props.getInit()}, {}, name, id);
+            PrimitiveTask prim(0, {}, {local.propsForCounter->getInit()}, {}, name, id);
             this->prim = prim;
         }
         PrimitiveTask get() {return this->prim;}

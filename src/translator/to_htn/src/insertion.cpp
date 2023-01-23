@@ -1,15 +1,16 @@
 #include "insertion.h"
 
-PrimsForInsertions::PrimsForInsertions(
+PrimsForInsertion::PrimsForInsertion(
         Slot s, int startID,
-        const Proposition &init,
-        const Proposition &empty, 
-        const Proposition &occupied, 
-        const vector<int> &positions, 
-        const vector<Proposition> &props) {
+        PropsForMatching &propsForMatching,
+        PropsForInsertion &propsForInsertion, 
+        const vector<int> &positions) {
     this->s = s;
     int id = startID;
     string name = "empty" + s.toString();
+    Proposition empty = propsForInsertion.getEmpty();
+    Proposition occupied = propsForInsertion.getOccupied();
+    vector<Proposition> props = propsForMatching.getMatchingProps();
     vector<Proposition> prec = {empty};
     vector<Proposition> del = {occupied};
     vector<Proposition> add;
@@ -21,7 +22,7 @@ PrimsForInsertions::PrimsForInsertions(
         if (s.i < pos) continue;
         Proposition prev;
         if (pos == 0) {
-            prev = init;
+            prev = propsForMatching.getInit();
         } else {prev = props[pos - 1];}
         string name = "match_to_" + to_string(pos) + s.toString();
         vector<Proposition> prec = {occupied, prev};
@@ -33,10 +34,10 @@ PrimsForInsertions::PrimsForInsertions(
     }
 }
 
-MethodsForInsertions::MethodsForInsertions(
+MethodsForInsertion::MethodsForInsertion(
         Slot s, 
-        CompsForInsertions compIns, 
-        PrimsForInsertions primIns, 
+        CompForInsertion compIns, 
+        PrimsForInsertion primIns, 
         Counter global, 
         Counter local) {
     string name = "not_occupy" + s.toString();
@@ -47,8 +48,8 @@ MethodsForInsertions::MethodsForInsertions(
     for (PrimitiveTask prim : prims) {
         name = "occupy" + s.toString();
         TaskNetwork tn(
-            {global.c.getComp(), 
-             local.c.getComp(), 
+            {global.compForCounter->get(), 
+             local.compForCounter->get(), 
              prim}, true);
         Method m(name, compIns.get(), tn);
         this->methods.push_back(m);

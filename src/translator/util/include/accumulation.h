@@ -31,7 +31,7 @@ class ActionPositions {
             for (int pos = 0; pos < plan.size(); pos++)
                 this->positions[plan[pos]].push_back(pos);
         }
-        vector<int> getPositions(int a) {return this->positions[a];}
+        vector<int> get(int a) {return this->positions[a];}
 };
 
 #endif

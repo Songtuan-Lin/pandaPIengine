@@ -9,12 +9,12 @@
 #include "method.h"
 #include "counter.h"
 
-class PropsForInsertions {
+class PropsForInsertion {
     private:
         Proposition propEmpty, propOccupied;
     
     public:
-        PropsForInsertions(Slot s, int id) {
+        PropsForInsertion(Slot s, int id) {
             string name = "empty" + s.toString();
             this->propEmpty = Proposition(name, id);
             assert(this->propEmpty.getID() == id);
@@ -36,33 +36,32 @@ class PropsForInsertions {
         }
 };
 
-class PrimsForInsertions {
+class PrimsForInsertion {
     private:
         vector<PrimitiveTask> prims;
         Slot s;
     
     public:
-        PrimsForInsertions(
+        PrimsForInsertion(
                 Slot s, int startID,
-                const Proposition &init,
-                const Proposition &empty, 
-                const Proposition &occupied, 
-                const vector<int> &positions, 
-                const vector<Proposition> &props);
+                PropsForMatching &propsForMatching,
+                PropsForInsertion &propsForInsertion, 
+                const vector<int> &positions);
         PrimitiveTask getEmpty() {return this->prims[0];}
         vector<PrimitiveTask> getOccupied() {
             vector<PrimitiveTask> occupied(this->prims.begin() + 1, this->prims.end());
             return occupied;
         }
+        vector<PrimitiveTask> get() {return this->prims;}
 };
 
-class CompsForInsertions {
+class CompForInsertion {
     private:
         CompoundTask c;
         Slot s;
     
     public:
-        CompsForInsertions(Slot s, int id) {
+        CompForInsertion(Slot s, int id) {
             this->s = s;
             string name = "slot" + s.toString();
             CompoundTask c(name, id);
@@ -72,16 +71,16 @@ class CompsForInsertions {
         CompoundTask get() {return this->c;}
 };
 
-class MethodsForInsertions {
+class MethodsForInsertion {
     private:
         vector<Method> methods;
         Slot s;
     
     public:
-        MethodsForInsertions(
+        MethodsForInsertion(
                 Slot s, 
-                CompsForInsertions compIns, 
-                PrimsForInsertions primIns,
+                CompForInsertion compIns, 
+                PrimsForInsertion primIns,
                 Counter global,
                 Counter local);
 };

@@ -7,7 +7,7 @@ PrimsForMatching::PrimsForMatching(
     this->lookup.resize(htn->numActions);
     int id = startID;
     for (int a = 0; a < htn->numActions; a++) {
-        for (int pos : positions.getPositions(a)) {
+        for (int pos : positions.get(a)) {
             string name = "matched[" + to_string(pos) + "]";
             vector<Proposition> prec, del;
             if (pos == 0) {

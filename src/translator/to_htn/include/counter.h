@@ -5,13 +5,13 @@
 #include "task.h"
 #include "method.h"
 
-class PropsForCounters {
+class PropsForCounter {
     private:
         vector<Proposition> props;
     
     public:
-        PropsForCounters() {}
-        PropsForCounters(int range, int startID) {
+        PropsForCounter() {}
+        PropsForCounter(int range, int startID) {
             int id = startID;
             for (int i = 0; i < range; i++) {
                 string name = "counted[" + to_string(i) + "]";
@@ -24,13 +24,13 @@ class PropsForCounters {
         Proposition getInit() {return this->props[0];}
 };
 
-class PrimsForCounters {
+class PrimsForCounter {
     private:
         vector<PrimitiveTask> prims;
     
     public:
-        PrimsForCounters() {}
-        PrimsForCounters(PropsForCounters &propsForCounter, int startID) {
+        PrimsForCounter() {}
+        PrimsForCounter(PropsForCounter &propsForCounter, int startID) {
             int id = startID;
             vector<Proposition> props = propsForCounter.get();
             for (int i = 1; i < props.size(); i++) {
@@ -47,36 +47,36 @@ class PrimsForCounters {
         vector<PrimitiveTask> get() {return this->prims;}
 };
 
-class CompsForCounters {
+class CompForCounter {
     private:
         CompoundTask c;
     
     public:
-        CompsForCounters() {}
-        CompsForCounters(int id, int counterID = -1) {
+        CompForCounter() {}
+        CompForCounter(int id, int counterID = -1) {
             string name = "counter[" + to_string(counterID) + "]";
             CompoundTask c(name, id);
             this->c = c;
             assert(this->c.validate());
         }
-        CompoundTask getComp() {return this->c;}
+        CompoundTask get() {return this->c;}
 };
 
-class MethodsForCounters {
+class MethodsForCounter {
     private:
         vector<Method> methods;
     
     public:
-        MethodsForCounters() {}
-        MethodsForCounters(
-                CompsForCounters compForCounter, 
-                PrimsForCounters primsForCounter) {
+        MethodsForCounter() {}
+        MethodsForCounter(
+                CompForCounter compForCounter, 
+                PrimsForCounter primsForCounter) {
             int i = 1;
             for (PrimitiveTask &prim : primsForCounter.get()) {
                 string name = "count[" + to_string(i - 1) + ";" + to_string(i) + "]";
                 vector<Task> tasks = {prim};
                 TaskNetwork tn(tasks);
-                Method m(name, compForCounter.getComp(), tn);
+                Method m(name, compForCounter.get(), tn);
                 methods.push_back(m);
                 i++;
             }
@@ -85,21 +85,11 @@ class MethodsForCounters {
 };
 
 struct Counter {
-    CompsForCounters c;
-    MethodsForCounters ms;
-    PropsForCounters props;
-    PrimsForCounters prims;
-    
-    Counter(
-            CompsForCounters c, 
-            MethodsForCounters ms, 
-            PropsForCounters props, 
-            PrimsForCounters prims) {
-        this->c = c;
-        this->ms = ms;
-        this->props = props;
-        this->prims = prims;
-    }
+    CompForCounter *compForCounter = nullptr;
+    MethodsForCounter *methodsForCounter = nullptr;
+    PropsForCounter *propsForCounter = nullptr;
+    PrimsForCounter *primsForCounter = nullptr;
+
 };
 
 #endif

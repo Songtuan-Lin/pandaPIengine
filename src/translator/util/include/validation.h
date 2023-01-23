@@ -5,7 +5,7 @@
 #include "traversal.h"
 #include "accumulation.h"
 
-class SlotValidiation {
+class SlotValidation {
     private:
         Model *htn;
         vector<int> plan;
@@ -27,7 +27,7 @@ class SlotValidiation {
         bool validate(int m, int b, int i, TaskTraversal *traversal, ActionAccumulation *accumulation);
     
     public:
-        SlotValidiation(Model *htn, vector<int> plan) {
+        SlotValidation(Model *htn, vector<int> plan) {
             this->htn = htn;
             this->plan = plan;
         }
