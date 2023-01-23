@@ -14,10 +14,24 @@ class PrimForStartingMethod {
     public:
         PrimForStartingMethod(Counter local, int id, int m) {
             string name = "start[" + to_string(m) + "]";
-            PrimitiveTask prim(0, {}, {local.propsForCounter->getInit()}, {}, name, id);
-            this->prim = prim;
+            Proposition init = local.propsForCounter->getInit();
+            this->prim = PrimitiveTask(0, {}, {init}, {}, name, id);
+            assert(this->prim.validate());
         }
         PrimitiveTask get() {return this->prim;}
+};
+
+class CompForBlock {
+    private:
+        CompoundTask c;
+    
+    public:
+        CompForBlock(Block b, int id) {
+            string name = "block" + b.toString();
+            this->c = CompoundTask(name, id);
+            assert(this->c.validate());
+        }
+        CompoundTask get() {return this->c;}
 };
 
 #endif
