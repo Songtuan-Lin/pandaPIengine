@@ -24,13 +24,36 @@ class PropsForMatching {
                 this->props.push_back(prop);
             }
         }
-        Proposition getInit() {return this->init;}
-        Proposition getProp(int pos) {return this->props[pos];}
-        vector<Proposition> getMatchingProps() {return this->props;}
+        Proposition getInit() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->init;
+        }
+        Proposition getProp(int pos) {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->props[pos];
+        }
+        vector<Proposition> getMatchingProps() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->props;
+        }
         vector<Proposition> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
             vector<Proposition> v = {this->init};
             v.insert(v.end(), this->props.begin(), this->props.end());
             return v;
+        }
+        bool validate() {
+            for (Proposition &prop : this->props)
+                if (!prop.validate()) return false;
+            return true && this->init.validate();
         }
 };
 
@@ -44,8 +67,23 @@ class PrimsForMatching {
                 Model *htn, int startID,
                 PropsForMatching &props,
                 ActionPositions &positions);
-        vector<PrimitiveTask> get() {return this->prims;}
-        vector<PrimitiveTask> get(int a) {return this->lookup[a];} 
+        vector<PrimitiveTask> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->prims;
+        }
+        vector<PrimitiveTask> get(int a) {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->lookup[a];
+        } 
+        bool validate() {
+            for (PrimitiveTask &p : this->prims)
+                if (!p.validate()) return false;
+            return true;
+        }
 };
 
 class PrimsTranslation {
@@ -66,8 +104,23 @@ class PrimsTranslation {
                 id++;
             }
         }
-        CompoundTask get(int a) {return this->lookup[a];}
-        vector<CompoundTask> get() {return this->comps;}
+        CompoundTask get(int a) {
+#ifndef NDEBUG
+            assert(this->lookup[a].validate());
+#endif
+            return this->lookup[a];
+        }
+        vector<CompoundTask> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->comps;
+        }
+        bool validate() {
+            for (CompoundTask &c : comps)
+                if (!c.validate()) return false;
+            return true;
+        }
 };
 
 class MethodsForMatching {
@@ -77,9 +130,19 @@ class MethodsForMatching {
     public:
         MethodsForMatching(
                 Model *htn, 
-                PrimsTranslation translation, 
-                PrimsForMatching matching);
-        vector<Method> get() {return this->methods;}
+                PrimsTranslation &translation, 
+                PrimsForMatching &primsForMatching);
+        vector<Method> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->methods;
+        }
+        bool validate() {
+            for (Method &m : this->methods)
+                if (!m.validate()) return false;
+            return true;
+        }
 };
 
 #endif

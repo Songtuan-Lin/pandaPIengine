@@ -1,6 +1,7 @@
 #ifndef _block_inc_h_
 #define _block_inc_h_
 
+#include <cmath>
 #include "meta.h"
 #include "task.h"
 #include "method.h"
@@ -12,13 +13,18 @@ class PrimForStartingMethod {
         PrimitiveTask prim;
     
     public:
+        PrimForStartingMethod() {}
         PrimForStartingMethod(Counter local, int id, int m) {
             string name = "start[" + to_string(m) + "]";
-            Proposition init = local.propsForCounter->getInit();
+            Proposition init = local.propsForCounter.getInit();
             this->prim = PrimitiveTask(0, {}, {init}, {}, name, id);
             assert(this->prim.validate());
         }
-        PrimitiveTask get() {return this->prim;}
+        PrimitiveTask get() {
+            assert(this->validate());
+            return this->prim;
+        }
+        bool validate() {return this->prim.validate();}
 };
 
 class CompForBlock {
@@ -26,12 +32,17 @@ class CompForBlock {
         CompoundTask c;
     
     public:
+        CompForBlock() {}
         CompForBlock(Block b, int id) {
             string name = "block" + b.toString();
             this->c = CompoundTask(name, id);
             assert(this->c.validate());
         }
-        CompoundTask get() {return this->c;}
+        CompoundTask get() {
+            assert(this->validate());
+            return this->c;
+        }
+        bool validate() {return this->c.validate();}
 };
 
 class MethodForBlock {
@@ -39,6 +50,7 @@ class MethodForBlock {
         Method m;
     
     public:
+        MethodForBlock() {}
         MethodForBlock(
                 Block block,
                 CompForBlock compForBlock,
@@ -46,17 +58,18 @@ class MethodForBlock {
             string name = "decompose" + block.toString();
             vector<Task> tasks;
             for (SlotTranslation &translation : translations[block.m][block.b]) {
-                if(translation.compForInsertion == nullptr) continue;
-                tasks.push_back(translation.compForInsertion->get());
+                if(!translation.compForInsertion.validate()) continue;
+                tasks.push_back(translation.compForInsertion.get());
             }
             TaskNetwork tn(tasks, true);
             this->m = Method(name, compForBlock.get(), tn);
         }
         Method get() {return this->m;}
+        bool validate() {return m.validate();}
 };
 
 struct BlockTranslation {
-    CompForBlock *compForBlock = nullptr;
+    CompForBlock compForBlock;
 };
 
 #endif

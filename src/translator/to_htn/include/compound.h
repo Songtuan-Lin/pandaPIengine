@@ -31,18 +31,56 @@ class CompsTranslation {
             assert(comp.validate());
             return comp;
         }
-        vector<CompoundTask> get() {return this->comps;}
+        vector<CompoundTask> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->comps;
+        }
+        bool validate() {
+            for (CompoundTask &c : this->comps)
+                if (!c.validate()) return false;
+            return true;
+        }
 };
 
-class MethodsTranslation {
+class MethodTranslation {
     private:
-        vector<Method> methods;
+        Method method;
     
     public:
-        MethodsTranslation(
-                Model *htn,
-                PrimsTranslation &primsTranslation,
-                CompsTranslation &compTranslation);
+        MethodTranslation(
+                Model *htn, int m,
+                PrimsTranslation &primsTranslation, 
+                CompsTranslation &compsTranslation,
+                vector<BlockTranslation> &blockTranslations,
+                PrimForStartingMethod &primForStartingMethod) {
+            assert(blockTranslations.size() == htn->numSubTasks[m] + 1);
+            string name = "method[" + to_string(m) + "]";
+            vector<Task> tasks;
+            tasks.resize(2 * htn->numSubTasks[m] + 1);
+            for (int pos = 0; pos < tasks.size(); pos++) {
+                int index = std::floor(pos / 2);
+                Task t;
+                if (pos % 2 == 0) {
+                    t = blockTranslations[index].compForBlock.get();
+                } else {
+                    int subTask = htn->subTasks[m][index];
+                    if (htn->isPrimitive[subTask]) {
+                        t = primsTranslation.get(subTask);
+                    } else {t = compsTranslation.get(subTask);}
+                }
+                tasks[pos] = t;
+            }
+            tasks.insert(tasks.begin(), primForStartingMethod.get());
+            TaskNetwork tn(tasks, true);
+            int decomposedTask = htn->decomposedTask[m];
+            this->method = Method(name, compsTranslation.get(decomposedTask), tn);
+        }
+        Method get() {
+            assert(this->method.validate());
+            return this->method;
+        }
 };
 
 #endif

@@ -25,10 +25,10 @@ struct Block {
 };
 
 struct SlotTranslation {
-    PropsForInsertion *propsForInsertion = nullptr;
-    PrimsForInsertion *primsForInsertion = nullptr;
-    CompForInsertion *compForInsertion = nullptr;
-    MethodsForInsertion *methodsForInsertion = nullptr;
+    PropsForInsertion propsForInsertion;
+    PrimsForInsertion primsForInsertion;
+    CompForInsertion compForInsertion;
+    MethodsForInsertion methodsForInsertion;
 };
 
 #endif

@@ -22,6 +22,11 @@ class PropsForCounter {
         }
         vector<Proposition> get() {return this->props;}
         Proposition getInit() {return this->props[0];}
+        bool validate() {
+            for (Proposition &prop : this->props)
+                if (!prop.validate()) return false;
+            return true;
+        }
 };
 
 class PrimsForCounter {
@@ -45,6 +50,11 @@ class PrimsForCounter {
             }
         }
         vector<PrimitiveTask> get() {return this->prims;}
+        bool validate() {
+            for (PrimitiveTask &p : this->prims)
+                if (!p.validate()) return false;
+            return true;
+        }
 };
 
 class CompForCounter {
@@ -60,6 +70,7 @@ class CompForCounter {
             assert(this->c.validate());
         }
         CompoundTask get() {return this->c;}
+        bool validate() {return this->c.validate();}
 };
 
 class MethodsForCounter {
@@ -82,13 +93,18 @@ class MethodsForCounter {
             }
         }
         vector<Method> get() {return this->methods;}
+        bool validate() {
+            for (Method &m : this->methods)
+                if (!m.validate()) return false;
+            return true;
+        }
 };
 
 struct Counter {
-    CompForCounter *compForCounter = nullptr;
-    MethodsForCounter *methodsForCounter = nullptr;
-    PropsForCounter *propsForCounter = nullptr;
-    PrimsForCounter *primsForCounter = nullptr;
+    CompForCounter compForCounter;
+    MethodsForCounter methodsForCounter;
+    PropsForCounter propsForCounter;
+    PrimsForCounter primsForCounter;
 
 };
 

@@ -14,6 +14,7 @@ class PropsForInsertion {
         Proposition propEmpty, propOccupied;
     
     public:
+        PropsForInsertion() {}
         PropsForInsertion(Slot s, int id) {
             string name = "empty" + s.toString();
             this->propEmpty = Proposition(name, id);
@@ -34,6 +35,9 @@ class PropsForInsertion {
             assert(this->propOccupied.validate() && this->propEmpty.validate());
             return {this->propEmpty, this->propOccupied};
         }
+        bool validate() {
+            return this->propEmpty.validate() && this->propOccupied.validate();
+        }
 };
 
 class PrimsForInsertion {
@@ -42,6 +46,7 @@ class PrimsForInsertion {
         Slot s;
     
     public:
+        PrimsForInsertion() {}
         PrimsForInsertion(
                 Slot s, int startID,
                 PropsForMatching &propsForMatching,
@@ -52,7 +57,17 @@ class PrimsForInsertion {
             vector<PrimitiveTask> occupied(this->prims.begin() + 1, this->prims.end());
             return occupied;
         }
-        vector<PrimitiveTask> get() {return this->prims;}
+        vector<PrimitiveTask> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->prims;
+        }
+        bool validate() {
+            for (PrimitiveTask &p : this->prims)
+                if (!p.validate()) return false;
+            return true;
+        }
 };
 
 class CompForInsertion {
@@ -61,6 +76,7 @@ class CompForInsertion {
         Slot s;
     
     public:
+        CompForInsertion() {}
         CompForInsertion(Slot s, int id) {
             this->s = s;
             string name = "slot" + s.toString();
@@ -68,7 +84,11 @@ class CompForInsertion {
             this->c = c;
             assert(this->c.validate());
         }
-        CompoundTask get() {return this->c;}
+        CompoundTask get() {
+            assert(this->validate());
+            return this->c;
+        }
+        bool validate() {return this->c.validate();}
 };
 
 class MethodsForInsertion {
@@ -77,13 +97,24 @@ class MethodsForInsertion {
         Slot s;
     
     public:
+        MethodsForInsertion() {}
         MethodsForInsertion(
                 Slot s, 
                 CompForInsertion compIns, 
                 PrimsForInsertion primIns,
                 Counter global,
                 Counter local);
-        vector<Method> get() {return this->methods;}
+        vector<Method> get() {
+#ifndef NDEBUG
+            assert(this->validate());
+#endif
+            return this->methods;
+        }
+        bool validate() {
+            for (Method &m : this->methods) 
+                if (!m.validate()) return false;
+            return true;
+        }
 };
 
 #endif

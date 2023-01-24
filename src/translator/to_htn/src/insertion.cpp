@@ -48,8 +48,8 @@ MethodsForInsertion::MethodsForInsertion(
     for (PrimitiveTask prim : prims) {
         name = "occupy" + s.toString();
         TaskNetwork tn(
-            {global.compForCounter->get(), 
-             local.compForCounter->get(), 
+            {global.compForCounter.get(), 
+             local.compForCounter.get(), 
              prim}, true);
         Method m(name, compIns.get(), tn);
         this->methods.push_back(m);

@@ -28,12 +28,12 @@ PrimsForMatching::PrimsForMatching(
 
 MethodsForMatching::MethodsForMatching(
         Model *htn, 
-        PrimsTranslation translation, 
-        PrimsForMatching matching) {
+        PrimsTranslation &translation, 
+        PrimsForMatching &primsForMatching) {
     for (int a = 0; a < htn->numActions; a++) {
         CompoundTask c = translation.get(a);
         if (!c.validate()) continue;
-        for (PrimitiveTask p : matching.get(a)) {
+        for (PrimitiveTask &p : primsForMatching.get(a)) {
             string name = "matching[" + to_string(a) + "]";
             TaskNetwork tn({p});
             Method m(name, c, tn);
