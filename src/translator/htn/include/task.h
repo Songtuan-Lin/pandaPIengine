@@ -89,6 +89,9 @@ class PrimitiveTask : public Task {
             }
             ofile << -1 << endl;
         }
+        vector<Proposition> getPrecondition() {return this->precondition;}
+        vector<Proposition> getPosEffs() {return this->posEffs;}
+        vector<Proposition> getNegEffs() {return this->negEffs;}
 };
 
 class CompoundTask : public Task {

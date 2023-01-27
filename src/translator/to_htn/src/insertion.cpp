@@ -19,7 +19,7 @@ PrimsForInsertion::PrimsForInsertion(
     id += 1;
     prims.push_back(prim);
     for (int pos : positions) {
-        if (s.i < pos) continue;
+        if (s.i > pos) continue;
         Proposition prev;
         if (pos == 0) {
             prev = propsForMatching.getInit();

@@ -21,11 +21,11 @@ file(GLOB UTIL_SOURCE_FILES
     "../Invariants.cpp"
 )
 
-add_library(util
+add_library(tool
     ${UTIL_SOURCE_FILES}
 )
 
-target_include_directories(util   
+target_include_directories(tool   
     PUBLIC
         util/include
         ${pandaPIengine_SOURCE_DIR}
@@ -54,6 +54,7 @@ target_include_directories(to_htn
 target_link_libraries(to_htn
     PUBLIC
         htn
+        tool
 )
 
 add_subdirectory(test)
