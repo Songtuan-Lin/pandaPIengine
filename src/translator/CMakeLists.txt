@@ -55,3 +55,5 @@ target_link_libraries(to_htn
     PUBLIC
         htn
 )
+
+add_subdirectory(test)

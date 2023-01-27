@@ -125,20 +125,20 @@ class TaskNetwork {
             this->order.push_back(constraint);
         }
         bool validiate() {
-            for (Task t: this->tasks) {
+            for (Task &t: this->tasks) {
                 if (!t.validate()) return false;
             }
             return true;
         }
         void write(ofstream &ofile) {
             assert(this->validiate());
-            for (Task t : this->tasks) {
+            for (Task &t : this->tasks) {
                 // TODO: check carefully whether an offset should
                 // be added to the id of a compound task
                 ofile << t.getID() << " ";
             }
             ofile << -1 << endl;
-            for (tuple<int, int> o: this->order) {
+            for (tuple<int, int> &o: this->order) {
                 ofile << get<0>(o) << " " << get<1>(o) << " ";
             }
             ofile << -1 << endl;

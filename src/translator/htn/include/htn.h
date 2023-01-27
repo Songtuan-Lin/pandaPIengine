@@ -10,6 +10,9 @@ class HTN {
         vector<PrimitiveTask> prims;
         vector<CompoundTask> comps;
         vector<Method> methods;
+        vector<Proposition> init;
+        vector<Proposition> goal;
+        CompoundTask top;
 
     public:
         void addProps(Proposition prop) {this->props.push_back(prop);}
@@ -32,6 +35,59 @@ class HTN {
         int getNumPrims() {return this->prims.size();}
         int getNumComps() {return this->comps.size();}
         int getNumMethods() {return this->methods.size();}
+        void write(ofstream &ofile) {
+            // write propositions
+            ofile << ";; #state features" << endl;
+            ofile << this->props.size() << endl;
+            for (Proposition prop : this->props)
+                prop.write(ofile);
+            // write mutex
+            ofile << endl << ";; Mutex Groups" << endl;
+            ofile << this->props.size() << endl;
+            for (Proposition prop : this->props) {
+                ofile << prop.getID() << " "; 
+                ofile << prop.getID() << " ";
+                ofile << prop.getName() << endl;
+            }
+            // other mutex groups
+            ofile << endl << ";; further strict Mutex Groups" << endl;
+            ofile << 0 << endl;
+            ofile << endl << ";; further non strict Mutex Groups" << endl;
+            ofile << 0 << endl;
+            // invariants
+            ofile << endl << ";; known invariants" << endl;
+            ofile << 0 << endl;
+            // actions
+            ofile << endl << ";; Actions" << endl;
+            ofile << this->prims.size() << endl;
+            for (PrimitiveTask &prim : this->prims)
+                prim.writeAsAction(ofile);
+            // initial state
+            ofile << endl << ";; Initial State" << endl;
+            for (Proposition &prop : this->init)
+                ofile << prop.getID() << " ";
+            ofile << " -1" << endl;
+            // goal
+            ofile << endl << ";; Goal" << endl;
+            for (Proposition &prop : this->goal) 
+                ofile << prop.getID() << " ";
+            ofile << " -1" << endl;
+            // all tasks
+            ofile << endl << ";; Tasks (primitive and abstract)" << endl;
+            ofile << this->prims.size() + this->comps.size() << endl;
+            for (PrimitiveTask &prim : this->prims)
+                prim.write(ofile);
+            for (CompoundTask &c : this->comps)
+                c.write(ofile);
+            // initial task
+            ofile << endl << ";; Initial Abstract Task" << endl;
+            ofile << this->top.getID() << endl;
+            // methods
+            ofile << endl << ";; Methods" << endl;
+            ofile << this->methods.size() << endl;
+            for (Method &m : this->methods)
+                m.write(ofile);
+        }
 };
 
 #endif
