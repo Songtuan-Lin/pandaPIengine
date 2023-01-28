@@ -127,6 +127,8 @@ class TaskNetwork {
             assert(get<0>(constraint) < this->tasks.size() && get<1>(constraint) < this->tasks.size());
             this->order.push_back(constraint);
         }
+        vector<Task> getTasks() {return this->tasks;}
+        vector<tuple<int, int>> getOrder() {return this->order;}
         bool validiate() {
             for (Task &t: this->tasks) {
                 if (!t.validate()) return false;
@@ -147,5 +149,4 @@ class TaskNetwork {
             ofile << -1 << endl;
         }
 };
-
 #endif

@@ -70,3 +70,107 @@ TEST_CASE("TEST PRIMS FOR INSERTIONS") {
     REQUIRE(negEffs[0].getID() == empty.getID());
     REQUIRE(negEffs[1].getID() == propsForMatching.getProp(0).getID());
 }
+
+TEST_CASE("TEST COUNTERS") {
+    PropsForCounter propsForCounter(2, 0);
+    REQUIRE(propsForCounter.get().size() == 3);
+    vector<Proposition> props = propsForCounter.get();
+    REQUIRE(props[0].getID() == propsForCounter.getInit().getID());
+    // test prims for counting
+    PrimsForCounter primsForCounter(propsForCounter, 0);
+    REQUIRE(primsForCounter.get().size() == 2);
+    vector<PrimitiveTask> prims = primsForCounter.get();
+    // test counting 1
+    vector<Proposition> prec = prims[0].getPrecondition();
+    REQUIRE(prec.size() == 1);
+    REQUIRE(prec[0].getID() == propsForCounter.getInit().getID());
+    vector<Proposition> posEffs = prims[0].getPosEffs();
+    REQUIRE(posEffs.size() == 1);
+    REQUIRE(posEffs[0].getID() == props[1].getID());
+    vector<Proposition> negEffs = prims[0].getNegEffs();
+    REQUIRE(negEffs.size() == 1);
+    REQUIRE(negEffs[0].getID() == props[0].getID());
+    // test counting 2
+    prec = prims[1].getPrecondition();
+    REQUIRE(prec.size() == 1);
+    REQUIRE(prec[0].getID() == props[1].getID());
+    posEffs = prims[1].getPosEffs();
+    REQUIRE(posEffs.size() == 1);
+    REQUIRE(posEffs[0].getID() == props[2].getID());
+    negEffs = prims[1].getNegEffs();
+    REQUIRE(negEffs.size() == 1);
+    REQUIRE(negEffs[0].getID() == props[1].getID());
+    CompForCounter compForCounter(2);
+    MethodsForCounter methodsForCounter(compForCounter, 
+                                        primsForCounter);
+    vector<Method> methods = methodsForCounter.get();
+    REQUIRE(methods.size() == 2);
+    CompoundTask c = methods[0].getDecomposedTask();
+    REQUIRE(c.getID() == compForCounter.get().getID());
+    TaskNetwork tn = methods[0].getTaskNetwork();
+    vector<Task> tasks = tn.getTasks();
+    REQUIRE(tasks.size() == 1);
+    REQUIRE(tasks[0].getID() == prims[0].getID());
+    c = methods[1].getDecomposedTask();
+    REQUIRE(c.getID() == compForCounter.get().getID());
+    tn = methods[1].getTaskNetwork();
+    tasks = tn.getTasks();
+    REQUIRE(tasks.size() == 1);
+    REQUIRE(tasks[0].getID() == prims[1].getID());
+}
+
+TEST_CASE("TEST METHODS FOR INSERTIONS") {
+    vector<int> positions = {0, 1};
+    PropsForMatching propsForMatching(3, 0);
+    Slot slot(0, 1, 1);
+    // counter for 0 -- 2
+    Counter global;
+    PropsForCounter propsForGlobalCounter(2, 4);
+    PrimsForCounter primsForGlobalCounter(propsForGlobalCounter, 0);
+    CompForCounter compForGlobalCounter(5);
+    global.propsForCounter = propsForGlobalCounter;
+    global.primsForCounter = primsForGlobalCounter;
+    global.compForCounter = compForGlobalCounter;
+    Counter local;
+    // counter for 0 -- 1
+    PropsForCounter propsForLocalCounter(1, 7);
+    PrimsForCounter primsForLocalCounter(propsForLocalCounter, 2);
+    CompForCounter compForLocalCounter(6);
+    local.propsForCounter = propsForLocalCounter;
+    local.primsForCounter = primsForLocalCounter;
+    local.compForCounter = compForLocalCounter;
+    // insertions
+    PropsForInsertion propsForInsertion(slot, 9);
+    PrimsForInsertion primsForInsertion(slot, 3,
+                                        propsForMatching,
+                                        propsForInsertion,
+                                        positions);
+    vector<PrimitiveTask> prims = primsForInsertion.get(); // size == 2
+    CompForInsertion compForInsertion(slot, 7);
+    REQUIRE(compForInsertion.get().getID() == 7);
+    MethodsForInsertion methodsForInsertion(slot, 
+                                            compForInsertion,
+                                            primsForInsertion,
+                                            global, local);
+    vector<Method> methods = methodsForInsertion.get();
+    REQUIRE(methods.size() == 2);
+    Method m = methods[0];
+    CompoundTask c = m.getDecomposedTask();
+    REQUIRE(c.getID() == compForInsertion.get().getID());
+    TaskNetwork tn = m.getTaskNetwork();
+    REQUIRE(tn.getTasks().size() == 1);
+    REQUIRE(tn.getTasks()[0].getID() == 3);
+    REQUIRE(tn.getTasks()[0].getID() == primsForInsertion.getEmpty().getID());
+    m = methods[1];
+    c = m.getDecomposedTask();
+    REQUIRE(c.getID() == compForInsertion.get().getID());
+    tn = m.getTaskNetwork();
+    REQUIRE(tn.getTasks().size() == 3);
+    vector<Task> tasks = tn.getTasks();
+    REQUIRE(tasks[0].getID() == 5);
+    REQUIRE(tasks[0].getID() == global.compForCounter.get().getID());
+    REQUIRE(tasks[1].getID() == 6);
+    REQUIRE(tasks[1].getID() == local.compForCounter.get().getID());
+    REQUIRE(tasks[2].getID() == 4);
+    REQUIRE(tasks[2].getID() == primsForInsertion.get()[1].getID());
+}

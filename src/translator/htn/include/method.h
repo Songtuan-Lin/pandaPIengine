@@ -24,6 +24,8 @@ class Method {
             this->tn.write(ofile);
         }
         bool validate() {return this->t.validate();}
+        CompoundTask getDecomposedTask() {return this->t;}
+        TaskNetwork getTaskNetwork() {return this->tn;}
 };
 
 #endif

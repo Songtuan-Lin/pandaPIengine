@@ -13,7 +13,7 @@ class PropsForCounter {
         PropsForCounter() {}
         PropsForCounter(int range, int startID) {
             int id = startID;
-            for (int i = 0; i < range; i++) {
+            for (int i = 0; i <= range; i++) {
                 string name = "counted[" + to_string(i) + "]";
                 Proposition prop(name, id);
                 id++;
