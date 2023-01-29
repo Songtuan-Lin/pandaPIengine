@@ -31,6 +31,8 @@ class HTN {
         void addMethods(vector<Method> ms) {
             this->methods.insert(this->methods.end(), ms.begin(), ms.end());
         }
+        void addInitState(Proposition prop) {this->init.push_back(prop);}
+        void addGoal(Proposition prop) {this->goal.push_back(prop);}
         int getNumProps() {return this->props.size();}
         int getNumPrims() {return this->prims.size();}
         int getNumComps() {return this->comps.size();}

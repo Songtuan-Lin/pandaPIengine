@@ -8,6 +8,7 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     PropsForMatching propsForMatching(this->plan.size(), 
                                       this->h.getNumProps());
     this->h.addProps(propsForMatching.get());
+    this->h.addInitState(propsForMatching.getInit());
     ActionPositions positions(this->htn, this->plan);
     PrimsForMatching primsForMatching(this->htn, 
                                       this->h.getNumPrims(),
@@ -19,6 +20,7 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
                                           this->h.getNumProps());
     global.propsForCounter = propsForGlobalCounter; 
     this->h.addProps(propsForGlobalCounter.get());
+    this->h.addInitState(propsForGlobalCounter.getInit());
     PrimsForCounter primsForGlobalCounter(propsForGlobalCounter, 
                                           this->h.getNumPrims());
     global.primsForCounter = primsForGlobalCounter;
@@ -51,6 +53,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
                 Slot s(m, b, i);
                 PropsForInsertion propsForInsertion(s, this->h.getNumProps());
                 this->h.addProps(propsForInsertion.get());
+                this->h.addInitState(propsForInsertion.getEmpty());
+                this->h.addInitState(propsForInsertion.getOccupied());
                 this->slotTranslations[m][b][i].propsForInsertion = propsForInsertion;
                 PrimsForInsertion primsForInsertion(s, this->h.getNumPrims(),
                                                     propsForMatching,
@@ -61,6 +65,7 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
             }
         }
     }
+    this->h.addGoal(propsForMatching.getProp(this->plan.size() - 1));
     // creating compound tasks and methods
     int offset = this->h.getNumPrims();
     // TODO: add the counter id
