@@ -23,7 +23,7 @@ bool SlotValidation::validate(int m, int b, int i, TaskTraversal *traversal, Act
         if (count > (this->plan.size() - 1 - i)) return false;
         int nextTask = this->htn->subTasks[m][b];
         for (int a = 0; a < this->htn->numActions; a++) {
-            int accumulationEnd = accumulation->getNumAccumulation(this->plan.size(), a);
+            int accumulationEnd = accumulation->getNumAccumulation(this->plan.size() - 1, a);
             int accumulationStart = accumulation->getNumAccumulation(i, a);
             int numAccumulation = accumulationEnd - accumulationStart;
             if (numAccumulation < traversal->getNumAction(nextTask, a)) return false;

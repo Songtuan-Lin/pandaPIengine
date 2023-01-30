@@ -78,7 +78,7 @@ class Translator {
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
             this->traversal = new TaskTraversal(this->htn);
-            this->validation = new SlotValidation(this->htn, this->plan);
+            this->validation = new SlotValidation(this->htn, this->plan, traversal);
             this->optimizeHTN = new OptimizeHTN(this->htn, this->plan);
         }
 };

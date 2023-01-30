@@ -53,6 +53,7 @@ target_include_directories(to_htn
 
 target_link_libraries(to_htn
     PUBLIC
+        intDataStructures
         htn
         tool
 )

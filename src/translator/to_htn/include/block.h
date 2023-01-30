@@ -70,6 +70,7 @@ class MethodForBlock {
 
 struct BlockTranslation {
     CompForBlock compForBlock;
+    bool valid = false;
 };
 
 #endif

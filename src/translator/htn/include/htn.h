@@ -15,6 +15,7 @@ class HTN {
         CompoundTask top;
 
     public:
+        void setTopTask(CompoundTask c) {this->top = c; assert(this->top.validate());}
         void addProps(Proposition prop) {this->props.push_back(prop);}
         void addProps(vector<Proposition> props) {
             this->props.insert(this->props.end(), props.begin(), props.end());
@@ -89,6 +90,19 @@ class HTN {
             ofile << this->methods.size() << endl;
             for (Method &m : this->methods)
                 m.write(ofile);
+        }
+        bool validate() {
+            for (int i = 0; i < this->props.size(); i++)
+                if (i != this->props[i].getID()) 
+                    return false;
+            for (int i = 0; i < this->prims.size(); i++)
+                if (i != this->prims[i].getID()) 
+                    return false;
+            int offset = this->prims.size();
+            for (int i = 0; i < this->comps.size(); i++)
+                if (i + offset != this->comps[i].getID()) 
+                    return false;
+            return true;
         }
 };
 

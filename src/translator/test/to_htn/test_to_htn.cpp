@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "match.h"
 #include "insertion.h"
+#include "to_htn.h"
 
 TEST_CASE("TEST PROPOSITIONS FOR MATCHING") {
     PropsForMatching propsForMatching(3, 0);
@@ -173,4 +174,13 @@ TEST_CASE("TEST METHODS FOR INSERTIONS") {
     REQUIRE(tasks[1].getID() == local.compForCounter.get().getID());
     REQUIRE(tasks[2].getID() == 4);
     REQUIRE(tasks[2].getID() == primsForInsertion.get()[1].getID());
+}
+
+TEST_CASE("TEST TRANSLATION") {
+    string htnFile = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/test.sas";
+    string planFile = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/test_plan.txt";
+    string oFilePath = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/output.sas";
+    ofstream ofile(oFilePath);
+    HTNTranslator *translator = new HTNTranslator(htnFile, planFile);
+    translator->write(ofile);
 }

@@ -20,4 +20,5 @@ class HTNTranslator : public Translator {
 
     public:
         HTNTranslator(string htnFile, string planFile);
+        void write(ofstream &ofile) {this->h.write(ofile);}
 };
