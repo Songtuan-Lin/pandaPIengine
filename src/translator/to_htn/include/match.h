@@ -131,7 +131,8 @@ class MethodsForMatching {
         MethodsForMatching(
                 Model *htn, 
                 PrimsTranslation &translation, 
-                PrimsForMatching &primsForMatching);
+                PrimsForMatching &primsForMatching,
+                ActionAccumulation &accumulation);
         vector<Method> get() {
 #ifndef NDEBUG
             assert(this->validate());

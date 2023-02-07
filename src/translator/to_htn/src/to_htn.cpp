@@ -125,7 +125,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     cout << "[Generate methods for matching]";
     MethodsForMatching methodsForMatching(this->htn, 
                                           primsTranslation, 
-                                          primsForMatching);
+                                          primsForMatching,
+                                          accumulation);
     cout << " Num methods generated: ";
     cout << methodsForMatching.get().size() << endl;
     this->h.addMethods(methodsForMatching.get());

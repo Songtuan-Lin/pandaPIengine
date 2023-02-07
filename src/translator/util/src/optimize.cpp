@@ -16,16 +16,30 @@ OptimizeHTN::OptimizeHTN(Model *htn, vector<int> plan) {
         saturated = true;
         MethodDFS *mDFS = new MethodDFS(htn, this->invalidTasks);
         for (int m = 0; m < htn->numMethods; m++) {
-            if (mDFS->isInvalidMethod(m) && (!this->invalidMethods[m])) {
-                this->invalidMethods[m] = true;
-                saturated = false;
-                tdg->maskMethod(m);
-                count++;
+            if (this->invalidMethods[m]) continue;
+            int u = tdg->vM(m);
+            vector<int>::iterator iter;
+            for (iter = tdg->adjBegin(u); iter < tdg->adjEnd(u); iter++) {
+                int adjTask = tdg->T(*iter);
+                if (this->invalidTasks[adjTask]) {
+                    this->invalidMethods[m] = true;
+                    tdg->maskMethod(m);
+                    saturated = false;
+                    count++;
+                }
             }
         }
         int initTask = htn->initialTask;
         int v = tdg->vT(initTask);
         tdg->calcReachability(v);
+        for (int t = 0; t < htn->numTasks; t++) {
+            int w = tdg->vT(t);
+            if (!tdg->reachable(w) && (!this->invalidTasks[t])) {
+                this->invalidTasks[t] = true;
+                tdg->maskTask(t);
+                saturated = false;
+            }
+        }
         for (int m = 0; m < htn->numMethods; m++) {
             int w = tdg->vM(m);
             if ((!tdg->reachable(w)) && (!this->invalidMethods[m])) {
@@ -45,7 +59,10 @@ OptimizeHTN::OptimizeHTN(Model *htn, vector<int> plan) {
                     break;
                 }
             }
-            if (allDisabled) this->invalidTasks[t] = true;
+            if (allDisabled && this->invalidTasks[t] == false) {
+                this->invalidTasks[t] = true;
+                saturated = false;
+            }
         }
     }
     cout << prefix << "Number of redundant methods: " << to_string(count) << endl;

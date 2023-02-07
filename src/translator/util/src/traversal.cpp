@@ -35,7 +35,8 @@ void TaskTraversal::dfs(int c, vector<bool> &visited) {
             } else {
                 this->dfs(t, visited);
                 for (int a = 0; a < htn->numActions; a++)
-                    local[a] += this->count[t - offset][a];
+                    if (!this->count[t - offset].size() == 0)
+                        local[a] += this->count[t - offset][a];
                 n += this->numReachableTasks[t - offset];
             }
         }

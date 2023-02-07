@@ -29,8 +29,11 @@ PrimsForMatching::PrimsForMatching(
 MethodsForMatching::MethodsForMatching(
         Model *htn, 
         PrimsTranslation &translation, 
-        PrimsForMatching &primsForMatching) {
+        PrimsForMatching &primsForMatching,
+        ActionAccumulation &accumulation) {
     for (int a = 0; a < htn->numActions; a++) {
+        if (accumulation.getNumAccumulation(a) == 0)
+            continue;
         CompoundTask c = translation.get(a);
         if (!c.validate()) continue;
         for (PrimitiveTask &p : primsForMatching.get(a)) {
