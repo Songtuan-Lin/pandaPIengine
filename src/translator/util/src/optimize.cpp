@@ -10,15 +10,18 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
         this->invalidTasks[i] = true;
     for (int a : plan)
         this->invalidTasks[a] = false;
+    int count = 0;
     for (int m = 0; m < htn->numMethods; m++) {
         int totalMinReachableTasks = 0;
         for (int i = 0; i < htn->numSubTasks[m]; i++)
             totalMinReachableTasks += traversal->getNumReachable(
                     htn->subTasks[m][i]);
-        if (totalMinReachableTasks > plan.size())
+        if (totalMinReachableTasks > plan.size()) {
             this->invalidMethods[m] = true;
+            tdg->maskMethod(m);
+            count++;
+        }
     }
-    int count = 0;
     bool saturated = false;
     while (!saturated) {
         saturated = true;
@@ -33,7 +36,8 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
                     this->invalidMethods[m] = true;
                     tdg->maskMethod(m);
                     saturated = false;
-                    count++;
+                    if (!this->invalidMethods[m])
+                        count++;
                 }
             }
         }

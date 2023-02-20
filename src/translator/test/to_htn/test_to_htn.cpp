@@ -177,8 +177,8 @@ TEST_CASE("TEST METHODS FOR INSERTIONS") {
 }
 
 TEST_CASE("TEST TRANSLATION") {
-    string htnFile = "/home/users/u6162630/Datasets/htn-to-domains/Transport/pfile02/grounded/plan_1/pfile02.sas";
-    string planFile = "/home/users/u6162630/Datasets/htn-to-domains/Transport/pfile02/grounded/plan_1/plan.txt";
+    string htnFile = "/home/users/u6162630/Datasets/htn-to-inval-noprec/Depots/p05/plan_1/p05-planning.sas";
+    string planFile = "/home/users/u6162630/Datasets/htn-to-inval-noprec/Depots/p05/plan_1/plan-cyk.txt";
     string oFilePath = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/output.sas";
     ofstream ofile(oFilePath);
     HTNTranslator *translator = new HTNTranslator(htnFile, planFile);
