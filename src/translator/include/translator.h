@@ -55,7 +55,8 @@ class Translator {
             return planNum;
         }
         vector<string> readPlanFile(string planFile) {
-            cout << "Read plan from " << planFile << endl;
+            cout << "[Reading the plan file] ";
+            cout << planFile << endl;
             vector<string> plan;
             ifstream fin(planFile);
             if(!fin.good()) {
@@ -68,7 +69,10 @@ class Translator {
                 std::transform(action.begin(), action.end(), action.begin(), ::tolower);
                 plan.push_back(action);
             }
-            cout << "Read plan file complete" << endl;
+            cout << "[Reading the plan file] ";
+            cout << "Plan length: " << plan.size() << endl;
+            cout << "[Reading the plan file] ";
+            cout << "Done!" << endl;
             return plan;
         }
 
@@ -78,7 +82,7 @@ class Translator {
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
             this->traversal = new TaskTraversal(this->htn);
-            this->validation = new SlotValidation(this->htn, this->plan, traversal);
-            this->optimizeHTN = new OptimizeHTN(this->htn, this->plan);
+            this->validation = new SlotValidation(this->htn, this->plan, this->traversal);
+            this->optimizeHTN = new OptimizeHTN(this->htn, this->traversal, this->plan);
         }
 };

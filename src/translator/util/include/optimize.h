@@ -3,6 +3,7 @@
 
 #include "Model.h"
 #include "graph.h"
+#include "traversal.h"
 
 class MethodDFS {
     public:
@@ -45,7 +46,7 @@ class OptimizeHTN {
         vector<bool> invalidTasks;
     
     public:
-        OptimizeHTN(Model *htn, vector<int> plan);
+        OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan);
         bool isTaskInvalid(int t) {return this->invalidTasks[t];}
         bool isMethodInvalid(int m) {return this->invalidMethods[m];}
 };

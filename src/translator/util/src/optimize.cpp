@@ -1,6 +1,6 @@
 #include "optimize.h"
 
-OptimizeHTN::OptimizeHTN(Model *htn, vector<int> plan) {
+OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan) {
     string prefix = "[Optimizing the Model] ";
     TDG *tdg = new TDG(htn);
     cout << prefix << "Analyzing the TDG" << endl;
@@ -10,6 +10,14 @@ OptimizeHTN::OptimizeHTN(Model *htn, vector<int> plan) {
         this->invalidTasks[i] = true;
     for (int a : plan)
         this->invalidTasks[a] = false;
+    for (int m = 0; m < htn->numMethods; m++) {
+        int totalMinReachableTasks = 0;
+        for (int i = 0; i < htn->numSubTasks[m]; i++)
+            totalMinReachableTasks += traversal->getNumReachable(
+                    htn->subTasks[m][i]);
+        if (totalMinReachableTasks > plan.size())
+            this->invalidMethods[m] = true;
+    }
     int count = 0;
     bool saturated = false;
     while (!saturated) {

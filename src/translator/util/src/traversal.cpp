@@ -5,12 +5,16 @@ TaskTraversal::TaskTraversal(Model *htn) {
     this->htn = htn;
     int offset = htn->numActions;
     this->count.resize(htn->numTasks - offset);
-    this->numReachableTasks.resize(htn->numTasks - offset);
+    this->numReachableTasks.assign(htn->numTasks - offset, 0);
     vector<bool> visited;
     visited.assign(htn->numTasks - offset, false);
-    cout << "[Do DFS on tasks and methods]";
+    string prefix = "[Do DFS on tasks and methods]";
+    cout << prefix;
     for (int c = htn->numActions; c < htn->numTasks; c++)
         this->dfs(c, visited);
+    cout << " Minimal reachable actions from the initial task: ";
+    cout << this->numReachableTasks[htn->initialTask - offset] << endl;
+    cout << prefix;
     cout << " Done!" << endl;
 }
 

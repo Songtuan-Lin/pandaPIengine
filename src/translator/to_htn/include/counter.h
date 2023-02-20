@@ -8,20 +8,30 @@
 class PropsForCounter {
     private:
         vector<Proposition> props;
+        int counterID;
     
     public:
         PropsForCounter() {}
-        PropsForCounter(int range, int startID) {
+        PropsForCounter(int range, int startID, int counterID = -1) {
             int id = startID;
+            this->counterID = counterID;
             for (int i = 0; i <= range; i++) {
-                string name = "counted[" + to_string(i) + "]";
+                string name = "counted[" + to_string(i) + ";";
+                name += to_string(counterID) + "]";
                 Proposition prop(name, id);
                 id++;
                 this->props.push_back(prop);
             }
+            string name = "invalid";
+            Proposition prop(name, id);
+            this->props.push_back(prop);
         }
+        int getCounterID() {return this->counterID;}
         vector<Proposition> get() {return this->props;}
         Proposition getInit() {return this->props[0];}
+        Proposition getInvalid() {
+            return this->props[this->props.size() - 1];
+        }
         bool validate() {
             for (Proposition &prop : this->props)
                 if (!prop.validate()) return false;
@@ -32,14 +42,18 @@ class PropsForCounter {
 class PrimsForCounter {
     private:
         vector<PrimitiveTask> prims;
+        int counterID;
     
     public:
         PrimsForCounter() {}
-        PrimsForCounter(PropsForCounter &propsForCounter, int startID) {
+        PrimsForCounter(PropsForCounter &propsForCounter, 
+                        int startID, int counterID = -1) {
             int id = startID;
+            this->counterID = counterID;
             vector<Proposition> props = propsForCounter.get();
-            for (int i = 1; i < props.size(); i++) {
-                string name = "counting[" + to_string(i) + "]";
+            for (int i = 1; i < props.size() - 1; i++) {
+                string name = "counting[" + to_string(i) + ";";
+                name += to_string(counterID) + "]";
                 vector<Proposition> prec = {props[i - 1]};
                 vector<Proposition> del = {props[i - 1]};
                 vector<Proposition> add = {props[i]};
@@ -48,7 +62,12 @@ class PrimsForCounter {
                 id++;
                 this->prims.push_back(prim);
             }
+            Proposition invalidProp = propsForCounter.getInvalid();
+            PrimitiveTask prim(0, {invalidProp}, {}, 
+                               {}, "invalidCounting", id);
+            this->prims.push_back(prim);
         }
+        int getCounterID() {return this->counterID;}
         vector<PrimitiveTask> get() {return this->prims;}
         bool validate() {
             for (PrimitiveTask &p : this->prims)

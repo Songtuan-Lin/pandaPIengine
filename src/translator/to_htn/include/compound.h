@@ -76,7 +76,8 @@ class MethodTranslation {
                 }
                 tasks.push_back(t);
             }
-            tasks.insert(tasks.begin(), primForStartingMethod.get());
+            if (primForStartingMethod.isValid())
+                tasks.insert(tasks.begin(), primForStartingMethod.get());
             TaskNetwork tn(tasks, true);
             int decomposedTask = htn->decomposedTask[m];
             this->method = Method(name, compsTranslation.get(decomposedTask), tn);

@@ -25,7 +25,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     int maxInsertions = this->plan.size() - traversal->getNumReachable(this->htn->initialTask);
     cout << "[Generate props for the global counter]";
     PropsForCounter propsForGlobalCounter(maxInsertions, 
-                                          this->h.getNumProps());
+                                          this->h.getNumProps(),
+                                          numCounter);
     cout << " Num props generated: ";
     cout << propsForGlobalCounter.get().size() << endl;
     global.propsForCounter = propsForGlobalCounter; 
@@ -33,9 +34,11 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     this->h.addInitState(propsForGlobalCounter.getInit());
     cout << "[Generate prims for the global counter]";
     PrimsForCounter primsForGlobalCounter(propsForGlobalCounter, 
-                                          this->h.getNumPrims());
+                                          this->h.getNumPrims(),
+                                          numCounter);
     cout << " Num prims generated: ";
     cout << primsForGlobalCounter.get().size() << endl;
+    numCounter++;
     global.primsForCounter = primsForGlobalCounter;
     this->h.addPrims(primsForGlobalCounter.get());
     this->slotTranslations.resize(this->htn->numMethods);
@@ -46,23 +49,30 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
         cout << "\r" << prefix << " " << progress << " methods visited";
         cout.flush();
         if (this->optimizeHTN->isMethodInvalid(m)) continue;
+        bool hasValidBlock = false;
+        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++)
+            for (int i = 0; i < this->plan.size(); i++)
+                if (this->validation->isValid(m, b, i))
+                    hasValidBlock = true;
+        if (!hasValidBlock) continue;
         int minReachableTasks = 0;
         for (int t = 0; t < this->htn->numSubTasks[m]; t++)
             minReachableTasks += traversal->getNumReachable(t);
         int bound = this->plan.size() - minReachableTasks;
-        PropsForCounter propsForLocalCounter(bound, this->h.getNumProps());
+        PropsForCounter propsForLocalCounter(bound, this->h.getNumProps(), numCounter);
         numProps += propsForLocalCounter.get().size();
         this->h.addProps(propsForLocalCounter.get());
         this->countersForMethods[m].propsForCounter = propsForLocalCounter;
         // prims for each method
         PrimsForCounter primsForLocalCounter(propsForLocalCounter, 
-                                             this->h.getNumPrims());
+                                             this->h.getNumPrims(),
+                                             numCounter);
+        numCounter++;
         this->countersForMethods[m].primsForCounter = primsForLocalCounter;
         numPrims += primsForLocalCounter.get().size();
         this->h.addPrims(primsForLocalCounter.get());
         PrimForStartingMethod primForStartingMethod(this->countersForMethods[m],
-                                                    this->h.getNumPrims(),
-                                                    m);
+                                                    this->h.getNumPrims(), m);
         numPrims += 1;
         this->h.addPrims(primForStartingMethod.get());
         this->startingPrimsForMethods[m] = primForStartingMethod;
@@ -94,6 +104,7 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     this->h.addGoal(propsForMatching.getProp(this->plan.size() - 1));
     // creating compound tasks and methods
     int offset = this->h.getNumPrims();
+    numCounter = 0;
     // TODO: add the counter id
     cout << "[Generate comp for the global counter]";
     CompForCounter compForGlobalCounter(offset + this->h.getNumComps(), numCounter);
@@ -137,17 +148,24 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
         string progress = to_string(m + 1) + "/" + to_string(this->htn->numMethods);
         cout << "\r" << prefix << " " << progress << " methods visited";
         cout.flush();
+        bool hasValidBlock = false;
         if (this->optimizeHTN->isMethodInvalid(m)) continue;
-        CompForCounter compForLocalCounter(offset + this->h.getNumComps(), numCounter);
-        numCounter++;
-        this->countersForMethods[m].compForCounter = compForLocalCounter;
-        this->h.addComps(compForLocalCounter.get());
-        MethodsForCounter methodsForLocalCounter(
-                compForLocalCounter,
-                this->countersForMethods[m].primsForCounter);
-        numMethods += methodsForLocalCounter.get().size();
-        this->h.addMethods(methodsForLocalCounter.get());
         this->blockTranslations[m].resize(this->htn->numSubTasks[m] + 1);
+        for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++)
+            for (int i = 0; i < this->plan.size(); i++)
+                if (this->validation->isValid(m, b, i))
+                    hasValidBlock = true;
+        if (hasValidBlock) {
+            CompForCounter compForLocalCounter(offset + this->h.getNumComps(), numCounter);
+            numCounter++;
+            this->countersForMethods[m].compForCounter = compForLocalCounter;
+            this->h.addComps(compForLocalCounter.get());
+            MethodsForCounter methodsForLocalCounter(
+                    compForLocalCounter,
+                    this->countersForMethods[m].primsForCounter);
+            numMethods += methodsForLocalCounter.get().size();
+            this->h.addMethods(methodsForLocalCounter.get());
+        }
         for (int b = 0; b < this->htn->numSubTasks[m] + 1; b++) {
             bool isValidBlock = false;
             for (int i = 0; i < this->plan.size(); i++) {

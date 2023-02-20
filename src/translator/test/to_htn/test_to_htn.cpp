@@ -74,12 +74,12 @@ TEST_CASE("TEST PRIMS FOR INSERTIONS") {
 
 TEST_CASE("TEST COUNTERS") {
     PropsForCounter propsForCounter(2, 0);
-    REQUIRE(propsForCounter.get().size() == 3);
+    REQUIRE(propsForCounter.get().size() == 4);
     vector<Proposition> props = propsForCounter.get();
     REQUIRE(props[0].getID() == propsForCounter.getInit().getID());
     // test prims for counting
     PrimsForCounter primsForCounter(propsForCounter, 0);
-    REQUIRE(primsForCounter.get().size() == 2);
+    REQUIRE(primsForCounter.get().size() == 3);
     vector<PrimitiveTask> prims = primsForCounter.get();
     // test counting 1
     vector<Proposition> prec = prims[0].getPrecondition();
@@ -105,7 +105,7 @@ TEST_CASE("TEST COUNTERS") {
     MethodsForCounter methodsForCounter(compForCounter, 
                                         primsForCounter);
     vector<Method> methods = methodsForCounter.get();
-    REQUIRE(methods.size() == 2);
+    REQUIRE(methods.size() == 3);
     CompoundTask c = methods[0].getDecomposedTask();
     REQUIRE(c.getID() == compForCounter.get().getID());
     TaskNetwork tn = methods[0].getTaskNetwork();
@@ -177,8 +177,8 @@ TEST_CASE("TEST METHODS FOR INSERTIONS") {
 }
 
 TEST_CASE("TEST TRANSLATION") {
-    string htnFile = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/test.sas";
-    string planFile = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/test_plan.txt";
+    string htnFile = "/home/users/u6162630/Datasets/htn-to-domains/Transport/pfile02/grounded/plan_1/pfile02.sas";
+    string planFile = "/home/users/u6162630/Datasets/htn-to-domains/Transport/pfile02/grounded/plan_1/plan.txt";
     string oFilePath = "/home/users/u6162630/Projects/ongoing/pandaPIengine/src/translator/test/to_htn/output.sas";
     ofstream ofile(oFilePath);
     HTNTranslator *translator = new HTNTranslator(htnFile, planFile);

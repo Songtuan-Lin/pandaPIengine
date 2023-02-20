@@ -11,10 +11,12 @@
 class PrimForStartingMethod {
     private:
         PrimitiveTask prim;
+        bool valid = false;
     
     public:
         PrimForStartingMethod() {}
         PrimForStartingMethod(Counter local, int id, int m) {
+            this->valid = true;
             string name = "start[" + to_string(m) + "]";
             Proposition init = local.propsForCounter.getInit();
             this->prim = PrimitiveTask(0, {}, {init}, {}, name, id);
@@ -25,6 +27,7 @@ class PrimForStartingMethod {
             return this->prim;
         }
         bool validate() {return this->prim.validate();}
+        bool isValid() {return this->valid;}
 };
 
 class CompForBlock {
