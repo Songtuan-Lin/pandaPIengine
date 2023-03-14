@@ -1,3 +1,5 @@
+#ifndef _translator_inc_h_
+#define _translator_inc_h_
 #include "Model.h"
 #include "task.h"
 #include "method.h"
@@ -85,4 +87,7 @@ class Translator {
             this->validation = new SlotValidation(this->htn, this->plan, this->traversal);
             this->optimizeHTN = new OptimizeHTN(this->htn, this->traversal, this->plan);
         }
+
+        virtual void write(ofstream &ofile) {}
 };
+#endif

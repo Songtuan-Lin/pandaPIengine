@@ -58,4 +58,18 @@ target_link_libraries(to_htn
         tool
 )
 
+add_executable(translator
+    main.cpp
+)
+
+target_include_directories(translator
+    PUBLIC
+        include
+)
+
+target_link_libraries(translator
+    PUBLIC
+        to_htn
+)
+
 add_subdirectory(test)
