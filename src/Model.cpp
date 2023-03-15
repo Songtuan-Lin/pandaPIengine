@@ -6,6 +6,7 @@
  */
 
 #include "Model.h"
+#include "PrecsEffs.h"
 
 #include <iostream>
 #include <fstream>
@@ -2093,6 +2094,10 @@ newlyReachedMLMs = new noDelIntSet();
             generateVectorRepresentation();
         }
 
+        // BEGIN: Compute possible effects. Just for dev reason i am using var = 0 (first state variable) 
+		// Moved - Check in main.cpp
+        // END: Compute effects
+
 #if DLEVEL == 5
 		printActions();
 		printMethods();
@@ -3103,6 +3108,118 @@ newlyReachedMLMs = new noDelIntSet();
 				methodSubTasksPredecessors[m][ordering[m][o+1]].insert(ordering[m][o]);
 			}
 		}
+	}
+
+	void Model::writeToSAS() {
+		string outFile = "linearized.sas";
+		ofstream fOut(outFile);
+		fOut << ";; #state features" << endl;
+		fOut << numStateBits << endl;
+		for (int i = 0; i < numStateBits; i++) {
+			fOut << factStrs[i] << endl;
+		}
+		fOut << endl << ";; Mutex Groups" << endl;
+		fOut << numVars << endl;
+		for (int i = 0; i < numVars; i++) {
+			fOut << firstIndex[i] << " " << lastIndex[i] << " " << varNames[i] << endl;
+		}
+		fOut << endl << ";; further strict Mutex Groups" << endl;
+		fOut << numStrictMutexes << endl;
+		for (int i = 0; i < numStrictMutexes; i++) {
+			fOut << strictMutexes[i][0] << " " << strictMutexes[i][1] << " -1" << endl;
+		}
+
+		fOut << endl << ";; further non strict Mutex Groups" << endl;
+		fOut << numMutexes << endl;
+		for (int i = 0; i < numMutexes; i++) {
+			fOut << mutexes[i][0] << " " << mutexes[i][1] << " -1" << endl;
+		}
+
+		fOut << endl << ";; known invariants" << endl;
+		fOut << numInvariants << endl;
+		for (int i = 0; i < numInvariants; i++) {
+			fOut << invariants[i][0] << " " << invariants[i][1] << " -1" << endl;
+		}
+
+		fOut << endl << ";; Actions" << endl;
+		fOut << numActions << endl;
+		for (int i = 0; i < numActions; i++)
+			writeAction(this, fOut, i);
+
+		fOut << endl << ";; initial state" << endl;
+		for (int i = 0; i < s0Size; i++) {
+			fOut << s0List[i] << " ";
+		}
+		fOut << "-1" << endl;
+
+		fOut << endl << ";; goal" << endl;
+		for (int i = 0; i < gSize; i++) {
+			fOut << gList[i] << " ";
+		}
+		fOut << "-1" << endl;
+
+		fOut << endl << ";; tasks (primitive and abstract)" << endl;
+		fOut << numTasks << endl;
+		int check = 0;
+		for (int i = 0; i < numActions; i++) {
+			fOut << "0 " << taskNames[i] << endl;
+			check++;
+		}
+		for (int i = numActions; i < numTasks; i++) {
+			fOut << "1 " << taskNames[i] << endl;
+			check++;
+		}
+		if (check != numTasks) {
+			cout << "ERROR: creation problem failed" << endl;
+			exit(-1);
+		}
+
+		fOut << endl << ";; initial abstract task" << endl;
+		fOut << initialTask << endl;
+
+		fOut << endl << ";; methods" << endl;
+		fOut << numMethods << endl;
+		check = 0;
+		for (int i = 0; i < numMethods; i++) {
+			fOut << methodNames[i] << endl;
+			fOut << decomposedTask[i] << endl;
+			for (int j = 0; j < numSubTasks[i]; j++) {
+				fOut << subTasks[i][j] << " ";
+			}
+			fOut << "-1" << endl;
+			for (int j = 0; j < numOrderings[i]; j++) {
+				fOut << ordering[i][j] << " ";
+			}
+			fOut << "-1" << endl;
+			check++;
+		}
+
+		// methods from new abstract tasks to prefix copies
+		assert(check == numMethods);
+
+		fOut.close();
+	}
+
+	void Model::writeAction(Model *htn, ofstream &fOut, int iAction) {
+		fOut << htn->actionCosts[iAction] << endl;
+		for (int j = 0; j < htn->numPrecs[iAction]; j++) {
+			fOut << htn->precLists[iAction][j] << " ";
+		}
+		fOut << "-1" << endl;
+
+		for (int j = 0; j < htn->numAdds[iAction]; j++) {
+			fOut << "0 " << htn->addLists[iAction][j] << "  ";
+		}
+		fOut << "-1" << endl;
+		if ((htn->numConditionalAdds[iAction] > 0) || (htn->numConditionalDels[iAction] > 0)) {
+			cout << "Conditional effects not supported" << endl;
+			exit(-1);
+		}
+
+		for (int j = 0; j < htn->numDels[iAction]; j++) {
+			fOut << "0 " << htn->delLists[iAction][j] << "  ";
+		}
+		fOut << "-1" << endl;
 	}
 
 	/* namespace progression */

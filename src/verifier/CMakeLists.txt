@@ -2,7 +2,15 @@ project(verifier)
 
 
 # commands for the util library
-file(GLOB UTIL_SOURCE_FILES "util/src/*.cpp")
+file(GLOB UTIL_SOURCE_FILES 
+    "util/src/*.cpp"
+    "../Model.cpp" 
+    "../ProgressionNetwork.cpp" 
+    "../Util.cpp" 
+    "../Debug.cpp" 
+    "../Invariants.cpp"
+    "../PrecsEffs.cpp"
+)
 
 add_library(util
     ${UTIL_SOURCE_FILES}

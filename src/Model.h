@@ -147,6 +147,8 @@ namespace progression {
 			int **ordering; // this is a list of ints (p1,s2, p2,s2, ...) means that p1 is before s2, p2 before s2, ...
 			int *numOrderings; // this is the length of the ARRAY, not the number of ordering constraints
 
+			// ordering structure used by the SAT planner and also by Pre/Eff calculation
+			// Caution: for Pre/Eff calculation the calculation of methodIsTotallyOrdered is disabled! Check the corresponding method.
 			// ordering structure used by the SAT planner
 			bool* methodIsTotallyOrdered;
 			int** methodTotalOrder;
@@ -242,14 +244,32 @@ namespace progression {
 			int **reachable = nullptr;
 
 			void writeToPDDL(string dName, string pName);
+			void writeToSAS();
 			bool isMethodTotallyOrdered(int method);
 			void computeTransitiveClosureOfMethodOrderings();
 			void buildOrderingDatastructures();
 
 			void calcSCCs();
 
+            // guaranteed/possible effects
+            vector<int>* poss_eff_positive;
+            vector<int>* poss_eff_negative;
+            vector<int>* eff_positive;
+            vector<int>* eff_negative;
+            vector<int>* preconditions;
+
+            vector<int>* poss_pos_m;
+            vector<int>* poss_neg_m;
+            vector<int>* eff_pos_m;
+            vector<int>* eff_neg_m;
+            vector<int>* prec_m;
+
+            // add effects transformation
+            bool** primitveAddEffectsList = nullptr;
+
 
         void calcAddToActionMapping();
+		void generateMethodRepresentation();
 
     private:
 			bool first = true;
@@ -261,7 +281,7 @@ namespace progression {
 
 			tuple<int *, int *, int **> readConditionalIntList(string s, int &sizeA, int &sizeB, int *&sizeC);
 
-			void generateMethodRepresentation();
+			// void generateMethodRepresentation();
 
 			pair<planStep **, planStep **> initializeMethod(int method
 #ifdef TRACESOLUTION
@@ -307,6 +327,7 @@ namespace progression {
 			void topsortDFS(int i, int & curpos, bool * & topVisited);
 			void methodTopSortDFS(int cur, map<int,unordered_set<int>> & adj, map<int, int> & colour, int & curpos, int* order);
 			void computeTransitiveChangeOfMethodOrderings(bool closure, int method);
+			void writeAction(Model *htn, ofstream &fOut, int iAction);
 
 
     };

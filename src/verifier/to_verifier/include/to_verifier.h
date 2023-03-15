@@ -4,6 +4,7 @@
 #include "mapping.h"
 #include "mark.h"
 #include "method_graph.h"
+#include "inference.h"
 
 class TOVerifier : public Verifier {
     public:
