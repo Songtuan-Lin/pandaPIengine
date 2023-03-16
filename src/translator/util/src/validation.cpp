@@ -9,10 +9,17 @@ bool SlotValidation::validate(int m, int b, int i, TaskTraversal *traversal, Act
             count += traversal->getNumReachable(subTask);
         }
         if (count > i) return false;
-        int prevTask = this->htn->subTasks[m][b - 1];
-        for (int a = 0; a < this->htn->numActions; a++)
-            if (accumulation->getNumAccumulation(i - 1, a) < traversal->getNumAction(prevTask, a)) 
-                return false;
+        for (int a = 0; a < this->htn->numActions; a++) {
+            int numAccumulation = 0;
+            if (i > 0)
+                numAccumulation = accumulation->getNumAccumulation(i - 1, a);
+            int accumulationBefore = 0;
+            for (int j = 0; j < b; j++) {
+                int taskBefore = this->htn->subTasks[m][j];
+                accumulationBefore += traversal->getNumAction(taskBefore, a);
+            }
+            if (numAccumulation < accumulationBefore) return false;
+        }
     }
     if (b < this->htn->numSubTasks[m]) {
         int count = 0;
@@ -26,7 +33,12 @@ bool SlotValidation::validate(int m, int b, int i, TaskTraversal *traversal, Act
             int accumulationEnd = accumulation->getNumAccumulation(this->plan.size() - 1, a);
             int accumulationStart = accumulation->getNumAccumulation(i, a);
             int numAccumulation = accumulationEnd - accumulationStart;
-            if (numAccumulation < traversal->getNumAction(nextTask, a)) return false;
+            int accumulationBehind = 0;
+            for (int j = b; j < this->htn->numSubTasks[m]; j++) {
+                int taskBehind = this->htn->subTasks[m][j];
+                accumulationBehind += traversal->getNumAction(taskBehind, a);
+            }
+            if (numAccumulation < accumulationBehind) return false;
         }
     }
     return true;

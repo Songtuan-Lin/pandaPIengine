@@ -25,9 +25,11 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
     bool saturated = false;
     while (!saturated) {
         saturated = true;
-        MethodDFS *mDFS = new MethodDFS(htn, this->invalidTasks);
         for (int m = 0; m < htn->numMethods; m++) {
-            if (this->invalidMethods[m]) continue;
+            if (this->invalidMethods[m]) {
+                continue;
+            }
+            assert(!this->invalidMethods[m]);
             int u = tdg->vM(m);
             vector<int>::iterator iter;
             for (iter = tdg->adjBegin(u); iter < tdg->adjEnd(u); iter++) {
@@ -36,8 +38,8 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
                     this->invalidMethods[m] = true;
                     tdg->maskMethod(m);
                     saturated = false;
-                    if (!this->invalidMethods[m])
-                        count++;
+                    count++;
+                    break;
                 }
             }
         }
@@ -47,6 +49,13 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
         for (int t = 0; t < htn->numTasks; t++) {
             int w = tdg->vT(t);
             if (!tdg->reachable(w) && (!this->invalidTasks[t])) {
+#ifndef NDEBUG
+                for (int pos = 0; pos < plan.size(); pos++) {
+                    int a = plan[pos];
+                    if (t == a)
+                        cout << prefix << "Unreachable action in position: " << pos << endl;
+                }
+#endif
                 this->invalidTasks[t] = true;
                 tdg->maskTask(t);
                 saturated = false;
@@ -55,6 +64,7 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
         for (int m = 0; m < htn->numMethods; m++) {
             int w = tdg->vM(m);
             if ((!tdg->reachable(w)) && (!this->invalidMethods[m])) {
+                assert(!this->invalidMethods[m]);
                 this->invalidMethods[m] = true;
                 tdg->maskMethod(m);
                 count++;
@@ -63,7 +73,9 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
         }
         for (int t = 0; t < htn->numTasks; t++) {
             bool allDisabled = true;
-            if (htn->isPrimitive[t]) continue;
+            if (htn->isPrimitive[t]) {
+                continue;
+            }
             for (int i = 0; i < htn->numMethodsForTask[t]; i++) {
                 int m = htn->taskToMethods[t][i];
                 if (!this->invalidMethods[m]) {
@@ -73,9 +85,14 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
             }
             if (allDisabled && this->invalidTasks[t] == false) {
                 this->invalidTasks[t] = true;
+                tdg->maskTask(t);
                 saturated = false;
             }
         }
     }
     cout << prefix << "Number of redundant methods: " << to_string(count) << endl;
+    if (this->invalidTasks[htn->initialTask]) {
+        cout << prefix << "Initial task identified as invalid" << endl;
+        exit(-1);
+    }
 }
