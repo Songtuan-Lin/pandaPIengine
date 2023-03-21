@@ -5,13 +5,13 @@
 
 class Method {
     private:
-        CompoundTask t; // decomposed task
+        Task t; // decomposed task
         TaskNetwork tn; // task network
         string name; // method name
 
     public:
         Method() {};
-        Method(string name, CompoundTask t, TaskNetwork tn) {
+        Method(string name, Task t, TaskNetwork tn) {
             this->name = name;
             this->t = t;
             this->tn = tn;
@@ -24,7 +24,7 @@ class Method {
             this->tn.write(ofile);
         }
         bool validate() {return this->t.validate();}
-        CompoundTask getDecomposedTask() {return this->t;}
+        Task getDecomposedTask() {return this->t;}
         TaskNetwork getTaskNetwork() {return this->tn;}
 };
 

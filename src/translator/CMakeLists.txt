@@ -58,6 +58,26 @@ target_link_libraries(to_htn
         tool
 )
 
+file(GLOB FUZZER_SOURCE_FILES
+    "fuzzer/src/*.cpp"
+)
+
+add_library(fuzzer
+    ${FUZZER_SOURCE_FILES}
+)
+
+target_include_directories(fuzzer
+    PUBLIC
+        fuzzer/include
+        include
+)
+
+target_link_libraries(fuzzer
+    PUBLIC
+        htn
+        tool
+)
+
 add_executable(translator
     main.cpp
 )
