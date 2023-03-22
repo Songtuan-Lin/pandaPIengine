@@ -90,6 +90,7 @@ target_include_directories(translator
 target_link_libraries(translator
     PUBLIC
         to_htn
+        fuzzer
 )
 
 add_subdirectory(test)

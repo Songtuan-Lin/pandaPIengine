@@ -12,10 +12,10 @@ class HTN {
         vector<Method> methods;
         vector<Proposition> init;
         vector<Proposition> goal;
-        CompoundTask top;
+        Task top;
 
     public:
-        void setTopTask(CompoundTask c) {this->top = c; assert(this->top.validate());}
+        void setTopTask(Task c) {this->top = c; assert(this->top.validate());}
         void addProps(Proposition prop) {this->props.push_back(prop);}
         void addProps(vector<Proposition> props) {
             this->props.insert(this->props.end(), props.begin(), props.end());

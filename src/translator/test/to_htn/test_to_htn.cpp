@@ -106,7 +106,7 @@ TEST_CASE("TEST COUNTERS") {
                                         primsForCounter);
     vector<Method> methods = methodsForCounter.get();
     REQUIRE(methods.size() == 3);
-    CompoundTask c = methods[0].getDecomposedTask();
+    Task c = methods[0].getDecomposedTask();
     REQUIRE(c.getID() == compForCounter.get().getID());
     TaskNetwork tn = methods[0].getTaskNetwork();
     vector<Task> tasks = tn.getTasks();
@@ -156,7 +156,7 @@ TEST_CASE("TEST METHODS FOR INSERTIONS") {
     vector<Method> methods = methodsForInsertion.get();
     REQUIRE(methods.size() == 2);
     Method m = methods[0];
-    CompoundTask c = m.getDecomposedTask();
+    Task c = m.getDecomposedTask();
     REQUIRE(c.getID() == compForInsertion.get().getID());
     TaskNetwork tn = m.getTaskNetwork();
     REQUIRE(tn.getTasks().size() == 1);
