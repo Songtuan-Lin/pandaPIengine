@@ -27,10 +27,7 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
     while (!saturated) {
         saturated = true;
         for (int m = 0; m < htn->numMethods; m++) {
-            if (this->invalidMethods[m]) {
-                continue;
-            }
-            assert(!this->invalidMethods[m]);
+            if (this->invalidMethods[m]) continue;
             int u = tdg->vM(m);
             vector<int>::iterator iter;
             for (iter = tdg->adjBegin(u); iter < tdg->adjEnd(u); iter++) {

@@ -40,6 +40,14 @@ Fuzzer::Fuzzer(string htnFile,
         string name = this->htn->methodNames[m];
         int c = this->htn->decomposedTask[m];
         Task decomposedTask = this->tasks[c];
+        for (int i = 0; i < this->htn->numOrderings[m]; i+=2) {
+            int firstInd = this->htn->ordering[m][i];
+            int secondInd = this->htn->ordering[m][i + 1];
+            if(firstInd > secondInd) {
+                cout << "Wrong" << endl;
+                exit(-1);
+            }
+        }
         for (int i = 0; i < this->htn->numSubTasks[m]; i++) {
             int t = this->htn->subTasks[m][i];
             Task task = this->tasks[t];
@@ -49,7 +57,10 @@ Fuzzer::Fuzzer(string htnFile,
                 discrete_distribution<> distribution(
                         {probability, 100-probability});
                 int keepTask = distribution(gen);
-                if (!keepTask && subs.size() != 0) continue;
+                if (!keepTask && subs.size() != 0) {
+                    cout << "method[" << m << ";" << i << ";" << t << "]" << endl;
+                    continue;
+                }
             }
             subs.push_back(task);
         }

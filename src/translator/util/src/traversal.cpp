@@ -34,7 +34,7 @@ void TaskTraversal::dfs(int c, vector<bool> &visited) {
         for (int i = 0; i < htn->numSubTasks[m]; i++) {
             int t = htn->subTasks[m][i];
             if (htn->isPrimitive[t]) {
-                local[t] = 1;
+                local[t] += 1;
                 n += 1;
             } else {
                 this->dfs(t, visited);

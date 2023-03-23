@@ -22,16 +22,16 @@ class PropsForCounter {
                 id++;
                 this->props.push_back(prop);
             }
-            string name = "invalid";
-            Proposition prop(name, id);
-            this->props.push_back(prop);
+            // string name = "invalid";
+            // Proposition prop(name, id);
+            // this->props.push_back(prop);
         }
         int getCounterID() {return this->counterID;}
         vector<Proposition> get() {return this->props;}
         Proposition getInit() {return this->props[0];}
-        Proposition getInvalid() {
-            return this->props[this->props.size() - 1];
-        }
+        // Proposition getInvalid() {
+        //     return this->props[this->props.size() - 1];
+        // }
         bool validate() {
             for (Proposition &prop : this->props)
                 if (!prop.validate()) return false;
@@ -62,10 +62,10 @@ class PrimsForCounter {
                 id++;
                 this->prims.push_back(prim);
             }
-            Proposition invalidProp = propsForCounter.getInvalid();
-            PrimitiveTask prim(0, {invalidProp}, {}, 
-                               {}, "invalidCounting", id);
-            this->prims.push_back(prim);
+            // Proposition invalidProp = propsForCounter.getInvalid();
+            // PrimitiveTask prim(0, {invalidProp}, {}, 
+            //                    {}, "invalidCounting", id);
+            // this->prims.push_back(prim);
         }
         int getCounterID() {return this->counterID;}
         vector<PrimitiveTask> get() {return this->prims;}
