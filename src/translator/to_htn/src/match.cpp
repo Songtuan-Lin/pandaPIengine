@@ -3,10 +3,12 @@
 PrimsForMatching::PrimsForMatching(
         Model *htn, int startID,
         PropsForMatching &props,
-        ActionPositions &positions) {
+        ActionPositions &positions,
+        OptimizeHTN *optimizeHTN) {
     this->lookup.resize(htn->numActions);
     int id = startID;
     for (int a = 0; a < htn->numActions; a++) {
+        if (optimizeHTN->isTaskInvalid(a)) continue;
         for (int pos : positions.get(a)) {
             string name = "matched[" + to_string(pos) + "]";
             vector<Proposition> prec, del;
@@ -30,8 +32,10 @@ MethodsForMatching::MethodsForMatching(
         Model *htn, 
         PrimsTranslation &translation, 
         PrimsForMatching &primsForMatching,
-        ActionAccumulation &accumulation) {
+        ActionAccumulation &accumulation,
+        OptimizeHTN *optimizeHTN) {
     for (int a = 0; a < htn->numActions; a++) {
+        if (optimizeHTN->isTaskInvalid(a)) continue;
         if (accumulation.getNumAccumulation(a) == 0)
             continue;
         CompoundTask c = translation.get(a);

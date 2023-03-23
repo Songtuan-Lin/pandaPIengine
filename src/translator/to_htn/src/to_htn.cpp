@@ -18,7 +18,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     PrimsForMatching primsForMatching(this->htn, 
                                       this->h.getNumPrims(),
                                       propsForMatching,
-                                      positions);
+                                      positions,
+                                      this->optimizeHTN);
     cout << " Num prims generated: ";
     cout << primsForMatching.get().size() << endl;
     this->h.addPrims(primsForMatching.get());
@@ -129,7 +130,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     cout << "[Translate prims]";
     PrimsTranslation primsTranslation(this->htn, 
                                       offset + this->h.getNumComps(), 
-                                      accumulation);
+                                      accumulation,
+                                      this->optimizeHTN);
     cout << " Num comps generated: ";
     cout << primsTranslation.get().size() << endl;
     this->h.addComps(primsTranslation.get());
@@ -137,7 +139,8 @@ HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFi
     MethodsForMatching methodsForMatching(this->htn, 
                                           primsTranslation, 
                                           primsForMatching,
-                                          accumulation);
+                                          accumulation,
+                                          this->optimizeHTN);
     cout << " Num methods generated: ";
     cout << methodsForMatching.get().size() << endl;
     this->h.addMethods(methodsForMatching.get());

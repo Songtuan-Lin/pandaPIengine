@@ -4,6 +4,7 @@
 #include "task.h"
 #include "method.h"
 #include "accumulation.h"
+#include "optimize.h"
 
 class PropsForMatching {
     private:
@@ -66,7 +67,8 @@ class PrimsForMatching {
         PrimsForMatching(
                 Model *htn, int startID,
                 PropsForMatching &props,
-                ActionPositions &positions);
+                ActionPositions &positions,
+                OptimizeHTN *optimizeHTN);
         vector<PrimitiveTask> get() {
 #ifndef NDEBUG
             assert(this->validate());
@@ -92,10 +94,14 @@ class PrimsTranslation {
         vector<CompoundTask> lookup;
     
     public:
-        PrimsTranslation(Model *htn, int startID, ActionAccumulation &accumulation) {
+        PrimsTranslation(Model *htn, 
+                         int startID, 
+                         ActionAccumulation &accumulation,
+                         OptimizeHTN *optimizeHTN) {
             int id = startID;
             this->lookup.resize(htn->numActions);
             for (int a = 0; a < htn->numActions; a++) {
+                if (optimizeHTN->isTaskInvalid(a)) continue;
                 if (accumulation.getNumAccumulation(a) == 0) continue;
                 string name = "prim[" + to_string(a) + "]";
                 CompoundTask c(name, id);
@@ -132,7 +138,8 @@ class MethodsForMatching {
                 Model *htn, 
                 PrimsTranslation &translation, 
                 PrimsForMatching &primsForMatching,
-                ActionAccumulation &accumulation);
+                ActionAccumulation &accumulation,
+                OptimizeHTN *optimizeHTN);
         vector<Method> get() {
 #ifndef NDEBUG
             assert(this->validate());
