@@ -35,7 +35,7 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
             vector<int>::iterator iter;
             for (iter = tdg->adjBegin(u); iter < tdg->adjEnd(u); iter++) {
                 int adjTask = tdg->T(*iter);
-                if (this->invalidTasks[adjTask] && (actionsInPlan.count(adjTask) == 0)) {
+                if (this->invalidTasks[adjTask]) {
                     this->invalidMethods[m] = true;
                     tdg->maskMethod(m);
                     saturated = false;
