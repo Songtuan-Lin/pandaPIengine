@@ -6,6 +6,7 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
     cout << prefix << "Analyzing the TDG" << endl;
     this->invalidMethods.assign(htn->numMethods, false);
     this->invalidTasks.assign(htn->numTasks, false);
+    unordered_set<int> actionsInPlan(plan.begin(), plan.end());
     for (int i = 0; i < htn->numActions; i++)
         this->invalidTasks[i] = true;
     for (int a : plan)
@@ -34,7 +35,7 @@ OptimizeHTN::OptimizeHTN(Model *htn, TaskTraversal *traversal, vector<int> plan)
             vector<int>::iterator iter;
             for (iter = tdg->adjBegin(u); iter < tdg->adjEnd(u); iter++) {
                 int adjTask = tdg->T(*iter);
-                if (this->invalidTasks[adjTask]) {
+                if (this->invalidTasks[adjTask] && (actionsInPlan.count(adjTask) == 0)) {
                     this->invalidMethods[m] = true;
                     tdg->maskMethod(m);
                     saturated = false;
