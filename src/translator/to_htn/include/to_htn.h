@@ -13,6 +13,9 @@
 class HTNTranslator : public Translator {
     private:
         HTN h;
+        TaskTraversal *traversal;
+        OptimizeHTN *optimizeHTN;
+        SlotValidation *validation;
         vector<vector<vector<SlotTranslation>>> slotTranslations;
         vector<Counter> countersForMethods;
         vector<vector<BlockTranslation>> blockTranslations;

@@ -14,9 +14,6 @@ class Translator {
     protected:
         Model *htn;
         vector<int> plan;
-        TaskTraversal *traversal;
-        OptimizeHTN *optimizeHTN;
-        SlotValidation *validation;
     
     private:
         void readHTNFile(string htnFile) {
@@ -83,9 +80,6 @@ class Translator {
             this->readHTNFile(htnFile);
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
-            this->traversal = new TaskTraversal(this->htn);
-            this->validation = new SlotValidation(this->htn, this->plan, this->traversal);
-            this->optimizeHTN = new OptimizeHTN(this->htn, this->traversal, this->plan);
         }
 
         virtual void write(ofstream &ofile) {}

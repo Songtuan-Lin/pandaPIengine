@@ -1,6 +1,9 @@
 #include "to_htn.h"
 
 HTNTranslator::HTNTranslator(string htnFile, string planFile) : Translator(htnFile, planFile) {
+    this->traversal = new TaskTraversal(this->htn);
+    this->validation = new SlotValidation(this->htn, this->plan, this->traversal);
+    this->optimizeHTN = new OptimizeHTN(this->htn, this->traversal, this->plan);
     this->countersForMethods.resize(this->htn->numMethods);
     this->startingPrimsForMethods.resize(this->htn->numMethods);
     int numCounter = 0;
