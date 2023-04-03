@@ -51,6 +51,28 @@ target_link_libraries(to_verifier
         util
 )
 
+file(GLOB SAT_SOURCE_FILES
+    "sat_verifier/src/*.cpp"
+)
+
+add_library(sat_verifier
+    ${SAT_SOURCE_FILES}
+)
+
+target_include_directories(sat_verifier
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/sat_verifier/include
+        ${pandaPIengine_SOURCE_DIR}/
+)
+
+target_link_libraries(sat_verifier
+    PUBLIC
+        util
+        intDataStructures
+        sat
+)
+
 # commands for command-line arguments
 find_program(GENGETOPT gengetopt)
 
@@ -74,6 +96,7 @@ add_executable(run_verifier ${VERIFIER_SOUCE_FILES} cmdline.c cmdline.h)
 target_link_libraries(run_verifier
 	PUBLIC
 		to_verifier
+        sat_verifier
 )
 
 target_include_directories(run_verifier
