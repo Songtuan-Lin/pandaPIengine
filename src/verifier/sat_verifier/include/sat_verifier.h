@@ -6,7 +6,7 @@
 
 class SATVerifier : Verifier {
     public:
-        SATVerifier(string htnFile, string planFile) {}
+        SATVerifier(string htnFile, string planFile) : Verifier(htnFile, planFile) {}
     
     private:
         sat_capsule capsule;

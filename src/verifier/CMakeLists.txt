@@ -56,8 +56,8 @@ file(GLOB SAT_SOURCE_FILES
 )
 
 add_library(sat_verifier
-    ${SAT_SOURCE_FILES}
-)
+    	sat_verifier/src/sat_verifier.cpp
+		sat_verifier/src/variables.cpp)
 
 target_include_directories(sat_verifier
     PUBLIC
