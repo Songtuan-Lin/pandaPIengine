@@ -11,7 +11,7 @@
 
 class ConstraintsOnMapping {
 public:
-    ConstraintsOnMapping(void *solver, PlanToSOGVars *mapping, SOG *sog);
+    ConstraintsOnMapping(void *solver, vector<int> &plan, PlanToSOGVars *mapping, SOG *sog);
 };
 
 class ConstraintsOnStates {

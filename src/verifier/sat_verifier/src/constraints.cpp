@@ -19,3 +19,26 @@ ConstraintsOnStates::ConstraintsOnStates(
         }
     }
 }
+
+ConstraintsOnMapping::ConstraintsOnMapping(
+        void *solver,
+        vector<int> &plan,
+        PlanToSOGVars *mapping,
+        SOG *sog) {
+    for (int pos = 0; pos < plan.size(); pos++) {
+        // get the variable indicating whether
+        // the plan step is matched to a vertex
+        int matchedVar = mapping->getMatchedVar(pos);
+        // every plan step must match to some vertex
+        assertYes(solver, matchedVar);
+        for (int v = 0; v < sog->numberOfVertices; v++){
+            // get the variable representing the mapping
+            // between a plan step and a vertex
+            int mappingVar = mapping->getMappingVar(pos, v);
+            if (mappingVar == -1) continue;
+            int taskVar = mapping->getTaskVar(pos, v);
+            assert(taskVar != -1);
+            implies(solver, mappingVar, taskVar);
+        }
+    }
+}
