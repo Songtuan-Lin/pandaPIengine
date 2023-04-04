@@ -6,8 +6,23 @@ PlanToSOGVars::PlanToSOGVars(
         SOG *sog,
         Model *htn,
         sat_capsule &capsule) {
+    int var;
+    string name;
+    this->artificialPrims.resize(sog->numberOfVertices);
+    for (int v = 0; v < sog->numberOfVertices; v++) {
+        PDT *pdt = sog->leafOfNode[v];
+        for (const int action : pdt->possiblePrimitives) {
+            string actionName = htn->taskNames[action];
+            if (Util::isPrecondition(actionName))
+                this->artificialPrims[v].push_back(action);
+        }
+        var = capsule.new_variable();
+        name = "activated[" + to_string(v) + "]";
+        DEBUG(capsule.registerVariable(var, name));
+        this->activated.push_back(var);
+    }
+    assert(this->activated.size() == sog->numberOfVertices);
     this->vertexToPos.resize(sog->numberOfVertices);
-    this->vertexHasPrec.assign(sog->numberOfVertices, false);
     for (int pos = 0; pos < plan.size(); pos++) {
         int p = plan[pos];
         vector<int> mappingPerPos;
@@ -17,8 +32,8 @@ PlanToSOGVars::PlanToSOGVars(
         vector<int> taskPerPos;
         taskPerPos.assign(sog->numberOfVertices, -1);
 
-        int var = capsule.new_variable();
-        string name = "matched[" + to_string(pos) + "]";
+        var = capsule.new_variable();
+        name = "matched[" + to_string(pos) + "]";
         DEBUG(capsule.registerVariable(var, name));
         this->matched.push_back(var);
 
@@ -27,10 +42,10 @@ PlanToSOGVars::PlanToSOGVars(
             for (size_t t = 0; t < pdt->possiblePrimitives.size(); t++) {
                 int action = pdt->possiblePrimitives[t];
                 string actionName = htn->taskNames[action];
-                if (Util::isPrecondition(actionName))
-                    this->vertexHasPrec[v] = true;
-                if (action == p)
+                if (action == p) {
                     taskPerPos[v] = pdt->primitiveVariable[t];
+                    break;
+                }
             }
             var = capsule.new_variable();
             name = "vertex_pos[" + to_string(v) + ";" + to_string(pos) + "]";
@@ -51,11 +66,4 @@ PlanToSOGVars::PlanToSOGVars(
         this->forbidden.push_back(forbiddenPerPos);
         this->tasks.push_back(taskPerPos);
     }
-    for (int v = 0; v < sog->numberOfVertices; v++) {
-        int var = capsule.new_variable();
-        string name = "activated[" + to_string(v) + "]";
-        DEBUG(capsule.registerVariable(var, name));
-        this->activated.push_back(var);
-    }
-    assert(this->activated.size() == sog->numberOfVertices);
 }

@@ -38,10 +38,12 @@ public:
             Model *htn,
             sat_capsule &capsule);
     int getMatchedVar(int pos) {return this->matched[pos];}
-    int getMappingVar(int pos, int v) {return this->posToVertex[pos][v];}
+    int getPosToVertexVar(int pos, int v) {return this->posToVertex[pos][v];}
+    int getVertexToPosVar(int v, int pos) {return this->vertexToPos[v][pos];}
     int getForbiddenVar(int pos, int v) {return this->forbidden[pos][v];}
     int getTaskVar(int pos, int v) {return this->tasks[pos][v];}
     int getActivatedVar(int v) {return this->activated[v];}
+    vector<int> getArtificialPrims(int v) {return this->artificialPrims[v];}
 
 
 private:
@@ -51,6 +53,6 @@ private:
     vector<vector<int>> forbidden;
     vector<vector<int>> tasks;
     vector<int> activated;
-    vector<bool> vertexHasPrec;
+    vector<vector<int>> artificialPrims;
 };
 

@@ -37,12 +37,22 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         for (int v = 0; v < sog->numberOfVertices; v++){
             // get the variable representing the mapping
             // between a plan step and a vertex
-            int posToVertex = mapping->getMappingVar(pos, v);
-            if (posToVertex == -1) continue;
-            invMapping[v].push_back(posToVertex);
+            int posToVertex = mapping->getPosToVertexVar(pos, v);
             int taskVar = mapping->getTaskVar(pos, v);
-            assert(taskVar != -1);
-            implies(solver, posToVertex, taskVar);
+            if (taskVar == -1) {
+                assertNot(solver, posToVertex);
+            } else {
+                implies(solver, posToVertex, taskVar);
+                possibleMappings.push_back(posToVertex);
+            }
+            int vertexToPos = mapping->getVertexToPosVar(v, pos);
+            vector<int> artiPrims = mapping->getArtificialPrims(v);
+            if (artiPrims.size() == 0) {
+                assertNot(solver, vertexToPos);
+            } else {
+                impliesOr(solver, vertexToPos, artiPrims);
+            }
+            // TODO: mapping a vertex to a position
             int forbiddenVar = mapping->getForbiddenVar(pos, v);
             impliesNot(solver, forbiddenVar, posToVertex);
             for (const int successor : sog->adj[v]) {
