@@ -11,11 +11,38 @@
 
 class ConstraintsOnMapping {
 public:
-    ConstraintsOnMapping(void *solver, vector<int> &plan, PlanToSOGVars *mapping, SOG *sog);
+    ConstraintsOnMapping(
+            void *solver,
+            sat_capsule &capsule,
+            vector<int> &plan,
+            PlanToSOGVars *mapping,
+            SOG *sog);
 };
 
 class ConstraintsOnStates {
 public:
-    ConstraintsOnStates(void *solver, Model *htn, StateVariables *vars, PlanExecution *execution);
+    ConstraintsOnStates(
+            void *solver,
+            Model *htn,
+            StateVariables *vars,
+            PlanExecution *execution);
+};
+
+class ConstraintsOnPrecs {
+public:
+    ConstraintsOnPrecs(
+            void *solver,
+            Model *htn,
+            int action,
+            int pos,
+            int premise,
+            StateVariables *vars) {
+        int numPrecs = htn->numPrecs[action];
+        for (int i = 0; i < numPrecs; i++) {
+            int prop = htn->precLists[action][i];
+            int var = vars->get(pos, prop);
+            implies(solver, premise, var);
+        }
+    }
 };
 #endif //PANDAPIENGINE_CONSTRAINTS_H

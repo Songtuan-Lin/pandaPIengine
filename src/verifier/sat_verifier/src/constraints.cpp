@@ -22,23 +22,69 @@ ConstraintsOnStates::ConstraintsOnStates(
 
 ConstraintsOnMapping::ConstraintsOnMapping(
         void *solver,
+        sat_capsule &capsule,
         vector<int> &plan,
         PlanToSOGVars *mapping,
         SOG *sog) {
+    vector<vector<int>> invMapping(sog->numberOfVertices);
     for (int pos = 0; pos < plan.size(); pos++) {
         // get the variable indicating whether
         // the plan step is matched to a vertex
         int matchedVar = mapping->getMatchedVar(pos);
         // every plan step must match to some vertex
         assertYes(solver, matchedVar);
+        vector<int> possibleMappings;
         for (int v = 0; v < sog->numberOfVertices; v++){
             // get the variable representing the mapping
             // between a plan step and a vertex
-            int mappingVar = mapping->getMappingVar(pos, v);
-            if (mappingVar == -1) continue;
+            int posToVertex = mapping->getMappingVar(pos, v);
+            if (posToVertex == -1) continue;
+            invMapping[v].push_back(posToVertex);
             int taskVar = mapping->getTaskVar(pos, v);
             assert(taskVar != -1);
-            implies(solver, mappingVar, taskVar);
+            implies(solver, posToVertex, taskVar);
+            int forbiddenVar = mapping->getForbiddenVar(pos, v);
+            impliesNot(solver, forbiddenVar, posToVertex);
+            for (const int successor : sog->adj[v]) {
+                if (pos > 0) {
+                    int forbidPrevNext = mapping->getForbiddenVar(
+                            pos - 1,
+                            successor);
+                    implies(solver,
+                            forbiddenVar,
+                            forbidPrevNext);
+                }
+                int forbiddenNext = mapping->getForbiddenVar(
+                        pos, successor);
+                implies(solver, forbiddenVar, forbiddenNext);
+            }
+            if (pos > 0) {
+                int forbiddenPrev = mapping->getForbiddenVar(
+                        pos - 1, v);
+                implies(solver, forbiddenVar, forbiddenPrev);
+            }
         }
+        // every plan step can be mapped to at most one
+        // vertex that has the respective action
+        atMostOne(solver, capsule, possibleMappings);
+        // if the plan step is matched, then it must be mapped
+        // to some vertex that has the respective action
+        impliesOr(solver, matchedVar, possibleMappings);
+    }
+    for (int v = 0; v < sog->numberOfVertices; v++) {
+        int activatedVar = mapping->getActivatedVar(v);
+        // if the vertex is activated, it must be mapped
+        // to some plan step
+        assert(invMapping[v].size() == plan.size());
+        impliesOr(solver, activatedVar, invMapping[v]);
+        vector<int> primVars;
+        PDT *pdt = sog->leafOfNode[v];
+        for (const int t : pdt->possiblePrimitives) {
+            int primVar = pdt->primitiveVariable[t];
+            primVars.push_back(primVar);
+        }
+        // if the vertex is not activated, then all actions
+        // in this vertex cannot be activated
+        notImpliesAllNot(solver, activatedVar, primVars);
     }
 }
