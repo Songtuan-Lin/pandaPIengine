@@ -27,6 +27,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         PlanToSOGVars *mapping,
         SOG *sog) {
     vector<vector<int>> invMapping(sog->numberOfVertices);
+    vector<vector<int>> mappingPerVertex(sog->numberOfVertices);
     for (int pos = 0; pos < plan.size(); pos++) {
         // get the variable indicating whether
         // the plan step is matched to a vertex
@@ -36,7 +37,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         vector<int> possibleMappings;
         for (int v = 0; v < sog->numberOfVertices; v++){
             // get the variable representing the mapping
-            // between a plan step and a vertex
+            // from a plan step to a vertex
             int posToVertex = mapping->getPosToVertexVar(pos, v);
             int taskVar = mapping->getTaskVar(pos, v);
             if (taskVar == -1) {
@@ -45,34 +46,59 @@ ConstraintsOnMapping::ConstraintsOnMapping(
                 implies(solver, posToVertex, taskVar);
                 possibleMappings.push_back(posToVertex);
             }
+            // get the variable representing the mapping
+            // from the vertex to the plan step
             int vertexToPos = mapping->getVertexToPosVar(v, pos);
-            vector<int> artiPrims = mapping->getArtificialPrims(v);
-            if (artiPrims.size() == 0) {
+            if (mapping->vertexHasArtiPrim(v)) {
+                // if the vertex does not have any artificial
+                // action, then the mapping from the vertex
+                // to the position cannot be activated
                 assertNot(solver, vertexToPos);
             } else {
-                impliesOr(solver, vertexToPos, artiPrims);
-            }
-            // TODO: mapping a vertex to a position
-            int forbiddenVar = mapping->getForbiddenVar(pos, v);
-            impliesNot(solver, forbiddenVar, posToVertex);
-            for (const int successor : sog->adj[v]) {
-                if (pos > 0) {
-                    int forbidPrevNext = mapping->getForbiddenVar(
-                            pos - 1,
-                            successor);
-                    implies(solver,
-                            forbiddenVar,
-                            forbidPrevNext);
+                vector<int> vars;
+                vector<int>::iterator iter;
+                // iterate through all artificial actions in the vertex
+                for (iter = mapping->abegin(v); iter < mapping->aend(v); iter++) {
+                    int var = mapping->getArtificialVar(v, *iter);
+                    assert(var != -1);
+                    vars.push_back(var);
+                    int varAtSeq = mapping->getSequenceVar(pos, *iter);
+                    // if the vertex is mapped to the position and the artificial
+                    // action is activated, then the respective action in the
+                    // position should also be activated
+                    impliesAnd(solver, vertexToPos, var, varAtSeq);
                 }
-                int forbiddenNext = mapping->getForbiddenVar(
-                        pos, successor);
-                implies(solver, forbiddenVar, forbiddenNext);
+                // if the mapping from the vertex to the position
+                // is activated, then some artificial action in the
+                // vertex should also be activated
+                impliesOr(solver, vertexToPos, vars);
             }
-            if (pos > 0) {
-                int forbiddenPrev = mapping->getForbiddenVar(
-                        pos - 1, v);
-                implies(solver, forbiddenVar, forbiddenPrev);
+            mappingPerVertex[v].push_back(posToVertex);
+            mappingPerVertex[v].push_back(vertexToPos);
+            // get the variable representing that the mapping
+            // between the position and the vertex is forbidden
+            int forbiddenVar = mapping->getForbiddenVar(pos, v);
+            // if the mapping is forbidden, then neither the mapping
+            // from the position to the vertex nor the mapping from
+            // the vertex to the position is allowed
+            impliesNot(solver, forbiddenVar, posToVertex);
+            impliesNot(solver, forbiddenVar, vertexToPos);
+            // if the mapping between the position and the vertex
+            // exists, then all the successors of the vertex are
+            // forbidden to be mapped to the previous position
+            for (const int successor : sog->adj[v]) {
+                if (pos == 0) break;
+                int forbidPrevNext = mapping->getForbiddenVar(
+                        pos - 1, successor);
+                implies(solver,
+                        posToVertex, forbidPrevNext);
+                implies(solver,
+                        vertexToPos, forbidPrevNext);
             }
+            if (pos == 0) continue;
+            int forbiddenPrev = mapping->getForbiddenVar(
+                    pos - 1, v);
+            implies(solver, forbiddenVar, forbiddenPrev);
         }
         // every plan step can be mapped to at most one
         // vertex that has the respective action
@@ -85,12 +111,11 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         int activatedVar = mapping->getActivatedVar(v);
         // if the vertex is activated, it must be mapped
         // to some plan step
-        assert(invMapping[v].size() == plan.size());
-        impliesOr(solver, activatedVar, invMapping[v]);
+        impliesOr(solver, activatedVar, mappingPerVertex[v]);
         vector<int> primVars;
         PDT *pdt = sog->leafOfNode[v];
-        for (const int t : pdt->possiblePrimitives) {
-            int primVar = pdt->primitiveVariable[t];
+        for (int i = 0; i < pdt->possiblePrimitives.size(); i++) {
+            int primVar = pdt->primitiveVariable[i];
             primVars.push_back(primVar);
         }
         // if the vertex is not activated, then all actions

@@ -1,7 +1,10 @@
 #include "Model.h"
 #include "sog.h"
+#include "pdt.h"
 #include "verifier.h"
 #include "execution.h"
+#include "variables.h"
+#include "constraints.h"
 #include "sat_encoder.h"
 
 class SATVerifier : Verifier {
@@ -10,5 +13,8 @@ class SATVerifier : Verifier {
     
     private:
         sat_capsule capsule;
-        SOG *sog;
+        PlanExecution *execution;
+        void *solver;
+
+        bool generateSATFormula(int depth, PDT *pdt);
 };
