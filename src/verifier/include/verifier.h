@@ -1,3 +1,5 @@
+#ifndef _VERIFIER_H_
+#define _VERIFIER_H_
 #include "Model.h"
 #include <fstream>
 #include <string.h>
@@ -10,6 +12,7 @@ class Verifier {
             this->readHTNFile(htnFile);
             vector<string> planStr = this->readPlanFile(planFile);
             this->plan = this->parsePlan(planStr);
+            this->result = false;
         }
 
         virtual bool getResult() {return this->result;}
@@ -79,3 +82,4 @@ class Verifier {
             return plan;
         }
 };
+#endif

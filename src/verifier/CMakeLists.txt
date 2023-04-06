@@ -20,22 +20,13 @@ target_link_libraries(util
 )
 
 # commands for the TO verifier
-file(GLOB TO_SOURCE_FILES 
-    "to_verifier/src/*.cpp" 
-    "../Model.cpp" 
-    "../ProgressionNetwork.cpp" 
-    "../Util.cpp" 
-    "../Debug.cpp" 
-    "../Invariants.cpp"
-)
-
 add_library(to_verifier
-    ${TO_SOURCE_FILES}
-    ${pandaPIengine_SOURCE_DIR}/Model.cpp
-    ${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp
-    ${pandaPIengine_SOURCE_DIR}/Util.cpp
-    ${pandaPIengine_SOURCE_DIR}/Debug.cpp
-    ${pandaPIengine_SOURCE_DIR}/Invariants.cpp
+		to_verifier/src/to_verifier.cpp
+    	${pandaPIengine_SOURCE_DIR}/Model.cpp
+    	${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp
+    	${pandaPIengine_SOURCE_DIR}/Util.cpp
+    	${pandaPIengine_SOURCE_DIR}/Debug.cpp
+    	${pandaPIengine_SOURCE_DIR}/Invariants.cpp
 )
 
 target_include_directories(to_verifier
@@ -51,13 +42,14 @@ target_link_libraries(to_verifier
         util
 )
 
-file(GLOB SAT_SOURCE_FILES
-    "sat_verifier/src/*.cpp"
-)
-
 add_library(sat_verifier
     	sat_verifier/src/sat_verifier.cpp
-		sat_verifier/src/variables.cpp sat_verifier/src/constraints.cpp)
+		sat_verifier/src/variables.cpp
+		sat_verifier/src/constraints.cpp
+		${pandaPIengine_SOURCE_DIR}/Model.cpp
+		${pandaPIengine_SOURCE_DIR}/Util.cpp
+		${pandaPIengine_SOURCE_DIR}/Debug.cpp
+		${pandaPIengine_SOURCE_DIR}/Invariants.cpp)
 
 target_include_directories(sat_verifier
     PUBLIC

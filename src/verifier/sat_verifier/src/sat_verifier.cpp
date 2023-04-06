@@ -1,4 +1,5 @@
 #include "sat_verifier.h"
+#include "state_formula.h"
 
 bool SATVerifier::generateSATFormula(int depth, PDT *pdt) {
     string prefix;
@@ -18,6 +19,8 @@ bool SATVerifier::generateSATFormula(int depth, PDT *pdt) {
 
     prefix = "[Extracting the SOG] ";
     before = std::clock();
+    vector<PDT*> leafs;
+    pdt->getLeafs(leafs);
     SOG *sog = pdt->getLeafSOG();
     after = std::clock();
     elapsed = 1000.0 * (after - before) / CLOCKS_PER_SEC;
@@ -41,6 +44,7 @@ bool SATVerifier::generateSATFormula(int depth, PDT *pdt) {
     numClausesBefore = get_number_of_clauses();
     before = std::clock();
     pdt->addDecompositionClauses(this->solver, this->capsule, this->htn);
+    no_abstract_in_leaf(this->solver, leafs, this->htn);
     after = std::clock();
     elapsed = 1000.0 * (after - before) / CLOCKS_PER_SEC;
     numClausesAfter = get_number_of_clauses();

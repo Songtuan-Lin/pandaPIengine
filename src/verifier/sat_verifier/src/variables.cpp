@@ -10,6 +10,7 @@ PlanToSOGVars::PlanToSOGVars(
     string name;
     this->artificial.resize(sog->numberOfVertices);
     this->artificialPrims.resize(sog->numberOfVertices);
+    this->hasArtiPrim.assign(sog->numberOfVertices, false);
     for (int v = 0; v < sog->numberOfVertices; v++) {
         this->artificial[v].assign(htn->numActions, -1);
         PDT *pdt = sog->leafOfNode[v];
