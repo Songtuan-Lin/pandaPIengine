@@ -10,7 +10,7 @@ ConstraintsOnStates::ConstraintsOnStates(
         PlanExecution *execution) {
     int length = execution->getStateSeqLen();
     int numProps = htn->numStateBits;
-    for (int pos = 0; pos < length; pos++) {
+    for (int pos = 0; pos < length - 1; pos++) {
         for (int prop = 0; prop < numProps; prop++) {
             int var = vars->get(pos, prop);
             if (execution->isPropTrue(pos, prop)) {

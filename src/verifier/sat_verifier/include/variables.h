@@ -12,7 +12,7 @@ public:
             vector<int> &plan,
             Model *htn,
             sat_capsule &capsule) {
-        for (int pos = 0; pos < plan.size() + 1; pos++) {
+        for (int pos = 0; pos < plan.size(); pos++) {
             vector<int> varsPerPos;
             int total = htn->numStateBits;
             for (int prop = 0; prop < total; prop++) {
