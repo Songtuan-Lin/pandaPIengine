@@ -49,7 +49,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
             // get the variable representing the mapping
             // from the vertex to the plan step
             int vertexToPos = mapping->getVertexToPosVar(v, pos);
-            if (mapping->vertexHasArtiPrim(v)) {
+            if (!mapping->vertexHasArtiPrim(v)) {
                 // if the vertex does not have any artificial
                 // action, then the mapping from the vertex
                 // to the position cannot be activated
