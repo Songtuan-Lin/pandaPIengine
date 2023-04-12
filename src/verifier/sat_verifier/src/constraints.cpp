@@ -120,7 +120,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         }
         // if the vertex is not activated, then all actions
         // in this vertex cannot be activated
-        impliesOr(solver, activatedVar, primVars);
+        // impliesOr(solver, activatedVar, primVars);
         notImpliesAllNot(solver, activatedVar, primVars);
     }
 }
