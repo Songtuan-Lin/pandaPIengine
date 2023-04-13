@@ -33,8 +33,11 @@ class SATVerifier : public Verifier {
                     if (state == 10) {
                         cout << prefix << "Solved!" << endl;
                         this->result = true;
-                        ipasir_release(this->solver);
                         cout << prefix << "Time: " << to_string(elapsed) << endl;
+#ifndef NDEBUG
+                        this->print(solver, pdt);
+#endif
+                        ipasir_release(this->solver);
                         return;
                     } else {cout << prefix << "Unsolvable" << endl;}
                     cout << prefix << "Time: " << to_string(elapsed) << endl;
@@ -48,5 +51,11 @@ class SATVerifier : public Verifier {
         PlanExecution *execution;
         void *solver;
 
+#ifndef NDEBUG
+        PlanToSOGVars *mapping;
+        SOG *sog;
+#endif
+
         bool generateSATFormula(int depth, PDT *pdt);
+        void print(void *solver, PDT *pdt);
 };

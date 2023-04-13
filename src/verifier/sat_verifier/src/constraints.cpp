@@ -108,6 +108,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         impliesOr(solver, matchedVar, possibleMappings);
     }
     for (int v = 0; v < sog->numberOfVertices; v++) {
+        atMostOne(solver, capsule, mappingPerVertex[v]);
         int activatedVar = mapping->getActivatedVar(v);
         // if the vertex is activated, it must be mapped
         // to some plan step
