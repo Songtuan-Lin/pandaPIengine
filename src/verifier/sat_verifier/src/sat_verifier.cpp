@@ -133,6 +133,7 @@ bool SATVerifier::generateSATFormula(int depth, PDT *pdt) {
     return true;
 }
 
+#ifndef NDEBUG
 void SATVerifier::print(void *solver, PDT *pdt) {
     int currentID = 0;
     vector<PDT*> leafs;
@@ -175,3 +176,4 @@ void SATVerifier::print(void *solver, PDT *pdt) {
     cout << "- Decomposition hierarchy" << endl;
     pdt->printDecomposition(this->htn);
 }
+#endif

@@ -57,5 +57,8 @@ class SATVerifier : public Verifier {
 #endif
 
         bool generateSATFormula(int depth, PDT *pdt);
+
+#ifndef NDEBUG
         void print(void *solver, PDT *pdt);
+#endif
 };
