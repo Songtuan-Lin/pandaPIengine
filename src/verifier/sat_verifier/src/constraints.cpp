@@ -87,6 +87,9 @@ ConstraintsOnMapping::ConstraintsOnMapping(
             // exists, then all the successors of the vertex are
             // forbidden to be mapped to the previous position
             for (const int successor : sog->adj[v]) {
+                int forbidNext = mapping->getForbiddenVar(
+                        pos, successor);
+                implies(solver, forbiddenVar, forbidNext);
                 if (pos == 0) break;
                 int forbidPrevNext = mapping->getForbiddenVar(
                         pos - 1, successor);
