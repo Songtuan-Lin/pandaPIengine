@@ -21,9 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ee133839-cbc8-4a0d-85fc-0a5c1f509877" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sat/pdt.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sat/pdt.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/sat_verifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/sat_verifier.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/constraints.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/constraints.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/test/test-invalid-plan" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test-invalid-plan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/test/test-task.sas" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test-task.sas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +103,7 @@
       <workItem from="1681565476744" duration="22000" />
       <workItem from="1681565518723" duration="27000" />
       <workItem from="1681565558998" duration="41000" />
-      <workItem from="1681566571039" duration="2000" />
+      <workItem from="1681566571039" duration="243000" />
     </task>
     <servers />
   </component>
@@ -138,7 +139,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp</url>
-          <line>26</line>
+          <line>29</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

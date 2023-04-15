@@ -26,7 +26,6 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         vector<int> &plan,
         PlanToSOGVars *mapping,
         SOG *sog) {
-    vector<vector<int>> invMapping(sog->numberOfVertices);
     vector<vector<int>> mappingPerVertex(sog->numberOfVertices);
     for (int pos = 0; pos < plan.size(); pos++) {
         // get the variable indicating whether
@@ -45,7 +44,6 @@ ConstraintsOnMapping::ConstraintsOnMapping(
             } else {
                 implies(solver, posToVertex, taskVar);
                 possibleMappings.push_back(posToVertex);
-                invMapping[v].push_back(posToVertex);
             }
             // get the variable representing the mapping
             // from the vertex to the plan step
@@ -88,6 +86,9 @@ ConstraintsOnMapping::ConstraintsOnMapping(
             // exists, then all the successors of the vertex are
             // forbidden to be mapped to the previous position
             for (const int successor : sog->adj[v]) {
+                int forbidNext = mapping->getForbiddenVar(
+                        pos, successor);
+                implies(solver, forbiddenVar, forbidNext);
                 if (pos == 0) break;
                 int forbidPrevNext = mapping->getForbiddenVar(
                         pos - 1, successor);
@@ -109,7 +110,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         impliesOr(solver, matchedVar, possibleMappings);
     }
     for (int v = 0; v < sog->numberOfVertices; v++) {
-        atMostOne(solver, capsule, invMapping[v]);
+        atMostOne(solver, capsule, mappingPerVertex[v]);
         int activatedVar = mapping->getActivatedVar(v);
         // if the vertex is activated, it must be mapped
         // to some plan step
@@ -122,6 +123,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         }
         // if the vertex is not activated, then all actions
         // in this vertex cannot be activated
+        // impliesOr(solver, activatedVar, primVars);
         notImpliesAllNot(solver, activatedVar, primVars);
     }
 }

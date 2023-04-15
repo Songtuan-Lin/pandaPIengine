@@ -15,6 +15,10 @@ class SATVerifier : public Verifier {
             this->htn->computeTransitiveClosureOfMethodOrderings();
             this->htn->buildOrderingDatastructures();
             this->htn->isTotallyOrdered = false;
+            if (!this->execution->isExecutable()) {
+                this->result = false;
+                return;
+            }
             PDT *pdt = new PDT(this->htn);
             int maxDepth = 2 * (this->plan.size()) * (this->htn->numTasks - this->htn->numActions);
             for (int depth = 1; depth < maxDepth; depth++) {
@@ -29,8 +33,11 @@ class SATVerifier : public Verifier {
                     if (state == 10) {
                         cout << prefix << "Solved!" << endl;
                         this->result = true;
-                        ipasir_release(this->solver);
                         cout << prefix << "Time: " << to_string(elapsed) << endl;
+#ifndef NDEBUG
+                        this->print(solver, pdt);
+#endif
+                        ipasir_release(this->solver);
                         return;
                     } else {cout << prefix << "Unsolvable" << endl;}
                     cout << prefix << "Time: " << to_string(elapsed) << endl;
@@ -44,5 +51,14 @@ class SATVerifier : public Verifier {
         PlanExecution *execution;
         void *solver;
 
+#ifndef NDEBUG
+        PlanToSOGVars *mapping;
+        SOG *sog;
+#endif
+
         bool generateSATFormula(int depth, PDT *pdt);
+
+#ifndef NDEBUG
+        void print(void *solver, PDT *pdt);
+#endif
 };
