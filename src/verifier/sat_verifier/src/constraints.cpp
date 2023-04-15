@@ -45,6 +45,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
             } else {
                 implies(solver, posToVertex, taskVar);
                 possibleMappings.push_back(posToVertex);
+                invMapping[v].push_back(posToVertex);
             }
             // get the variable representing the mapping
             // from the vertex to the plan step
@@ -108,6 +109,7 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         impliesOr(solver, matchedVar, possibleMappings);
     }
     for (int v = 0; v < sog->numberOfVertices; v++) {
+        atMostOne(solver, capsule, invMapping[v]);
         int activatedVar = mapping->getActivatedVar(v);
         // if the vertex is activated, it must be mapped
         // to some plan step
