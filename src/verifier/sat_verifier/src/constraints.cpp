@@ -26,7 +26,6 @@ ConstraintsOnMapping::ConstraintsOnMapping(
         vector<int> &plan,
         PlanToSOGVars *mapping,
         SOG *sog) {
-    vector<vector<int>> invMapping(sog->numberOfVertices);
     vector<vector<int>> mappingPerVertex(sog->numberOfVertices);
     for (int pos = 0; pos < plan.size(); pos++) {
         // get the variable indicating whether
