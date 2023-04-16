@@ -34,8 +34,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee133839-cbc8-4a0d-85fc-0a5c1f509877" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/verifier/test/test-plan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/test/test-task.sas" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test-task.sas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,26 +58,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.jetbrains.cidr.cpp.cmake.workspace.CMakeCacheInvalidator.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/users/u6162630/Projects/ongoing/pandaPIengine/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;clion.custom.compiler.configurable&quot;,
-    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.advertisement.text.has.clang-format": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/home/users/u6162630/Projects/ongoing/pandaPIengine/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "structure.view.defaults.are.configured": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="CMake Application.run_verifier">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="cmd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="cmd" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -109,7 +113,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h ../verifier/test/test-task.sas -p ../verifier/test/test-plan" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
+    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h $USER_HOME$/Evaluations/po-val-2/PCP/p-pcp01/plan-1/p-pcp01.sas -p $USER_HOME$/Evaluations/po-val-2/PCP/p-pcp01/plan-1/plan-sat" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -177,6 +181,8 @@
       <workItem from="1681017368052" duration="42000" />
       <workItem from="1681017415986" duration="39000" />
       <workItem from="1681017457382" duration="351000" />
+      <workItem from="1681017811185" duration="35022000" />
+      <workItem from="1681541802779" duration="669000" />
     </task>
     <servers />
   </component>
@@ -203,17 +209,6 @@
           <url>file://$PROJECT_DIR$/sat/sat_planner.cpp</url>
           <line>755</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <condition expression="depth==2" language="ObjectiveC" />
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp</url>
-          <line>13</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp</url>
-          <line>26</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
