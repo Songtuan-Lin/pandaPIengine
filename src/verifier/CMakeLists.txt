@@ -49,7 +49,7 @@ add_library(sat_verifier
 		${pandaPIengine_SOURCE_DIR}/Model.cpp
 		${pandaPIengine_SOURCE_DIR}/Util.cpp
 		${pandaPIengine_SOURCE_DIR}/Debug.cpp
-		${pandaPIengine_SOURCE_DIR}/Invariants.cpp)
+		${pandaPIengine_SOURCE_DIR}/Invariants.cpp sat_verifier/src/depth.cpp sat_verifier/src/marker.cpp)
 
 target_include_directories(sat_verifier
     PUBLIC
