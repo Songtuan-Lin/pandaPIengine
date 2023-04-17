@@ -36,13 +36,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/verifier/test/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/test/test_main.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/test/test_util.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/util/include/distribution.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/util/src/distribution.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -79,20 +76,21 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "CMakeSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager" selected="Catch.All in test_util">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in test_util" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="test_util" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="test_util" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="cmd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="cmd" CONFIG_NAME="Debug">
@@ -201,6 +199,7 @@
       <workItem from="1681689982180" duration="132000" />
       <workItem from="1681690120258" duration="103000" />
       <workItem from="1681690228893" duration="12507000" />
+      <workItem from="1681724404446" duration="7292000" />
     </task>
     <servers />
   </component>
