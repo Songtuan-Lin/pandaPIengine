@@ -33,14 +33,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ee133839-cbc8-4a0d-85fc-0a5c1f509877" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/marker.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/marker.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/CMakeLists.txt" afterDir="false" />
-    </list>
+    <list default="true" id="ee133839-cbc8-4a0d-85fc-0a5c1f509877" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -193,7 +186,7 @@
       <workItem from="1681566923028" duration="1238000" />
       <workItem from="1681568362075" duration="176000" />
       <workItem from="1681568914806" duration="1311000" />
-      <workItem from="1681629639310" duration="8469000" />
+      <workItem from="1681629639310" duration="8948000" />
     </task>
     <servers />
   </component>
