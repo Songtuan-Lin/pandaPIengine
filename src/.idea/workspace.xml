@@ -63,25 +63,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.has.clang-format": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/home/users/u6162630/Projects/ongoing/pandaPIengine/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "structure.view.defaults.are.configured": "true",
-    "vue.rearranger.settings.migration": "true"
-=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -99,19 +80,12 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
->>>>>>> 494dd8e22a44d8a24edfca8769cda0b8e3a79cac
   }
 }]]></component>
   <component name="RunManager" selected="CMake Application.run_verifier">
-<<<<<<< HEAD
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-=======
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
->>>>>>> 494dd8e22a44d8a24edfca8769cda0b8e3a79cac
       </method>
     </configuration>
     <configuration name="cmd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="cmd" CONFIG_NAME="Debug">
@@ -144,11 +118,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-<<<<<<< HEAD
-    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h $USER_HOME$/Evaluations/po-val-2/PCP/p-pcp01/plan-1/p-pcp01.sas -p $USER_HOME$/Evaluations/po-val-2/PCP/p-pcp01/plan-1/plan-sat" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
-=======
     <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h ../verifier/test/test-task.sas -p ../verifier/test/test-plan" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
->>>>>>> 494dd8e22a44d8a24edfca8769cda0b8e3a79cac
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -216,10 +186,6 @@
       <workItem from="1681017368052" duration="42000" />
       <workItem from="1681017415986" duration="39000" />
       <workItem from="1681017457382" duration="351000" />
-<<<<<<< HEAD
-      <workItem from="1681017811185" duration="35022000" />
-      <workItem from="1681541802779" duration="669000" />
-=======
       <workItem from="1681565476744" duration="22000" />
       <workItem from="1681565518723" duration="27000" />
       <workItem from="1681565558998" duration="41000" />
@@ -228,7 +194,6 @@
       <workItem from="1681568362075" duration="176000" />
       <workItem from="1681568914806" duration="1311000" />
       <workItem from="1681629639310" duration="8469000" />
->>>>>>> 494dd8e22a44d8a24edfca8769cda0b8e3a79cac
     </task>
     <servers />
   </component>
@@ -256,8 +221,6 @@
           <line>755</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
-<<<<<<< HEAD
-=======
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <condition expression="depth==2" language="ObjectiveC" />
           <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/sat_verifier.cpp</url>
@@ -269,7 +232,6 @@
           <line>29</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
->>>>>>> 494dd8e22a44d8a24edfca8769cda0b8e3a79cac
       </breakpoints>
     </breakpoint-manager>
   </component>
