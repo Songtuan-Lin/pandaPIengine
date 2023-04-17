@@ -6,7 +6,7 @@ file(GLOB UTIL_SOURCE_FILES "util/src/*.cpp")
 
 add_library(util
     ${UTIL_SOURCE_FILES}
-)
+        util/src/distribution.cpp)
 
 target_include_directories(util
     PUBLIC
@@ -96,3 +96,13 @@ target_include_directories(run_verifier
 		${PROJECT_SOURCE_DIR}
 		${PROJECT_SOURCE_DIR}/include
 )
+
+add_subdirectory(test)
+enable_testing()
+add_executable(test_util
+		${CMAKE_CURRENT_SOURCE_DIR}/test/test_util.cpp)
+target_link_libraries(test_util
+		PUBLIC
+			test_main
+			catch2
+			util)
