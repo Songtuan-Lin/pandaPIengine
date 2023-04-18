@@ -24,6 +24,7 @@ public:
         this->row++;
         return this->distribution[r];
     }
+    void reset() {this->row = 0;}
     int numDistributions() {return this->numRows;}
 private:
     int** distribution;
