@@ -106,3 +106,16 @@ target_link_libraries(test_util
 			test_main
 			catch2
 			util)
+
+add_executable(test_depth
+		${CMAKE_CURRENT_SOURCE_DIR}/test/test_depth.cpp
+		${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp)
+
+target_link_libraries(test_depth
+		PUBLIC
+			test_main
+			catch2
+			sat_verifier)
+target_include_directories(test_depth
+		PUBLIC
+		${pandaPIengine_SOURCE_DIR}/)
