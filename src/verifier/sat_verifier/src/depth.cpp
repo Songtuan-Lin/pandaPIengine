@@ -10,84 +10,57 @@ Depth::Depth(string htnFile, int length) {
     this->htn->calcSCCs();
     this->htn->calcSCCGraph();
     this->htn->analyseSCCcyclicity();
-    int maxSubtasks = 0;
-    for (int m = 0; m < this->htn->numMethods; m++)
-        if (maxSubtasks < this->htn->numSubTasks[m])
-            maxSubtasks = this->htn->numSubTasks[m];
     this->depth.resize(this->htn->numTasks);
     for (int t = 0; t < this->htn->numTasks; t++)
         this->depth[t].assign(length + 1, -1);
-    this->cache.resize(length + 1);
-    for (int i = 0; i < length + 1; i++)
-        this->cache[i].assign(maxSubtasks, nullptr);
+    this->distributions.resize(this->htn->numMethods);
+    for (int m = 0; m < this->htn->numMethods; m++)
+        this->distributions[m] = new Distributions(
+                m, length, this->htn);
     for (int i = 0; i < this->htn->numSCCs; i++) {
         int scc = htn->sccTopOrder[i];
-        this->depthPerSCC(length, scc, this->htn);
+        this->depthPerSCC(
+                length, scc);
     }
 }
 
 void Depth::depthPerSCC(
         int length,
-        int scc,
-        Model *htn) {
-    int numTasks = htn->sccSize[scc];
-    this->update(length, scc, htn, false);
-    for (int i = 0; i < numTasks; i++)
-        this->update(length, scc, htn, true);
+        int scc) {
+    int size = htn->sccSize[scc];
+    for (int i = 1; i <= length; i++) {
+        this->update(length, scc, false);
+        for (int j = 1; j <= size - 1; j++)
+            this->update(length, scc, true);
+    }
 }
 
 void Depth::update(
         int length,
         int scc,
-        Model *htn,
-        bool empty) {
-    int numTasks = htn->sccSize[scc];
-    for (int l = 0; l < length; l++) {
-        for (int tInd = 0; tInd < numTasks; tInd++) {
-            int task = htn->sccToTasks[scc][tInd];
-            if (htn->isPrimitive[task]) {
-                assert(numTasks == 1);
-                string taskName = htn->taskNames[task];
-                if (Util::isPrecondition(taskName))
+        bool allowEmptiness) {
+    for (int l = 0; l <= length; l++) {
+        int size = this->htn->sccSize[scc];
+        for (int tInd = 0; tInd < size; tInd++) {
+            int task = this->htn->sccToTasks[scc][tInd];
+            if (this->htn->isPrimitive[task]) {
+                assert(size == 1);
+                string name = this->htn->taskNames[task];
+                if (Util::isPrecondition(name))
                     this->depth[task][0] = 0;
                 else
                     this->depth[task][1] = 0;
-                return;
+                continue;
             }
-            int numMethods = htn->numMethodsForTask[task];
+            int numMethods = this->htn->numMethodsForTask[task];
             for (int mInd = 0; mInd < numMethods; mInd++) {
-                int m = htn->taskToMethods[task][mInd];
-                int numSubtasks = htn->numSubTasks[m];
-                if (this->cache[l][numSubtasks - 1] == nullptr)
-                    this->cache[l][numSubtasks - 1] = new LengthDistributions(
-                            l, numSubtasks);
-                LengthDistributions *distributions = this->cache[l][numSubtasks - 1];
-                for (;;) {
-                    int *distribution = distributions->next();
-                    if (distribution == nullptr) break;
-                    bool hasEmptyCycles = false;
-                    for (int i = 0; i < numSubtasks; i++)
-                        if (distribution[i] == l)
-                            hasEmptyCycles = true;
-                    if (hasEmptyCycles != empty) continue;
-                    int candidate = -1;
-                    for (int t = 0; t < numSubtasks; t++) {
-                        int subtask = htn->subTasks[m][t];
-                        int len = distribution[t];
-                        int local = this->depth[subtask][len];
-                        if (local == -1) {
-                            candidate = local;
-                            break;
-                        }
-                        if (candidate < local)
-                            candidate = local;
-                    }
-                    if (candidate != -1)
-                        candidate += 1;
+                int m = this->htn->taskToMethods[task][mInd];
+                this->distributions[m]->update(
+                        l, this->depth, allowEmptiness);
+                if (this->distributions[m]->isDistributable(l))
                     this->depth[task][l] = max(
-                            candidate, this->depth[task][l]);
-                }
-                distributions->reset();
+                            this->depth[task][l],
+                            1 + this->distributions[m]->maxDepth(l));
             }
         }
     }

@@ -15,10 +15,11 @@ public:
     int get(int task, int length) {return this->depth[task][length];}
 private:
     Model *htn;
+    vector<Distributions*> distributions;
     vector<vector<int>> depth;
     vector<vector<LengthDistributions*>> cache;
-    void depthPerSCC(int length, int scc, Model *htn);
-    void update(int length, int scc, Model *htn, bool empty);
+    void depthPerSCC(int length, int scc);
+    void update(int length, int scc, bool allowEmptiness);
     void readHTNFile(string htnFile) {
         cout << "read model from" << htnFile << "\n";
         std::ifstream *fileInput = new std::ifstream(htnFile);

@@ -7,6 +7,7 @@
 
 #include <climits>
 #include "vector"
+# include "Model.h"
 
 using namespace std;
 class LengthDistributions {
@@ -45,53 +46,50 @@ public:
         for (int i = 0; i < numTasks; i++)
             this->depth[i].assign(length + 1, -1);
         this->method = method;
-        this->maxLength = length;
         this->htn = htn;
     }
-    void update(int length, vector<vector<int>> &K, bool allowEmptiness) {
+    void update(int l, vector<vector<int>> &K, bool allowEmptiness) {
         int numTasks = this->htn->numSubTasks[this->method];
         int rootTask = this->htn->decomposedTask[this->method];
         int lastTask = this->htn->subTasks[this->method][numTasks - 1];
         int subtaskSCC = this->htn->taskToSCC[lastTask];
         int rootSCC = this->htn->taskToSCC[rootTask];
         if ((subtaskSCC == rootSCC) == allowEmptiness) {
-            this->valid[numTasks - 1][length] = (K[lastTask][length] != -1);
-            this->depth[numTasks - 1][length] = max(
-                    this->depth[numTasks - 1][length],
-                    K[lastTask][length]);
+            this->valid[numTasks - 1][l] = (K[lastTask][l] != -1);
+            this->depth[numTasks - 1][l] = max(
+                    this->depth[numTasks - 1][l],
+                    K[lastTask][l]);
         }
-        // TODO: update the depth
         for (int tInd = numTasks - 2; tInd >= 0; tInd--) {
             int task = this->htn->subTasks[this->method][tInd];
             subtaskSCC = this->htn->taskToSCC[task];
             if ((subtaskSCC == rootSCC) == allowEmptiness) {
-                this->valid[tInd][length] = this->valid[tInd][length] ||
-                                            this->valid[tInd + 1][0];
-                this->depth[tInd][length] = max(
-                        this->depth[tInd][length],
-                        K[task][length]);
+                this->valid[tInd][l] = this->valid[tInd][l] ||
+                                       this->valid[tInd + 1][0];
+                this->depth[tInd][l] = max(
+                        this->depth[tInd][l],
+                        K[task][l]);
             }
             if (allowEmptiness) continue;
-            for (int assignment = 0; assignment < length; assignment++) {
+            for (int assignment = 0; assignment < l; assignment++) {
                 int depthForTask = K[task][assignment];
                 if (depthForTask == -1) continue;
-                int remain = length - assignment;
+                int remain = l - assignment;
                 if (this->valid[tInd + 1][remain]) {
-                    this->valid[tInd][length] = true;
-                    //TODO: update the depth
+                    this->valid[tInd][l] = true;
                     int depthForSubtasks = this->depth[tInd + 1][remain];
-                    this->depth[tInd][length] = max(
-                            this->depth[tInd][length],
-                            depthForTask + depthForSubtasks);
+                    this->depth[tInd][l] = max(
+                            this->depth[tInd][l],
+                            max(depthForTask, depthForSubtasks));
                 }
             }
         }
     }
-    bool distributable(int tInd, int length);
+    bool isDistributable(int l) {return this->valid[0][l];}
+    int maxDepth(int l) {return this->depth[0][l];}
 private:
     Model *htn;
     int method;
-    int maxLength;
     vector<vector<bool>> valid;
     vector<vector<int>> depth;
 };

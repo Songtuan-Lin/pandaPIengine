@@ -36,7 +36,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="" />
+    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/test/test-task.sas" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test-task.sas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/test/test_depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test_depth.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/util/include/distribution.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/util/include/distribution.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/util/src/distribution.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/util/src/distribution.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,15 +87,15 @@
   }
 }]]></component>
   <component name="RunManager" selected="Catch.All in test_depth">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in test_depth" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="test_depth" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="test_depth" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="cmd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="cmd" CONFIG_NAME="Debug">
@@ -198,6 +206,7 @@
       <workItem from="1681690228893" duration="12507000" />
       <workItem from="1681724404446" duration="7342000" />
       <workItem from="1681905499357" duration="2000" />
+      <workItem from="1681905641737" duration="6999000" />
     </task>
     <servers />
   </component>
@@ -214,20 +223,20 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
-          <line>16</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <condition expression="scc == 7" language="ObjectiveC" />
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
-          <line>35</line>
-          <option name="timeStamp" value="33" />
+          <url>file://$PROJECT_DIR$/verifier/test/test_depth.cpp</url>
+          <line>10</line>
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
-          <line>56</line>
-          <option name="timeStamp" value="43" />
+          <line>21</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <condition expression="l==3" language="ObjectiveC" />
+          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
+          <line>54</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
