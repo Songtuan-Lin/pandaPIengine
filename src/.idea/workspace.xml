@@ -36,15 +36,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/test/test-task.sas" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test-task.sas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/test/test_depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test_depth.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/util/include/distribution.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/util/include/distribution.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/verifier/util/src/distribution.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/util/src/distribution.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -206,7 +198,7 @@
       <workItem from="1681690228893" duration="12507000" />
       <workItem from="1681724404446" duration="7342000" />
       <workItem from="1681905499357" duration="2000" />
-      <workItem from="1681905641737" duration="6999000" />
+      <workItem from="1681905641737" duration="7029000" />
     </task>
     <servers />
   </component>
