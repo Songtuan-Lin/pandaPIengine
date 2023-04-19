@@ -32,3 +32,8 @@ int LengthDistributions::generate(int total, int row, int col) {
         return size;
     }
 }
+
+bool Distributions::distributable(int tInd, int length) {
+    if (tInd == 0)
+        return this->valid[0][length];
+}
