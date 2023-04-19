@@ -48,22 +48,30 @@ public:
         this->maxLength = length;
         this->htn = htn;
     }
-    void update(int length, vector<vector<int>> &K, bool allowEmptyness) {
+    void update(int length, vector<vector<int>> &K, bool allowEmptiness) {
         int numTasks = this->htn->numSubTasks[this->method];
         int rootTask = this->htn->decomposedTask[this->method];
         int lastTask = this->htn->subTasks[this->method][numTasks - 1];
         int subtaskSCC = this->htn->taskToSCC[lastTask];
         int rootSCC = this->htn->taskToSCC[rootTask];
-        if (subtaskSCC == rootSCC && allowEmptyness)
+        if ((subtaskSCC == rootSCC) == allowEmptiness) {
             this->valid[numTasks - 1][length] = (K[lastTask][length] != -1);
+            this->depth[numTasks - 1][length] = max(
+                    this->depth[numTasks - 1][length],
+                    K[lastTask][length]);
+        }
         // TODO: update the depth
         for (int tInd = numTasks - 2; tInd >= 0; tInd--) {
             int task = this->htn->subTasks[this->method][tInd];
             subtaskSCC = this->htn->taskToSCC[task];
-            if (subtaskSCC == rootSCC && allowEmptyness)
+            if ((subtaskSCC == rootSCC) == allowEmptiness) {
                 this->valid[tInd][length] = this->valid[tInd][length] ||
                                             this->valid[tInd + 1][0];
-            if (allowEmptyness) continue;
+                this->depth[tInd][length] = max(
+                        this->depth[tInd][length],
+                        K[task][length]);
+            }
+            if (allowEmptiness) continue;
             for (int assignment = 0; assignment < length; assignment++) {
                 int depthForTask = K[task][assignment];
                 if (depthForTask == -1) continue;
