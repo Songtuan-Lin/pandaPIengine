@@ -14,7 +14,7 @@ class SATVerifier : public Verifier {
         SATVerifier(
                 string htnFile,
                 string planFile,
-                string fileNoPrec = "") : Verifier(htnFile, planFile) {
+                bool optimizeDepth=false) : Verifier(htnFile, planFile) {
             this->execution = new PlanExecution(this->htn, this->plan);
             this->htn->computeTransitiveClosureOfMethodOrderings();
             this->htn->buildOrderingDatastructures();
@@ -25,10 +25,10 @@ class SATVerifier : public Verifier {
             }
             PDT *pdt = new PDT(this->htn);
             int maxDepth = 2 * (this->plan.size()) * (this->htn->numTasks - this->htn->numActions);
-            if (!fileNoPrec.empty()) {
+            if (optimizeDepth) {
                 string prefix = "[Computing optimal depth]";
                 Depth *depth = new Depth(
-                        fileNoPrec,
+                        this->htn,
                         this->plan.size());
                 int optimalDepth = depth->get();
 #ifndef NDEBUG

@@ -50,9 +50,6 @@ struct gengetopt_args_info
   const char *verifier_help; /**< @brief selecting a plan verifier help description.  */
   int optimizeDepth_flag;	/**< @brief calculating optimal depth (default=off).  */
   const char *optimizeDepth_help; /**< @brief calculating optimal depth help description.  */
-  char * fileNoPrec_arg;	/**< @brief htn problem without method preconditions.  */
-  char * fileNoPrec_orig;	/**< @brief htn problem without method preconditions original value given at command line.  */
-  const char *fileNoPrec_help; /**< @brief htn problem without method preconditions help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -60,7 +57,6 @@ struct gengetopt_args_info
   unsigned int plan_given ;	/**< @brief Whether plan was given.  */
   unsigned int verifier_given ;	/**< @brief Whether verifier was given.  */
   unsigned int optimizeDepth_given ;	/**< @brief Whether optimizeDepth was given.  */
-  unsigned int fileNoPrec_given ;	/**< @brief Whether fileNoPrec was given.  */
 
   char **inputs ; /**< @brief unnamed options (options without names) */
   unsigned inputs_num ; /**< @brief unnamed options number */

@@ -5,9 +5,9 @@
 #include "depth.h"
 #include "util.h"
 
-Depth::Depth(string htnFile, int length) {
-    this->readHTNFile(htnFile);
+Depth::Depth(Model *htn, int length) {
     this->maxLength = length;
+    this->htn = htn;
     this->htn->calcSCCs();
     this->htn->calcSCCGraph();
     this->htn->analyseSCCcyclicity();
