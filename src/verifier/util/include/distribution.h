@@ -64,7 +64,7 @@ public:
             int task = this->htn->subTasks[this->method][tInd];
             subtaskSCC = this->htn->taskToSCC[task];
             if ((subtaskSCC == rootSCC) == allowEmptiness) {
-                this->valid[tInd][l] = this->valid[tInd][l] ||
+                this->valid[tInd][l] = (K[task][l] != -1) &&
                                        this->valid[tInd + 1][0];
                 this->depth[tInd][l] = max(
                         this->depth[tInd][l],

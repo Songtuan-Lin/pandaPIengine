@@ -13,11 +13,12 @@ class Depth {
 public:
     Depth(string htnFile, int length);
     int get(int task, int length) {return this->depth[task][length];}
+    int get() {return this->depth[this->htn->initialTask][this->maxLength];}
 private:
     Model *htn;
+    int maxLength;
     vector<Distributions*> distributions;
     vector<vector<int>> depth;
-    vector<vector<LengthDistributions*>> cache;
     void depthPerSCC(int length, int scc);
     void update(int length, int scc, bool allowEmptiness);
     void readHTNFile(string htnFile) {

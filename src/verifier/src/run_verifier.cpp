@@ -19,7 +19,15 @@ int main(int argc, char *argv[]) {
     if (approach.compare("cyk") == 0) {
         verifier = new TOVerifier(htnFile, planFile);
     } else if (approach.compare("sat") == 0) {
-        verifier = new SATVerifier(htnFile, planFile);
+        bool optimizeDepth = args_info.optimizeDepth_given;
+        if (optimizeDepth && (!args_info.fileNoPrec_given)) {
+            cout << "problem file for computing depth is not given" << endl;
+            exit(-1);
+        }
+        string fileNoPrec = "";
+        if (optimizeDepth)
+            fileNoPrec = args_info.fileNoPrec_arg;
+        verifier = new SATVerifier(htnFile, planFile, fileNoPrec);
     } else {cout << "Approach has not been implemented!" << endl; exit(-1);}
     // TODO: add the processor for selecting different verifier
     std::clock_t afterVerify = std::clock();

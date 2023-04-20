@@ -7,6 +7,7 @@
 
 Depth::Depth(string htnFile, int length) {
     this->readHTNFile(htnFile);
+    this->maxLength = length;
     this->htn->calcSCCs();
     this->htn->calcSCCGraph();
     this->htn->analyseSCCcyclicity();
