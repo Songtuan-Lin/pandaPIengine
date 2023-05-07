@@ -38,10 +38,12 @@ const char *gengetopt_args_info_help[] = {
   "  -h, --htn=STRING       the path to the input HTN problem file",
   "  -p, --plan=STRING      the path to the input plan file",
   "  -v, --verifier=STRING  selecting a plan verifier",
+  "  -o, --optimizeDepth    calculating optimal depth  (default=off)",
     0
 };
 
 typedef enum {ARG_NO
+  , ARG_FLAG
   , ARG_STRING
 } cmdline_parser_arg_type;
 
@@ -92,6 +94,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->htn_given = 0 ;
   args_info->plan_given = 0 ;
   args_info->verifier_given = 0 ;
+  args_info->optimizeDepth_given = 0 ;
 }
 
 static
@@ -104,6 +107,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->plan_orig = NULL;
   args_info->verifier_arg = NULL;
   args_info->verifier_orig = NULL;
+  args_info->optimizeDepth_flag = 0;
   
 }
 
@@ -117,6 +121,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->htn_help = gengetopt_args_info_help[2] ;
   args_info->plan_help = gengetopt_args_info_help[3] ;
   args_info->verifier_help = gengetopt_args_info_help[4] ;
+  args_info->optimizeDepth_help = gengetopt_args_info_help[5] ;
   
 }
 
@@ -260,6 +265,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "plan", args_info->plan_orig, 0);
   if (args_info->verifier_given)
     write_into_file(outfile, "verifier", args_info->verifier_orig, 0);
+  if (args_info->optimizeDepth_given)
+    write_into_file(outfile, "optimizeDepth", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -1058,6 +1065,9 @@ int update_arg(void *field, char **orig_field,
     val = possible_values[found];
 
   switch(arg_type) {
+  case ARG_FLAG:
+    *((int *)field) = !*((int *)field);
+    break;
   case ARG_STRING:
     if (val) {
       string_field = (char **)field;
@@ -1075,6 +1085,7 @@ int update_arg(void *field, char **orig_field,
   /* store the original value */
   switch(arg_type) {
   case ARG_NO:
+  case ARG_FLAG:
     break;
   default:
     if (value && orig_field) {
@@ -1145,6 +1156,7 @@ cmdline_parser_internal (
         { "htn",	1, NULL, 'h' },
         { "plan",	1, NULL, 'p' },
         { "verifier",	1, NULL, 'v' },
+        { "optimizeDepth",	0, NULL, 'o' },
         { 0,  0, 0, 0 }
       };
 
@@ -1153,7 +1165,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "Vh:p:v:", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "Vh:p:v:o", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1201,6 +1213,16 @@ cmdline_parser_internal (
               &(local_args_info.verifier_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "verifier", 'v',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'o':	/* calculating optimal depth.  */
+        
+        
+          if (update_arg((void *)&(args_info->optimizeDepth_flag), 0, &(args_info->optimizeDepth_given),
+              &(local_args_info.optimizeDepth_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "optimizeDepth", 'o',
               additional_error))
             goto failure;
         

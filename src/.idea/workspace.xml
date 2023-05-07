@@ -36,7 +36,17 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="" />
+    <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/options.ggo" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/options.ggo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/depth.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/include/sat_verifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/include/sat_verifier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/test/test_depth.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/test/test_depth.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +55,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -78,7 +88,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Catch.All in test_depth">
+  <component name="RunManager" selected="CMake Application.run_verifier">
     <configuration name="All in test_depth" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="test_depth" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="test_depth" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -115,7 +125,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
+    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/pfile01.sas -p $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/plan-sat -o -f $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/pfile01-noprec.sas" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -194,7 +204,7 @@
       <workItem from="1681724404446" duration="7342000" />
       <workItem from="1681905499357" duration="2000" />
       <workItem from="1681905641737" duration="7029000" />
-      <workItem from="1683467438840" duration="2000" />
+      <workItem from="1681947509161" duration="12003000" />
     </task>
     <servers />
   </component>
@@ -212,19 +222,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/verifier/test/test_depth.cpp</url>
-          <line>10</line>
+          <line>32</line>
           <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
-          <line>21</line>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <condition expression="l==3" language="ObjectiveC" />
-          <url>file://$PROJECT_DIR$/verifier/sat_verifier/src/depth.cpp</url>
-          <line>54</line>
-          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

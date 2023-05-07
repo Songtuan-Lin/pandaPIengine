@@ -3,6 +3,7 @@
 #include "pdt.h"
 #include "ipasir.h"
 #include "verifier.h"
+#include "depth.h"
 #include "execution.h"
 #include "variables.h"
 #include "constraints.h"
@@ -10,7 +11,10 @@
 
 class SATVerifier : public Verifier {
     public:
-        SATVerifier(string htnFile, string planFile) : Verifier(htnFile, planFile) {
+        SATVerifier(
+                string htnFile,
+                string planFile,
+                bool optimizeDepth=false) : Verifier(htnFile, planFile) {
             this->execution = new PlanExecution(this->htn, this->plan);
             this->htn->computeTransitiveClosureOfMethodOrderings();
             this->htn->buildOrderingDatastructures();
@@ -21,7 +25,20 @@ class SATVerifier : public Verifier {
             }
             PDT *pdt = new PDT(this->htn);
             int maxDepth = 2 * (this->plan.size()) * (this->htn->numTasks - this->htn->numActions);
-            for (int depth = 1; depth < maxDepth; depth++) {
+            if (optimizeDepth) {
+                string prefix = "[Computing optimal depth]";
+                Depth *depth = new Depth(
+                        this->htn,
+                        this->plan.size());
+                int optimalDepth = depth->get();
+#ifndef NDEBUG
+                if (optimalDepth > maxDepth)
+                    cout << prefix << " Higher optimal depth!" << endl;
+#endif
+                maxDepth = min(maxDepth, optimalDepth);
+                cout << prefix << " Max depth: " << maxDepth << endl;
+            }
+            for (int depth = 1; depth <= maxDepth; depth++) {
                 this->solver = ipasir_init();
                 int state = 20;
                 if (this->generateSATFormula(depth, pdt)) {

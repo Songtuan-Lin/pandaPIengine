@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
     if (approach.compare("cyk") == 0) {
         verifier = new TOVerifier(htnFile, planFile);
     } else if (approach.compare("sat") == 0) {
-        verifier = new SATVerifier(htnFile, planFile);
+        bool optimizeDepth = args_info.optimizeDepth_given;
+        verifier = new SATVerifier(htnFile, planFile, optimizeDepth);
     } else {cout << "Approach has not been implemented!" << endl; exit(-1);}
     // TODO: add the processor for selecting different verifier
     std::clock_t afterVerify = std::clock();
