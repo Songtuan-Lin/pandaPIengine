@@ -14,5 +14,7 @@ option "optimizeDepth" o "calculating optimal depth" flag off
 
 section "Create Invalid Plans"
 option "createInvalIns" c "creating invalid instances" flag off
-option "benchmark" b "the path to a benchmark set" string multiple
-option "directory" d "output directory of generated invalid plans"
+option "domain" d "domain of the instance" string optional
+option "task" t "task of the instance" string optional
+option "outputFile" f "the path to the output file" string optional
+option "planFile" - "the path to the output plan file" string optional

@@ -38,8 +38,11 @@
   <component name="ChangeListManager">
     <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.c" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/cmdline.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/cmdline.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/verifier/include/verifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/include/verifier.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/verifier/options.ggo" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/options.ggo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,11 +92,6 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="cmd" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="cmd" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -124,7 +122,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/pfile01.sas -p $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/plan-sat -o -f $USER_HOME$/Evaluations/po-val/Barman-BDI/pfile01/plan-1/pfile01-noprec.sas" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
+    <configuration name="run_verifier" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-v sat -h $USER_HOME$/Test/test/pfile01.sas -p $USER_HOME$/Test/test/invalid-plan -o" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="run_verifier" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pandaPIengine" RUN_TARGET_NAME="run_verifier">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -206,6 +204,7 @@
       <workItem from="1681947509161" duration="14143000" />
       <workItem from="1682905477344" duration="158000" />
       <workItem from="1683000404070" duration="775000" />
+      <workItem from="1683509587602" duration="11967000" />
     </task>
     <servers />
   </component>

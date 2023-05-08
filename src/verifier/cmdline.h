@@ -50,6 +50,20 @@ struct gengetopt_args_info
   const char *verifier_help; /**< @brief selecting a plan verifier help description.  */
   int optimizeDepth_flag;	/**< @brief calculating optimal depth (default=off).  */
   const char *optimizeDepth_help; /**< @brief calculating optimal depth help description.  */
+  int createInvalIns_flag;	/**< @brief creating invalid instances (default=off).  */
+  const char *createInvalIns_help; /**< @brief creating invalid instances help description.  */
+  char * domain_arg;	/**< @brief domain of the instance.  */
+  char * domain_orig;	/**< @brief domain of the instance original value given at command line.  */
+  const char *domain_help; /**< @brief domain of the instance help description.  */
+  char * task_arg;	/**< @brief task of the instance.  */
+  char * task_orig;	/**< @brief task of the instance original value given at command line.  */
+  const char *task_help; /**< @brief task of the instance help description.  */
+  char * outputFile_arg;	/**< @brief the path to the output file.  */
+  char * outputFile_orig;	/**< @brief the path to the output file original value given at command line.  */
+  const char *outputFile_help; /**< @brief the path to the output file help description.  */
+  char * planFile_arg;	/**< @brief the path to the output plan file.  */
+  char * planFile_orig;	/**< @brief the path to the output plan file original value given at command line.  */
+  const char *planFile_help; /**< @brief the path to the output plan file help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -57,6 +71,11 @@ struct gengetopt_args_info
   unsigned int plan_given ;	/**< @brief Whether plan was given.  */
   unsigned int verifier_given ;	/**< @brief Whether verifier was given.  */
   unsigned int optimizeDepth_given ;	/**< @brief Whether optimizeDepth was given.  */
+  unsigned int createInvalIns_given ;	/**< @brief Whether createInvalIns was given.  */
+  unsigned int domain_given ;	/**< @brief Whether domain was given.  */
+  unsigned int task_given ;	/**< @brief Whether task was given.  */
+  unsigned int outputFile_given ;	/**< @brief Whether outputFile was given.  */
+  unsigned int planFile_given ;	/**< @brief Whether planFile was given.  */
 
   char **inputs ; /**< @brief unnamed options (options without names) */
   unsigned inputs_num ; /**< @brief unnamed options number */

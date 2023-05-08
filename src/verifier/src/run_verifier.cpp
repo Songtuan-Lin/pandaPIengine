@@ -13,6 +13,22 @@ int main(int argc, char *argv[]) {
 
     string htnFile = args_info.htn_arg;
     string planFile = args_info.plan_arg;
+    if (args_info.createInvalIns_given){
+        Verifier *verifier = new Verifier(htnFile, planFile);
+        verifier->generateInvalPlans(
+                args_info.domain_arg,
+                args_info.task_arg,
+                args_info.outputFile_arg,
+                args_info.planFile_arg);
+        SATVerifier *satVerifier = new SATVerifier(
+                htnFile, args_info.planFile_arg, true);
+        if (satVerifier->getResult()) {
+            cout << "- instance is valid" << endl;
+            remove(args_info.outputFile_arg);
+            exit(-1);
+        }
+        exit(0);
+    }
     string approach = args_info.verifier_arg;
     Verifier *verifier;
     std::clock_t beforeVerify = std::clock();
