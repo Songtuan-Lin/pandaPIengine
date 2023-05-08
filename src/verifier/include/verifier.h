@@ -15,6 +15,8 @@ class Verifier {
             this->result = false;
         }
 
+        void generateInvalPlans(string domain, string task) {};
+        
         virtual bool getResult() {return this->result;}
 
     protected:
