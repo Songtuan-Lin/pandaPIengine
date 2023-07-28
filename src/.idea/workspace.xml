@@ -17,7 +17,6 @@
       <config projectName="pandaPIengine" targetName="hrc" />
       <config projectName="pandaPIengine" targetName="pandaPIengine" />
       <config projectName="pandaPIengine" targetName="util" />
-      <config projectName="pandaPIengine" targetName="to_verifier" />
       <config projectName="pandaPIengine" targetName="test_util" />
       <config projectName="pandaPIengine" targetName="symbolic_search" />
       <config projectName="pandaPIengine" targetName="run_verifier" />
@@ -37,9 +36,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e6b61c-4ea4-4fba-972e-aad0e5ff6b6e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/src.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/src.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.c" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/cmdline.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/cmdline.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/cmdline.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/include/verifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/include/verifier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/options.ggo" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/options.ggo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/verifier/src/run_verifier.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/to_verifier/include/method_graph.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/to_verifier/include/to_verifier.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/verifier/to_verifier/src/to_verifier.cpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,11 +166,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="to_verifier" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="to_verifier" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="util" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pandaPIengine" TARGET_NAME="util" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -184,7 +185,6 @@
       <item itemvalue="CMake Application.run_verifier" />
       <item itemvalue="CMake Application.sat_verifier" />
       <item itemvalue="CMake Application.test_util" />
-      <item itemvalue="CMake Application.to_verifier" />
       <item itemvalue="CMake Application.util" />
       <item itemvalue="CMake Application.test_main" />
     </list>

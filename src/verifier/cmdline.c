@@ -34,18 +34,11 @@ const char *gengetopt_args_info_versiontext = "<versiontext>";
 const char *gengetopt_args_info_description = "<description>";
 
 const char *gengetopt_args_info_help[] = {
-  "      --help               Print help and exit",
-  "  -V, --version            Print version and exit",
-  "  -h, --htn=STRING         the path to the input HTN problem file",
-  "  -p, --plan=STRING        the path to the input plan file",
-  "  -v, --verifier=STRING    selecting a plan verifier",
-  "  -o, --optimizeDepth      calculating optimal depth  (default=off)",
-  "\nCreate Invalid Plans:",
-  "  -c, --createInvalIns     creating invalid instances  (default=off)",
-  "  -d, --domain=STRING      domain of the instance",
-  "  -t, --task=STRING        task of the instance",
-  "  -f, --outputFile=STRING  the path to the output file",
-  "      --planFile=STRING    the path to the output plan file",
+  "      --help           Print help and exit",
+  "  -V, --version        Print version and exit",
+  "  -h, --htn=STRING     the path to the input HTN problem file",
+  "  -p, --plan=STRING    the path to the input plan file",
+  "  -o, --optimizeDepth  calculating optimal depth  (default=off)",
     0
 };
 
@@ -100,13 +93,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->version_given = 0 ;
   args_info->htn_given = 0 ;
   args_info->plan_given = 0 ;
-  args_info->verifier_given = 0 ;
   args_info->optimizeDepth_given = 0 ;
-  args_info->createInvalIns_given = 0 ;
-  args_info->domain_given = 0 ;
-  args_info->task_given = 0 ;
-  args_info->outputFile_given = 0 ;
-  args_info->planFile_given = 0 ;
 }
 
 static
@@ -117,18 +104,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->htn_orig = NULL;
   args_info->plan_arg = NULL;
   args_info->plan_orig = NULL;
-  args_info->verifier_arg = NULL;
-  args_info->verifier_orig = NULL;
   args_info->optimizeDepth_flag = 0;
-  args_info->createInvalIns_flag = 0;
-  args_info->domain_arg = NULL;
-  args_info->domain_orig = NULL;
-  args_info->task_arg = NULL;
-  args_info->task_orig = NULL;
-  args_info->outputFile_arg = NULL;
-  args_info->outputFile_orig = NULL;
-  args_info->planFile_arg = NULL;
-  args_info->planFile_orig = NULL;
   
 }
 
@@ -141,13 +117,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->htn_help = gengetopt_args_info_help[2] ;
   args_info->plan_help = gengetopt_args_info_help[3] ;
-  args_info->verifier_help = gengetopt_args_info_help[4] ;
-  args_info->optimizeDepth_help = gengetopt_args_info_help[5] ;
-  args_info->createInvalIns_help = gengetopt_args_info_help[7] ;
-  args_info->domain_help = gengetopt_args_info_help[8] ;
-  args_info->task_help = gengetopt_args_info_help[9] ;
-  args_info->outputFile_help = gengetopt_args_info_help[10] ;
-  args_info->planFile_help = gengetopt_args_info_help[11] ;
+  args_info->optimizeDepth_help = gengetopt_args_info_help[4] ;
   
 }
 
@@ -244,16 +214,6 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->htn_orig));
   free_string_field (&(args_info->plan_arg));
   free_string_field (&(args_info->plan_orig));
-  free_string_field (&(args_info->verifier_arg));
-  free_string_field (&(args_info->verifier_orig));
-  free_string_field (&(args_info->domain_arg));
-  free_string_field (&(args_info->domain_orig));
-  free_string_field (&(args_info->task_arg));
-  free_string_field (&(args_info->task_orig));
-  free_string_field (&(args_info->outputFile_arg));
-  free_string_field (&(args_info->outputFile_orig));
-  free_string_field (&(args_info->planFile_arg));
-  free_string_field (&(args_info->planFile_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -297,20 +257,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "htn", args_info->htn_orig, 0);
   if (args_info->plan_given)
     write_into_file(outfile, "plan", args_info->plan_orig, 0);
-  if (args_info->verifier_given)
-    write_into_file(outfile, "verifier", args_info->verifier_orig, 0);
   if (args_info->optimizeDepth_given)
     write_into_file(outfile, "optimizeDepth", 0, 0 );
-  if (args_info->createInvalIns_given)
-    write_into_file(outfile, "createInvalIns", 0, 0 );
-  if (args_info->domain_given)
-    write_into_file(outfile, "domain", args_info->domain_orig, 0);
-  if (args_info->task_given)
-    write_into_file(outfile, "task", args_info->task_orig, 0);
-  if (args_info->outputFile_given)
-    write_into_file(outfile, "outputFile", args_info->outputFile_orig, 0);
-  if (args_info->planFile_given)
-    write_into_file(outfile, "planFile", args_info->planFile_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -436,12 +384,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (! args_info->plan_given)
     {
       fprintf (stderr, "%s: '--plan' ('-p') option required%s\n", prog_name, (additional_error ? additional_error : ""));
-      error_occurred = 1;
-    }
-  
-  if (! args_info->verifier_given)
-    {
-      fprintf (stderr, "%s: '--verifier' ('-v') option required%s\n", prog_name, (additional_error ? additional_error : ""));
       error_occurred = 1;
     }
   
@@ -602,17 +544,11 @@ cmdline_parser_internal (
         { "version",	0, NULL, 'V' },
         { "htn",	1, NULL, 'h' },
         { "plan",	1, NULL, 'p' },
-        { "verifier",	1, NULL, 'v' },
         { "optimizeDepth",	0, NULL, 'o' },
-        { "createInvalIns",	0, NULL, 'c' },
-        { "domain",	1, NULL, 'd' },
-        { "task",	1, NULL, 't' },
-        { "outputFile",	1, NULL, 'f' },
-        { "planFile",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "Vh:p:v:ocd:t:f:", long_options, &option_index);
+      c = getopt_long (argc, argv, "Vh:p:o", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -647,70 +583,12 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'v':	/* selecting a plan verifier.  */
-        
-        
-          if (update_arg( (void *)&(args_info->verifier_arg), 
-               &(args_info->verifier_orig), &(args_info->verifier_given),
-              &(local_args_info.verifier_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "verifier", 'v',
-              additional_error))
-            goto failure;
-        
-          break;
         case 'o':	/* calculating optimal depth.  */
         
         
           if (update_arg((void *)&(args_info->optimizeDepth_flag), 0, &(args_info->optimizeDepth_given),
               &(local_args_info.optimizeDepth_given), optarg, 0, 0, ARG_FLAG,
               check_ambiguity, override, 1, 0, "optimizeDepth", 'o',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'c':	/* creating invalid instances.  */
-        
-        
-          if (update_arg((void *)&(args_info->createInvalIns_flag), 0, &(args_info->createInvalIns_given),
-              &(local_args_info.createInvalIns_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "createInvalIns", 'c',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'd':	/* domain of the instance.  */
-        
-        
-          if (update_arg( (void *)&(args_info->domain_arg), 
-               &(args_info->domain_orig), &(args_info->domain_given),
-              &(local_args_info.domain_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "domain", 'd',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 't':	/* task of the instance.  */
-        
-        
-          if (update_arg( (void *)&(args_info->task_arg), 
-               &(args_info->task_orig), &(args_info->task_given),
-              &(local_args_info.task_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "task", 't',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'f':	/* the path to the output file.  */
-        
-        
-          if (update_arg( (void *)&(args_info->outputFile_arg), 
-               &(args_info->outputFile_orig), &(args_info->outputFile_given),
-              &(local_args_info.outputFile_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "outputFile", 'f',
               additional_error))
             goto failure;
         
@@ -723,22 +601,6 @@ cmdline_parser_internal (
             exit (EXIT_SUCCESS);
           }
 
-          /* the path to the output plan file.  */
-          if (strcmp (long_options[option_index].name, "planFile") == 0)
-          {
-          
-          
-            if (update_arg( (void *)&(args_info->planFile_arg), 
-                 &(args_info->planFile_orig), &(args_info->planFile_given),
-                &(local_args_info.planFile_given), optarg, 0, 0, ARG_STRING,
-                check_ambiguity, override, 0, 0,
-                "planFile", '-',
-                additional_error))
-              goto failure;
-          
-          }
-          
-          break;
         case '?':	/* Invalid option.  */
           /* `getopt_long' already printed an error message.  */
           goto failure;

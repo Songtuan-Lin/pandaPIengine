@@ -16,66 +16,6 @@ class Verifier {
             this->plan = this->parsePlan(planStr);
             this->result = false;
         }
-
-        void generateInvalPlans(
-                string domain,
-                string task,
-                string outFile,
-                string planFile) {
-            random_device dev;
-            mt19937 rng(dev());
-            uniform_int_distribution<int> randOps(1, 3);
-            uniform_int_distribution<int> position(
-                    0, this->plan.size() - 1);
-            uniform_int_distribution<int> action(
-                    0, this->htn->numActions-1);
-            int op = randOps(rng);
-            int pos;
-            int a;
-            switch (op) {
-                case 1:
-                    // adding an action
-                    cout << "- Adding an action" << endl;
-                    pos = position(rng);
-                    a = action(rng);
-                    while (Util::isPrecondition(this->htn->taskNames[a]))
-                        a = action(rng);
-                    this->plan.insert(
-                            this->plan.begin()+pos, a);
-                    break;
-                case 2:
-                    // deleting an action
-                    cout << "- Deleting an action" << endl;
-                    pos = position(rng);
-                    this->plan.erase(this->plan.begin() + pos);
-                    break;
-                case 3:
-                    // switching two actions
-                    cout << "- Swapping two actions" << endl;
-                    int firstPos = position(rng);
-                    int secondPos = position(rng);
-                    swap(this->plan[firstPos], this->plan[secondPos]);
-                    break;
-            }
-            ofstream ofile(outFile);
-            ofile << domain << endl;
-            ofile << task << endl;
-            for (int i = 0; i < this->plan.size(); i++) {
-                int t = this->plan[i];
-                if (i == this->plan.size() - 1) {
-                    ofile << this->htn->taskNames[t];
-                } else { ofile << this->htn->taskNames[t] << ";"; }
-            }
-            ofile.close();
-            ofstream oplan(planFile);
-            for (int i = 0; i < this->plan.size(); i++) {
-                int t = this->plan[i];
-                if (i == this->plan.size() - 1) {
-                    oplan << this->htn->taskNames[t];
-                } else {oplan << this->htn->taskNames[t] << ";";}
-            }
-        };
-        
         virtual bool getResult() {return this->result;}
 
     protected:

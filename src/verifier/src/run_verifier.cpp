@@ -1,9 +1,6 @@
-#include <getopt.h>
 #include <iostream>
-#include <fstream>
 #include <string>
 #include "cmdline.h"
-#include "to_verifier.h"
 #include "verifier.h"
 #include "sat_verifier.h"
 
@@ -13,32 +10,9 @@ int main(int argc, char *argv[]) {
 
     string htnFile = args_info.htn_arg;
     string planFile = args_info.plan_arg;
-    if (args_info.createInvalIns_given){
-        Verifier *verifier = new Verifier(htnFile, planFile);
-        verifier->generateInvalPlans(
-                args_info.domain_arg,
-                args_info.task_arg,
-                args_info.outputFile_arg,
-                args_info.planFile_arg);
-        SATVerifier *satVerifier = new SATVerifier(
-                htnFile, args_info.planFile_arg, true);
-        if (satVerifier->getResult()) {
-            cout << "- instance is valid" << endl;
-            remove(args_info.outputFile_arg);
-            exit(-1);
-        }
-        exit(0);
-    }
-    string approach = args_info.verifier_arg;
-    Verifier *verifier;
     std::clock_t beforeVerify = std::clock();
-    if (approach.compare("cyk") == 0) {
-        verifier = new TOVerifier(htnFile, planFile);
-    } else if (approach.compare("sat") == 0) {
-        bool optimizeDepth = args_info.optimizeDepth_given;
-        verifier = new SATVerifier(htnFile, planFile, optimizeDepth);
-    } else {cout << "Approach has not been implemented!" << endl; exit(-1);}
-    // TODO: add the processor for selecting different verifier
+    bool optimizeDepth = args_info.optimizeDepth_given;
+    Verifier *verifier = new SATVerifier(htnFile, planFile, optimizeDepth);
     std::clock_t afterVerify = std::clock();
     double prepTime = 1000.0 * (afterVerify - beforeVerify) / CLOCKS_PER_SEC;
     cout << "Information about the verification" << endl;

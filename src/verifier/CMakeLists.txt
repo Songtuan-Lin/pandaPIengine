@@ -19,29 +19,6 @@ target_link_libraries(util
         intDataStructures
 )
 
-# commands for the TO verifier
-add_library(to_verifier
-		to_verifier/src/to_verifier.cpp
-    	${pandaPIengine_SOURCE_DIR}/Model.cpp
-    	${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp
-    	${pandaPIengine_SOURCE_DIR}/Util.cpp
-    	${pandaPIengine_SOURCE_DIR}/Debug.cpp
-    	${pandaPIengine_SOURCE_DIR}/Invariants.cpp
-)
-
-target_include_directories(to_verifier
-    PUBLIC
-        ${PROJECT_SOURCE_DIR}/to_verifier/include
-        ${pandaPIengine_SOURCE_DIR}/
-        ${PROJECT_SOURCE_DIR}/include
-)
-
-target_link_libraries(to_verifier
-    PUBLIC
-        intDataStructures
-        util
-)
-
 add_library(sat_verifier
     	sat_verifier/src/sat_verifier.cpp
 		sat_verifier/src/variables.cpp
@@ -49,6 +26,7 @@ add_library(sat_verifier
 		${pandaPIengine_SOURCE_DIR}/Model.cpp
 		${pandaPIengine_SOURCE_DIR}/Util.cpp
 		${pandaPIengine_SOURCE_DIR}/Debug.cpp
+		${pandaPIengine_SOURCE_DIR}/ProgressionNetwork.cpp
 		${pandaPIengine_SOURCE_DIR}/Invariants.cpp sat_verifier/src/depth.cpp sat_verifier/src/marker.cpp)
 
 target_include_directories(sat_verifier
@@ -87,7 +65,6 @@ add_executable(run_verifier ${VERIFIER_SOUCE_FILES} cmdline.c cmdline.h)
 
 target_link_libraries(run_verifier
 	PUBLIC
-		to_verifier
         sat_verifier
 )
 

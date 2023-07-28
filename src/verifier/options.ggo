@@ -9,12 +9,4 @@ args "--string-parser -u"
 
 option "htn" h "the path to the input HTN problem file" string required
 option "plan" p "the path to the input plan file" string required
-option "verifier" v "selecting a plan verifier" string required
 option "optimizeDepth" o "calculating optimal depth" flag off
-
-section "Create Invalid Plans"
-option "createInvalIns" c "creating invalid instances" flag off
-option "domain" d "domain of the instance" string optional
-option "task" t "task of the instance" string optional
-option "outputFile" f "the path to the output file" string optional
-option "planFile" - "the path to the output plan file" string optional
